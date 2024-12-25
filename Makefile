@@ -1,5 +1,5 @@
 NAME	:= Game
-CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast
+CFLAGS	:= -g -Wextra -Wall -Werror -Wunreachable-code -Ofast
 LIBMLX	:= ./MLX
 
 HEADERS	:= -I ./include -I $(LIBMLX)/include
