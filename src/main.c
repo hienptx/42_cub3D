@@ -5,13 +5,16 @@
 #include <math.h>
 #include "../typedef.h"
 #include "../MLX/include/MLX42/MLX42.h"
-#define WIDTH 640
+#include "../MLX/include/MLX42/MLX42_Int.h"
+#define WIDTH 1280
 #define HEIGHT 640
 #define cell_size 64
 
 void	rotate(t_cub3d *data, int unit_degree);
 void	put_pixel_box(t_cub3d *data, u_int32_t color);
 void	cast_ray(void *param);
+void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall);
+
 // Exit the program as failure.
 static void ft_error(void)
 {
@@ -59,24 +62,28 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 		mlx_close_window(mlx);
 	if (mlx_is_key_down(mlx, MLX_KEY_W))
 	{
+		memset(data->img2->pixels, 255, data->img2->width * data->img2->height * sizeof(int32_t));
 		put_pixel_box(data, 0xFFFFFFFF);
 		move_forward(data, 1);
 		key_pressed = true;
 	}
 	if (mlx_is_key_down(mlx, MLX_KEY_S))
 	{
+		memset(data->img2->pixels, 255, data->img2->width * data->img2->height * sizeof(int32_t));
 		put_pixel_box(data, 0xFFFFFFFF);
 		move_forward(data, -1);
 		key_pressed = true;
 	}
 	if (mlx_is_key_down(mlx, MLX_KEY_A))
 	{
+		memset(data->img2->pixels, 255, data->img2->width * data->img2->height * sizeof(int32_t));
 		put_pixel_box(data, 0xFFFFFFFF);
 		rotate(data, 5);
 		key_pressed = true;
 	}
 	if (mlx_is_key_down(mlx, MLX_KEY_D))
 	{
+		memset(data->img2->pixels, 255, data->img2->width * data->img2->height * sizeof(int32_t));
 		put_pixel_box(data, 0xFFFFFFFF);
 		rotate(data, -5);
 		key_pressed = true;
@@ -87,14 +94,19 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 		cast_ray(data);
 }
 
+int	adjust_angle(int angle)
+{
+	if (359 < angle)
+		angle -= 360;
+	if (angle < 0)
+		angle += 360;
+	return (angle);
+}
 
 void rotate(t_cub3d *data, int unit_degree)
 {
 	data->pos.angle += unit_degree;
-	if (359 < data->pos.angle)
-		data->pos.angle -= 360;
-	if (data->pos.angle < 0)
-		data->pos.angle += 360;
+	data->pos.angle = adjust_angle(data->pos.angle);
 	data->pos.dx = cos(deg2rad(data->pos.angle));
 	data->pos.dy = -sin(deg2rad(data->pos.angle));
 }
@@ -184,95 +196,130 @@ void cast_ray(void *param) {
 	float angle = data->pos.angle;
 	float px = data->pos.x;
 	float py = data->pos.y;
-	// angle = angle * (180/M_PI);  // convert to degrees
-	float rx, ry, xo, yo, disV = 100000, disH = 100000;
+	float rx, ry, xo, yo, disV, disH, disT;
 	int dof, mx, my;
 
 	render_map(data->map.map_data, 8, 8, 512, 512, data);
-	// Vertical
-	dof = 0;
-	float tan_ra = tan(deg2rad(angle));
-	if (cos(deg2rad(angle)) > 0.001) {
-		rx = (((int)px/cell_size) * cell_size) + cell_size;
-		ry = (px-rx) * tan_ra + py;
-		xo = cell_size;
-		yo = -xo * tan_ra;
-	}
-	else if (cos(deg2rad(angle)) < -0.001) {
-		rx = (((int)px/cell_size) * cell_size) - 0.0001;
-		ry = (px-rx) * tan_ra + py;
-		xo = -cell_size;
-		yo = -xo * tan_ra;
-	}
-	else {
-		rx = px;
-		ry = py;
-		dof = 8;
-	}
-
-	while (dof < 8) {
-		mx = (int)(rx/cell_size);
-		my = (int)(ry/cell_size);
-		int mp = my * data->map.map_width + mx;
-		if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_width && 
-			data->map.map_data[mp] == 1) {
-			dof = 8;
-			disV = sqrt(pow(rx - px, 2) + pow(ry - py, 2));	//
+	angle = adjust_angle(angle + 30);
+	int i = 0;
+	while (i++ < 60)
+	{
+		disV = 100000;
+		disH = 100000;
+		// Vertical
+		dof = 0;
+		float tan_ra = tan(deg2rad(angle));
+		if (cos(deg2rad(angle)) > 0.001) {
+			rx = (((int)px/cell_size) * cell_size) + cell_size;
+			ry = (px-rx) * tan_ra + py;
+			xo = cell_size;
+			yo = -xo * tan_ra;
+		}
+		else if (cos(deg2rad(angle)) < -0.001) {
+			rx = (((int)px/cell_size) * cell_size) - 0.0001;
+			ry = (px-rx) * tan_ra + py;
+			xo = -cell_size;
+			yo = -xo * tan_ra;
 		}
 		else {
-			rx += xo;
-			ry += yo;
-			dof += 1;
-		}
-	}
-	float vx = rx, vy = ry;
-
-	// Horizontal
-	dof = 0;
-	tan_ra = 1.0/tan_ra;
-	if (sin(deg2rad(angle)) > 0.001) {
-		ry = (((int)py/cell_size) * cell_size) - 0.0001;
-		rx = (py-ry) * tan_ra + px;
-		yo = -cell_size;
-		xo = -yo * tan_ra;
-	}
-	else if (sin(deg2rad(angle)) < -0.001) {
-		ry = (((int)py/cell_size) * cell_size) + cell_size;
-		rx = (py-ry) * tan_ra + px;
-		yo = cell_size;
-		xo = -yo * tan_ra;
-	}
-	else {
-		rx = px;
-		ry = py;
-		dof = 8;
-	}
-
-	while (dof < 8) {
-		mx = (int)(rx/cell_size);
-		my = (int)(ry/cell_size);
-		int mp = my * data->map.map_width + mx;
-		if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_width && 
-			data->map.map_data[mp] == 1) {
+			rx = px;
+			ry = py;
 			dof = 8;
-			disH = sqrt(pow(rx - px, 2) + pow(ry - py, 2));	//
+		}
+
+		while (dof < 8) {
+			mx = (int)(rx/cell_size);
+			my = (int)(ry/cell_size);
+			int mp = my * data->map.map_width + mx;
+			if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_width && 
+				data->map.map_data[mp] == 1) {
+				dof = 8;
+				disV = sqrt(pow(rx - px, 2) + pow(ry - py, 2));	//
+			}
+			else {
+				rx += xo;
+				ry += yo;
+				dof += 1;
+			}
+		}
+		float vx = rx, vy = ry;
+
+		// Horizontal
+		dof = 0;
+		tan_ra = 1.0/tan_ra;
+		if (sin(deg2rad(angle)) > 0.001) {
+			ry = (((int)py/cell_size) * cell_size) - 0.0001;
+			rx = (py-ry) * tan_ra + px;
+			yo = -cell_size;
+			xo = -yo * tan_ra;
+		}
+		else if (sin(deg2rad(angle)) < -0.001) {
+			ry = (((int)py/cell_size) * cell_size) + cell_size;
+			rx = (py-ry) * tan_ra + px;
+			yo = cell_size;
+			xo = -yo * tan_ra;
 		}
 		else {
-			rx += xo;
-			ry += yo;
-			dof += 1;
+			rx = px;
+			ry = py;
+			dof = 8;
+		}
+
+		while (dof < 8) {
+			mx = (int)(rx/cell_size);
+			my = (int)(ry/cell_size);
+			int mp = my * data->map.map_width + mx;
+			if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_width && 
+				data->map.map_data[mp] == 1) {
+				dof = 8;
+				disH = sqrt(pow(rx - px, 2) + pow(ry - py, 2));	//
+			}
+			else {
+				rx += xo;
+				ry += yo;
+				dof += 1;
+			}
+		}
+
+		// Use closest intersection
+		if (disV < disH) {
+			rx = vx;
+			ry = vy;
+			disT = disV;
+		}
+		else
+			disT = disH;
+		printf("Ray hit at (%f, %f)\n", rx, ry);
+		// Draw the ray line from player position to hit point
+		float ray_length = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
+		draw_line(data, px, py, angle, ray_length, 0x00FF00FF);
+		draw_wall_slice(data, i, ray_length);
+		angle = adjust_angle(angle - 1);
+	}
+}
+
+void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall) {
+	// Calculate wall height
+	int wall_height = (int)(6000 / distance_to_wall);
+
+	// Calculate start and end of the vertical line
+	int line_top = (HEIGHT / 2) - (wall_height / 2);
+	int line_bottom = (HEIGHT / 2) + (wall_height / 2);
+
+	// Clip to screen bounds
+	if (line_top < 0) line_top = 0;
+	if (line_bottom >= HEIGHT) line_bottom = HEIGHT - 1;
+
+	// Calculate wall color based on distance (e.g., darker for farther walls)
+	// int color = calculate_color(distance_to_wall);
+
+	// Draw the vertical line one pixel at a time
+	for (int y = line_top; y <= line_bottom; y++) {
+		for (int j = 0; j < 8; j++)
+		{
+			mlx_put_pixel(data->img2, 8 * x + j, y, 0x00FF00FF); // Draw a single pixel
 		}
 	}
-
-	// Use closest intersection
-	if (disV < disH) {
-		rx = vx;
-		ry = vy;
-	}
-	printf("Ray hit at (%f, %f)\n", rx, ry);
-	// Draw the ray line from player position to hit point
-	float ray_length = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
-	draw_line(data, px, py, angle, ray_length, 0x00FF00FF);
 }
 
 
@@ -299,6 +346,9 @@ int32_t	main(void)
 	// Create and display the image.
 	data.img = mlx_new_image(data.mlx, 512, 512);
 	if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
+		ft_error();
+	data.img2 = mlx_new_image(data.mlx, 512, 512);
+	if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, 515, 0) < 0))
 		ft_error();
 
 	// Even after the image is being displayed, we can still modify the buffer.
