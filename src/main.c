@@ -3,11 +3,10 @@
 #include <unistd.h>
 #include <string.h>
 #include <math.h>
-#include "../typedef.h"
+#include "../includes/cub3D.h"
 #include "../MLX/include/MLX42/MLX42.h"
 #include "../MLX/include/MLX42/MLX42_Int.h"
-#define WIDTH 1280
-#define HEIGHT 640
+
 #define cell_size 64
 
 void	rotate(t_cub3d *data, int unit_degree);
@@ -138,26 +137,34 @@ void	put_pixel_box(t_cub3d *data, u_int32_t color)
 	}
 }
 
-void render_map(int *map, int map_width, int map_height, int img_width, int img_height, t_cub3d	*data) {
-	int scale_factor_x = img_width / map_width;
-	int scale_factor_y = img_height / map_height;
+void render_map(char **map, int map_width, int map_height, int img_width, int img_height, t_cub3d *data) {
+    int scale_factor_x = img_width / map_width;
+    int scale_factor_y = img_height / map_height;
+    int color;
 
-	for (int i = 0; i < map_height; i++) {
-		for (int j = 0; j < map_width; j++) {
-			int color = (map[i * map_width + j] == 1) ? 0xFF0000FF : 0xFFFFFFFF; // Wall or space
-			int x_start = j * scale_factor_x + 1;
-			int y_start = i * scale_factor_y + 1;
-			int x_end = x_start + scale_factor_x - 1;
-			int y_end = y_start + scale_factor_y - 1;
+    for (int i = 0; i < map_height; i++) {
+        for (int j = 0; j < map_width; j++) {
+            if (map[i][j] == '1')
+                color = 0xFF0000FF; // Wall: Blue
+            else if (map[i][j] == '0')
+                color = 0xFFFFFFFF; // Space: White
+            else
+                color = 0x00000000; // Default: Black (or transparent)
 
-			for (int y = y_start; y < y_end; y++) {
-				for (int x = x_start; x < x_end; x++) {
-					mlx_put_pixel(data->img, x, y, color);
-				}
-			}
-		}
-	}
+            int x_start = j * scale_factor_x + 1;
+            int y_start = i * scale_factor_y + 1;
+            int x_end = x_start + scale_factor_x - 1;
+            int y_end = y_start + scale_factor_y - 1;
+
+            for (int y = y_start; y < y_end; y++) {
+                for (int x = x_start; x < x_end; x++) {
+                    mlx_put_pixel(data->img, x, y, color);
+                }
+            }
+        }
+    }
 }
+
 
 void draw_line(t_cub3d *data, float start_x, float start_y, float angle, float length, int color) {
 	float end_x = start_x + length * cos(deg2rad(angle));
@@ -199,7 +206,7 @@ void cast_ray(void *param) {
 	float rx, ry, xo, yo, disV, disH, disT;
 	int dof, mx, my;
 
-	render_map(data->map.map_data, 8, 8, 512, 512, data);
+	render_map(data->map.map_data, data->map.map_width, data->map.map_height, 512, 512, data);
 	angle = adjust_angle(angle + 30);
 	int i = 0;
 	while (i++ < 60)
@@ -230,9 +237,9 @@ void cast_ray(void *param) {
 		while (dof < 8) {
 			mx = (int)(rx/cell_size);
 			my = (int)(ry/cell_size);
-			int mp = my * data->map.map_width + mx;
-			if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_width && 
-				data->map.map_data[mp] == 1) {
+			// int mp = my * data->map.map_width + mx;
+			if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_height && 
+				data->map.map_data[my][mx] == '1') {
 				dof = 8;
 				disV = sqrt(pow(rx - px, 2) + pow(ry - py, 2));	//
 			}
@@ -268,9 +275,9 @@ void cast_ray(void *param) {
 		while (dof < 8) {
 			mx = (int)(rx/cell_size);
 			my = (int)(ry/cell_size);
-			int mp = my * data->map.map_width + mx;
-			if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_width && 
-				data->map.map_data[mp] == 1) {
+			// int mp = my * data->map.map_width + mx;
+			if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_height && 
+				data->map.map_data[my][mx] == '1') {
 				dof = 8;
 				disH = sqrt(pow(rx - px, 2) + pow(ry - py, 2));	//
 			}
@@ -289,6 +296,7 @@ void cast_ray(void *param) {
 		}
 		else
 			disT = disH;
+		printf("Closest intersection at (%f, %f) with distance %f\n", rx, ry, disT);
 		printf("Ray hit at (%f, %f)\n", rx, ry);
 		// Draw the ray line from player position to hit point
 		float ray_length = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
@@ -322,45 +330,67 @@ void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall) {
 	}
 }
 
-
-int32_t	main(void)
+int32_t	main(int ac, char *av[])
 {
+	char *path;
 	t_cub3d	data;
-	int map_input[] = {1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1};
+	// int map_input[] = {1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1};
+	char *map_input[] = {
+    " 1111111",
+    " 1010001",
+    "10010101",
+    "10000111",
+	"10000001",
+	"1010001",
+	"10111001",
+	"11  1111"
+};
 	data.map.map_data = malloc(sizeof(map_input));
-	memcpy(data.map.map_data, map_input, sizeof(map_input));
+	ft_memcpy(data.map.map_data, map_input, sizeof(map_input));
 	data.map.map_width = 8;
+	data.map.map_height = 8;
 	data.pos.x = 300;
 	data.pos.y = 300;
 	data.pos.dx = 0;
 	data.pos.dy = -1;
 	data.pos.angle = 0;
 
-	// MLX allows you to define its core behaviour before startup.
-	// mlx_set_setting(MLX_MAXIMIZED, true);
-	data.mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
-	if (!data.mlx)
-		ft_error();
+	if (ac == 2)
+	{
+		path = av[1];
+		if (parsed_map(path, data.map))
+		{
+			// MLX allows you to define its core behaviour before startup.
+			// mlx_set_setting(MLX_MAXIMIZED, true);
+			data.mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
+			if (!data.mlx)
+				ft_error();
 
-	/* Do stuff */
-	// Create and display the image.
-	data.img = mlx_new_image(data.mlx, 512, 512);
-	if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
-		ft_error();
-	data.img2 = mlx_new_image(data.mlx, 512, 512);
-	if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, 515, 0) < 0))
-		ft_error();
+			/* Do stuff */
+			// Create and display the image.
+			data.img = mlx_new_image(data.mlx, 512, 512);
+			if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
+				ft_error();
+			data.img2 = mlx_new_image(data.mlx, 512, 512);
+			if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, 515, 0) < 0))
+				ft_error();
 
-	// Even after the image is being displayed, we can still modify the buffer.
-	render_map(data.map.map_data, 8, 8, 512, 512, &data);
-	put_pixel_box(&data, 0xF000000F);
+			// Even after the image is being displayed, we can still modify the buffer.
+			render_map(data.map.map_data, 8, 8, 512, 512, &data);
+			put_pixel_box(&data, 0xF000000F);
 
-	// Register a hook and pass mlx as an optional param.
-	// NOTE: Do this before calling mlx_loop!
-	// mlx_loop_hook(data.mlx, ft_hook, &data);
-	mlx_key_hook(data.mlx, &my_keyhook, &data);
-	mlx_loop(data.mlx);
-	mlx_terminate(data.mlx);
+			// Register a hook and pass mlx as an optional param.
+			// NOTE: Do this before calling mlx_loop!
+			// mlx_loop_hook(data.mlx, ft_hook, &data);
+			mlx_key_hook(data.mlx, &my_keyhook, &data);
+			mlx_loop(data.mlx);
+			mlx_terminate(data.mlx);
+		}
+		else
+			printf("Invalid MAP.\n");
+	}
+	else
+		printf("Invalid input.\n./cub3D [MAP.cub]\n");
 	return (EXIT_SUCCESS);
 }
 
