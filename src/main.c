@@ -12,7 +12,7 @@
 void	rotate(t_cub3d *data, int unit_degree);
 void	put_pixel_box(t_cub3d *data, u_int32_t color);
 void	cast_ray(void *param);
-void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall);
+void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int ca, int color);
 
 // Exit the program as failure.
 static void ft_error(void)
@@ -138,31 +138,31 @@ void	put_pixel_box(t_cub3d *data, u_int32_t color)
 }
 
 void render_map(char **map, int map_width, int map_height, int img_width, int img_height, t_cub3d *data) {
-    int scale_factor_x = img_width / map_width;
-    int scale_factor_y = img_height / map_height;
-    int color;
+	int scale_factor_x = img_width / map_width;
+	int scale_factor_y = img_height / map_height;
+	int color;
 
-    for (int i = 0; i < map_height; i++) {
-        for (int j = 0; j < map_width; j++) {
-            if (map[i][j] == '1')
-                color = 0xFF0000FF; // Wall: Blue
-            else if (map[i][j] == '0')
-                color = 0xFFFFFFFF; // Space: White
-            else
-                color = 0x00000000; // Default: Black (or transparent)
+	for (int i = 0; i < map_height; i++) {
+		for (int j = 0; j < map_width; j++) {
+			if (map[i][j] == '1')
+				color = 0xFF0000FF; // Wall: Blue
+			else if (map[i][j] == '0')
+				color = 0xFFFFFFFF; // Space: White
+			else
+				color = 0x00000000; // Default: Black (or transparent)
 
-            int x_start = j * scale_factor_x + 1;
-            int y_start = i * scale_factor_y + 1;
-            int x_end = x_start + scale_factor_x - 1;
-            int y_end = y_start + scale_factor_y - 1;
+			int x_start = j * scale_factor_x + 1;
+			int y_start = i * scale_factor_y + 1;
+			int x_end = x_start + scale_factor_x - 1;
+			int y_end = y_start + scale_factor_y - 1;
 
-            for (int y = y_start; y < y_end; y++) {
-                for (int x = x_start; x < x_end; x++) {
-                    mlx_put_pixel(data->img, x, y, color);
-                }
-            }
-        }
-    }
+			for (int y = y_start; y < y_end; y++) {
+				for (int x = x_start; x < x_end; x++) {
+					mlx_put_pixel(data->img, x, y, color);
+				}
+			}
+		}
+	}
 }
 
 
@@ -205,9 +205,10 @@ void cast_ray(void *param) {
 	float py = data->pos.y;
 	float rx, ry, xo, yo, disV, disH, disT;
 	int dof, mx, my;
+	int	color;
 
 	render_map(data->map.map_data, data->map.map_width, data->map.map_height, 512, 512, data);
-	angle = adjust_angle(angle + 30);
+	float ra = adjust_angle(angle + 30);
 	int i = 0;
 	while (i++ < 60)
 	{
@@ -215,14 +216,14 @@ void cast_ray(void *param) {
 		disH = 100000;
 		// Vertical
 		dof = 0;
-		float tan_ra = tan(deg2rad(angle));
-		if (cos(deg2rad(angle)) > 0.001) {
+		float tan_ra = tan(deg2rad(ra));
+		if (cos(deg2rad(ra)) > 0.001) {
 			rx = (((int)px/cell_size) * cell_size) + cell_size;
 			ry = (px-rx) * tan_ra + py;
 			xo = cell_size;
 			yo = -xo * tan_ra;
 		}
-		else if (cos(deg2rad(angle)) < -0.001) {
+		else if (cos(deg2rad(ra)) < -0.001) {
 			rx = (((int)px/cell_size) * cell_size) - 0.0001;
 			ry = (px-rx) * tan_ra + py;
 			xo = -cell_size;
@@ -254,13 +255,13 @@ void cast_ray(void *param) {
 		// Horizontal
 		dof = 0;
 		tan_ra = 1.0/tan_ra;
-		if (sin(deg2rad(angle)) > 0.001) {
+		if (sin(deg2rad(ra)) > 0.001) {
 			ry = (((int)py/cell_size) * cell_size) - 0.0001;
 			rx = (py-ry) * tan_ra + px;
 			yo = -cell_size;
 			xo = -yo * tan_ra;
 		}
-		else if (sin(deg2rad(angle)) < -0.001) {
+		else if (sin(deg2rad(ra)) < -0.001) {
 			ry = (((int)py/cell_size) * cell_size) + cell_size;
 			rx = (py-ry) * tan_ra + px;
 			yo = cell_size;
@@ -293,23 +294,28 @@ void cast_ray(void *param) {
 			rx = vx;
 			ry = vy;
 			disT = disV;
+			color = 1;
 		}
 		else
+		{
 			disT = disH;
-		printf("Closest intersection at (%f, %f) with distance %f\n", rx, ry, disT);
-		printf("Ray hit at (%f, %f)\n", rx, ry);
+			color = 0;
+		}
+		// printf("Closest intersection at (%f, %f) with distance %f\n", rx, ry, disT);
 		// Draw the ray line from player position to hit point
-		float ray_length = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
-		draw_line(data, px, py, angle, ray_length, 0x00FF00FF);
-		draw_wall_slice(data, i, ray_length);
-		angle = adjust_angle(angle - 1);
+		// float ray_length = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
+		draw_line(data, px, py, ra, disT, 0x00FF00FF);
+		draw_wall_slice(data, i, disT, adjust_angle(angle-ra), color);
+		// draw_wall_slice(data, i, disT, adjust_angle(ra - angle));
+		ra = adjust_angle(ra - 1);
 	}
 }
 
-void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall) {
+void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int ca, int color) {
+	distance_to_wall *= cos(deg2rad(ca));
 	// Calculate wall height
 	int wall_height = (int)(6000 / distance_to_wall);
-
+	// printf("%d\n", wall_height);
 	// Calculate start and end of the vertical line
 	int line_top = (HEIGHT / 2) - (wall_height / 2);
 	int line_bottom = (HEIGHT / 2) + (wall_height / 2);
@@ -325,7 +331,10 @@ void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall) {
 	for (int y = line_top; y <= line_bottom; y++) {
 		for (int j = 0; j < 8; j++)
 		{
-			mlx_put_pixel(data->img2, 8 * x + j, y, 0x00FF00FF); // Draw a single pixel
+			if (color == 0)
+				mlx_put_pixel(data->img2, 8 * x + j, y, 0x00FF00FF * 0.8); // Draw a single pixel
+			else
+				mlx_put_pixel(data->img2, 8 * x + j, y, 0x00FF00FF); // Draw a single pixel
 		}
 	}
 }
@@ -336,23 +345,23 @@ int32_t	main(int ac, char *av[])
 	t_cub3d	data;
 	// int map_input[] = {1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1};
 	char *map_input[] = {
-    " 1111111",
-    " 1010001",
-    "10010101",
-    "10000111",
+	" 1111111",
+	" 1010001",
+	"10010101",
+	"10000111",
 	"10000001",
 	"1010001",
 	"10111001",
 	"11  1111"
-};
+	};
 	data.map.map_data = malloc(sizeof(map_input));
 	ft_memcpy(data.map.map_data, map_input, sizeof(map_input));
 	data.map.map_width = 8;
 	data.map.map_height = 8;
 	data.pos.x = 300;
 	data.pos.y = 300;
-	data.pos.dx = 0;
-	data.pos.dy = -1;
+	data.pos.dx = 1;
+	data.pos.dy = 0;
 	data.pos.angle = 0;
 
 	if (ac == 2)
