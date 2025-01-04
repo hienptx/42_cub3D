@@ -15,6 +15,8 @@ typedef struct s_user_map
 	char	**map_data;
 	int	map_width;
 	int	map_height;
+	int	scale_factor_x;
+	int	scale_factor_y;
 	char *NO_texture;
 	char *SO_texture;
 	char *WE_texture;

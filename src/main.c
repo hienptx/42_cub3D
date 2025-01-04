@@ -21,27 +21,66 @@ static void ft_error(void)
 	exit(EXIT_FAILURE);
 }
 
-// Print the window width and height.
-// static void ft_hook(void* param)
-// {
-// 	t_cub3d	*data = param;
-
-// 	printf("x: %d | y: %d | dx: %f | dy: %f\n", data->pos.x, data->pos.y, data->pos.dx, data->pos.dy);
-// }
-
 float	deg2rad(int a)
 {
 	return (a * M_PI / 180.0);
 }
 
+int	wall_collision(t_cub3d *data, int dir)
+{
+	int	x_offset;
+	int	y_offset;
+	int	cnt;
+
+	cnt = 0;
+	if (0 < data->pos.dx)
+		x_offset = 10;
+	else
+		x_offset = -10;
+	if (0 < data->pos.dy)
+		y_offset = 10;
+	else
+		y_offset = -10;
+	int ipx = data->pos.x / data->map.scale_factor_x;
+	int ipy = data->pos.y / data->map.scale_factor_y;
+	int ipx_add_xo = (data->pos.x + x_offset) / data->map.scale_factor_x;
+	int ipy_add_yo = (data->pos.y + y_offset) / data->map.scale_factor_y;
+	// int ipx_sub_xo = (data->pos.x - x_offset) / data->map.scale_factor_x;
+	// int ipy_sub_yo = (data->pos.y - y_offset) / data->map.scale_factor_y;
+	if (dir == 1)	//W
+	{
+		printf("%u, %u, %f, %f\n", data->pos.x, data->pos.y, data->pos.dx, data->pos.dy);
+		if (data->map.map_data[ipy][ipx_add_xo] == '0')
+		{
+			data->pos.x += data->pos.dx * 4;
+			cnt++;
+		}
+		if (data->map.map_data[ipy_add_yo][ipx] == '0')
+		{
+			data->pos.y += data->pos.dy * 4;
+			cnt++;
+		}
+		// printf("%d\n", cnt);
+		if (cnt <= 1)
+			printf("collision\n");
+	}
+	
+	return (0);
+}
+
 void move_forward(t_cub3d *data, int dir)
 {
-	//speed is 4
-	if (dir == 1)
+	if (wall_collision(data, dir))
 	{
-		data->pos.y += data->pos.dy * 4;
-		data->pos.x += data->pos.dx * 4;
+
+		return ;
 	}
+	//speed is 4
+	// if (dir == 1)
+	// {
+	// 	data->pos.y += data->pos.dy * 4;
+	// 	data->pos.x += data->pos.dx * 4;
+	// }
 	else if (dir == -1)
 	{
 		data->pos.y -= data->pos.dy * 4;
@@ -353,11 +392,14 @@ int32_t	main(int ac, char *av[])
 	"1010001",
 	"10111001",
 	"11  1111"
-	};
+	};//		   |
+	//init_fuction V
 	data.map.map_data = malloc(sizeof(map_input));
 	ft_memcpy(data.map.map_data, map_input, sizeof(map_input));
 	data.map.map_width = 8;
 	data.map.map_height = 8;
+	data.map.scale_factor_x = 512 / 8;
+	data.map.scale_factor_y = 512 / 8;
 	data.pos.x = 300;
 	data.pos.y = 300;
 	data.pos.dx = 1;
