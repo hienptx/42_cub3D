@@ -26,55 +26,50 @@ float	deg2rad(int a)
 	return (a * M_PI / 180.0);
 }
 
-int wall_collision(t_cub3d *data, int dir)
+int	wall_collision(t_cub3d *data, int dir)
 {
-    int x_offset;
-    int y_offset;
-    int cnt = 0;
+	int	x_offset;
+	int	y_offset;
+	int	cnt;
 
-    // Set offsets for detecting potential collisions
-    if (data->pos.dx > 0)  // Moving right
-        x_offset = 10;
-    else if (data->pos.dx < 0)  // Moving left
-        x_offset = -10;
-    else
-        x_offset = 0;
-    
-    if (data->pos.dy > 0)  // Moving down
-        y_offset = 10;
-    else if (data->pos.dy < 0)  // Moving up
-        y_offset = -10;
-    else
-        y_offset = 0;
-
-    // Calculate the grid positions where the player is going to move
-    int ipx_add_xo = (data->pos.x + x_offset) / data->map.pw;
-    int ipy_add_yo = (data->pos.y + y_offset) / data->map.ph;
-
-    // For 'forward' movement direction
-    if (dir == 1)  // W key for forward movement
-    {
-        printf("%u, %u, %f, %f\n", data->pos.x, data->pos.y, data->pos.dx, data->pos.dy);
-
-        // Check if there are no walls (denoted by '0') in the direction of movement
-        if (data->map.map_data[data->map.pos.x][ipx_add_xo] == '0')
-        {
-            data->pos.x += data->pos.dx * 4;  // Move the player
-            cnt++;
-        }
-        if (data->map.map_data[ipy_add_yo][data->map.pos.y] == '0')
-        {
-            data->pos.y += data->pos.dy * 4;  // Move the player
-            cnt++;
-        }
-
-        // If no movement occurred, output "collision"
-        if (cnt == 0)
-            printf("collision\n");
-    }
-    return (0);
+	cnt = 0;
+	if (0 < data->pos.dx)
+		x_offset = 10;
+	else
+		x_offset = -10;
+	if (0 < data->pos.dy)
+		y_offset = 10;
+	else
+		y_offset = -10;
+		
+	int ipx = data->pos.x / data->map.pw;
+	int ipy = data->pos.y / data->map.ph;
+	int ipx_add_xo = (data->pos.x + x_offset) / data->map.pw;
+	int ipy_add_yo = (data->pos.y + y_offset) / data->map.ph;
+	// int ipx_sub_xo = (data->pos.x - x_offset) / data->map.scale_factor_x;
+	// int ipy_sub_yo = (data->pos.y - y_offset) / data->map.scale_factor_y;
+	if (dir == 1)	//W
+	{
+		printf("%u, %u, %f, %f\n", data->pos.x, data->pos.y, data->pos.dx, data->pos.dy);
+		char c = data->map.map_data[ipy][ipx_add_xo];
+		if (c == '0' || ft_strchr("NSWE", c))
+		{
+			data->pos.x += data->pos.dx * 4;
+			cnt++;
+		}
+		char a = data->map.map_data[ipy_add_yo][ipx];
+		if (a == '0' || ft_strchr("NSWE", a))
+		{
+			data->pos.y += data->pos.dy * 4;
+			cnt++;
+		}
+		// printf("%d\n", cnt);
+		if (cnt <= 1)
+			printf("collision\n");
+	}
+	
+	return (0);
 }
-
 
 void move_forward(t_cub3d *data, int dir)
 {
@@ -456,6 +451,7 @@ int32_t	main(int ac, char *av[])
 			mlx_key_hook(data.mlx, &my_keyhook, &data);
 			mlx_loop(data.mlx);
 			mlx_terminate(data.mlx);
+			ft_free_map(data.map);
 		}
 		else
 			return (EXIT_SUCCESS);

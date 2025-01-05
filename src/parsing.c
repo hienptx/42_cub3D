@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:46:15 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/05 01:47:09 by hipham           ###   ########.fr       */
+/*   Updated: 2025/01/06 00:41:27 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,17 +218,17 @@ void parse_player_dir(int dx, int dy, t_user_map *map)
 }
 
 // NO(0, -1); SO(0, 1); EA(1, 0); WE(-1,0) 
-bool validate_player_pos(char c, unsigned int i, unsigned int j, t_user_map *map)
+bool validate_player_pos(char c, unsigned int j, unsigned int i, t_user_map *map)
 {
 	if (ft_strchr("NSEW", c))
 	{
-		map->pos.x = i;
-		map->pos.y = j;
+		map->pos.x = j;
+		map->pos.y = i;
 		if(c == 'N')
 			parse_player_dir(0, -1, map);	
 		else if(c == 'S')
 			parse_player_dir(0, 1, map);	
-		else if(c == 'N')
+		else if(c == 'E')
 			parse_player_dir(1, 0, map);	
 		else if(c == 'W')
 			parse_player_dir(-1, 0, map);			
@@ -334,13 +334,9 @@ bool parsed_map(char *map_path, t_cub3d *data)
 	{
 		if (!valid_map(&data->map))
 		{
-			// TO_DO:
 			ft_free_map(data->map);
 			return(0);
 		}	
-		// printf("test\n");
-		printf("map_width = %i", data->map.map_width); 
-		printf("map_height = %i", data->map.map_height); 
 	}
 	else
 		return(0);

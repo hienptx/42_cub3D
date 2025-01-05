@@ -17,5 +17,6 @@
 #define cell_size 64
 
 bool parsed_map(char *map_path, t_cub3d *data);
+void ft_free_map(t_user_map map);
 
 #endif
