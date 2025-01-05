@@ -26,53 +26,60 @@ float	deg2rad(int a)
 	return (a * M_PI / 180.0);
 }
 
-int	wall_collision(t_cub3d *data, int dir)
+int wall_collision(t_cub3d *data, int dir)
 {
-	int	x_offset;
-	int	y_offset;
-	int	cnt;
+    int x_offset;
+    int y_offset;
+    int cnt = 0;
 
-	cnt = 0;
-	if (0 < data->pos.dx)
-		x_offset = 10;
-	else
-		x_offset = -10;
-	if (0 < data->pos.dy)
-		y_offset = 10;
-	else
-		y_offset = -10;
-	int ipx = data->pos.x / data->map.scale_factor_x;
-	int ipy = data->pos.y / data->map.scale_factor_y;
-	int ipx_add_xo = (data->pos.x + x_offset) / data->map.scale_factor_x;
-	int ipy_add_yo = (data->pos.y + y_offset) / data->map.scale_factor_y;
-	// int ipx_sub_xo = (data->pos.x - x_offset) / data->map.scale_factor_x;
-	// int ipy_sub_yo = (data->pos.y - y_offset) / data->map.scale_factor_y;
-	if (dir == 1)	//W
-	{
-		printf("%u, %u, %f, %f\n", data->pos.x, data->pos.y, data->pos.dx, data->pos.dy);
-		if (data->map.map_data[ipy][ipx_add_xo] == '0')
-		{
-			data->pos.x += data->pos.dx * 4;
-			cnt++;
-		}
-		if (data->map.map_data[ipy_add_yo][ipx] == '0')
-		{
-			data->pos.y += data->pos.dy * 4;
-			cnt++;
-		}
-		// printf("%d\n", cnt);
-		if (cnt <= 1)
-			printf("collision\n");
-	}
-	
-	return (0);
+    // Set offsets for detecting potential collisions
+    if (data->pos.dx > 0)  // Moving right
+        x_offset = 10;
+    else if (data->pos.dx < 0)  // Moving left
+        x_offset = -10;
+    else
+        x_offset = 0;
+    
+    if (data->pos.dy > 0)  // Moving down
+        y_offset = 10;
+    else if (data->pos.dy < 0)  // Moving up
+        y_offset = -10;
+    else
+        y_offset = 0;
+
+    // Calculate the grid positions where the player is going to move
+    int ipx_add_xo = (data->pos.x + x_offset) / data->map.pw;
+    int ipy_add_yo = (data->pos.y + y_offset) / data->map.ph;
+
+    // For 'forward' movement direction
+    if (dir == 1)  // W key for forward movement
+    {
+        printf("%u, %u, %f, %f\n", data->pos.x, data->pos.y, data->pos.dx, data->pos.dy);
+
+        // Check if there are no walls (denoted by '0') in the direction of movement
+        if (data->map.map_data[data->map.pos.x][ipx_add_xo] == '0')
+        {
+            data->pos.x += data->pos.dx * 4;  // Move the player
+            cnt++;
+        }
+        if (data->map.map_data[ipy_add_yo][data->map.pos.y] == '0')
+        {
+            data->pos.y += data->pos.dy * 4;  // Move the player
+            cnt++;
+        }
+
+        // If no movement occurred, output "collision"
+        if (cnt == 0)
+            printf("collision\n");
+    }
+    return (0);
 }
+
 
 void move_forward(t_cub3d *data, int dir)
 {
 	if (wall_collision(data, dir))
 	{
-
 		return ;
 	}
 	//speed is 4
@@ -151,6 +158,8 @@ void rotate(t_cub3d *data, int unit_degree)
 
 void	put_pixel_box(t_cub3d *data, u_int32_t color)
 {
+	// int scale_factor_x = data->img->width / data->map.map_width;
+    // int scale_factor_y = data->img->height / data->map.map_height;
 	const int x_margin[7] = {-3, -2, -1, 0 ,1, 2, 3};
 	const int y_margin[7] = {-3, -2, -1, 0 ,1, 2, 3};
 	size_t	i;
@@ -176,32 +185,32 @@ void	put_pixel_box(t_cub3d *data, u_int32_t color)
 	}
 }
 
-void render_map(char **map, int map_width, int map_height, int img_width, int img_height, t_cub3d *data) {
-	int scale_factor_x = img_width / map_width;
-	int scale_factor_y = img_height / map_height;
-	int color;
+void render_map(char **map, t_cub3d *data) {
+    int scale_factor_x = data->img->width / data->map.map_width;
+    int scale_factor_y = data->img->height / data->map.map_height;
+    int color;
 
-	for (int i = 0; i < map_height; i++) {
-		for (int j = 0; j < map_width; j++) {
-			if (map[i][j] == '1')
-				color = 0xFF0000FF; // Wall: Blue
-			else if (map[i][j] == '0')
-				color = 0xFFFFFFFF; // Space: White
-			else
-				color = 0x00000000; // Default: Black (or transparent)
+    for (int i = 0; i < data->map.map_height; i++) {
+        for (int j = 0; j < data->map.map_width; j++) {
+            if (map[i][j] == '1')
+                color = 0xFF0000FF; // Wall: Blue
+            else if (map[i][j] == '0' || ft_strchr("NSEW", map[i][j]))
+                color = 0xFFFFFFFF; // Space: White
+            else
+                color = 0x00000000; // Default: Black (or transparent)
 
-			int x_start = j * scale_factor_x + 1;
-			int y_start = i * scale_factor_y + 1;
-			int x_end = x_start + scale_factor_x - 1;
-			int y_end = y_start + scale_factor_y - 1;
+            int x_start = j * scale_factor_y + 1;
+            int y_start = i * scale_factor_x + 1;
+            int x_end = x_start + scale_factor_x - 1;
+            int y_end = y_start + scale_factor_y - 1;
 
-			for (int y = y_start; y < y_end; y++) {
-				for (int x = x_start; x < x_end; x++) {
-					mlx_put_pixel(data->img, x, y, color);
-				}
-			}
-		}
-	}
+            for (int y = y_start; y < y_end; y++) {
+                for (int x = x_start; x < x_end; x++) {
+                    mlx_put_pixel(data->img, x, y, color);
+                }
+            }
+        }
+    }
 }
 
 
@@ -246,8 +255,9 @@ void cast_ray(void *param) {
 	int dof, mx, my;
 	int	color;
 
-	render_map(data->map.map_data, data->map.map_width, data->map.map_height, 512, 512, data);
+	render_map(data->map.map_data, data);
 	float ra = adjust_angle(angle + 30);
+	// angle = adjust_angle(angle + 30);
 	int i = 0;
 	while (i++ < 60)
 	{
@@ -378,56 +388,66 @@ void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int ca, int 
 	}
 }
 
+void map_initialising(t_user_map *map)
+{
+	map->map_width = 0;
+	map->map_height = 0;
+	map->pw = 0;
+	map->ph = 0;
+	map->map_data = NULL;
+	map->NO_texture = NULL;
+	map->SO_texture = NULL;
+	map->WE_texture = NULL;
+	map->NO_texture = NULL;
+	map->ceiling = NULL;
+	map->floor = NULL;
+}
+
+void player_initilising(t_player *player)
+{
+	player->angle = 0;
+	player->dx = 0;
+	player->dy = 0;
+	player->x = 0;
+	player->y = 0;
+}
+
 int32_t	main(int ac, char *av[])
 {
 	char *path;
 	t_cub3d	data;
-	// int map_input[] = {1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,1,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,1,0,1,1,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1};
-	char *map_input[] = {
-	" 1111111",
-	" 1010001",
-	"10010101",
-	"10000111",
-	"10000001",
-	"1010001",
-	"10111001",
-	"11  1111"
-	};//		   |
-	//init_fuction V
-	data.map.map_data = malloc(sizeof(map_input));
-	ft_memcpy(data.map.map_data, map_input, sizeof(map_input));
-	data.map.map_width = 8;
-	data.map.map_height = 8;
-	data.map.scale_factor_x = 512 / 8;
-	data.map.scale_factor_y = 512 / 8;
-	data.pos.x = 300;
-	data.pos.y = 300;
-	data.pos.dx = 1;
-	data.pos.dy = 0;
-	data.pos.angle = 0;
 
 	if (ac == 2)
 	{
 		path = av[1];
-		if (parsed_map(path, data.map))
+		map_initialising(&data.map);
+		if (parsed_map(path, &data))
 		{
+
 			// MLX allows you to define its core behaviour before startup.
 			// mlx_set_setting(MLX_MAXIMIZED, true);
 			data.mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
 			if (!data.mlx)
 				ft_error();
-
 			/* Do stuff */
 			// Create and display the image.
 			data.img = mlx_new_image(data.mlx, 512, 512);
 			if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
 				ft_error();
+			data.pos.dx = data.map.pos.dx; 
+			data.pos.dy = data.map.pos.dy;
+			// Calculate the size of each scaled pixel
+			data.map.pw = data.img->width / data.map.map_width;
+			data.map.ph = data.img->height / data.map.map_height;
+			// Position the player in the center of the scaled pixel
+			data.pos.x = data.map.pos.x * data.map.pw + data.map.pw / 2.0;
+			data.pos.y = data.map.pos.y * data.map.ph + data.map.ph / 2.0;
 			data.img2 = mlx_new_image(data.mlx, 512, 512);
 			if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, 515, 0) < 0))
 				ft_error();
 
 			// Even after the image is being displayed, we can still modify the buffer.
-			render_map(data.map.map_data, 8, 8, 512, 512, &data);
+			render_map(data.map.map_data, &data);
 			put_pixel_box(&data, 0xF000000F);
 
 			// Register a hook and pass mlx as an optional param.
@@ -438,10 +458,10 @@ int32_t	main(int ac, char *av[])
 			mlx_terminate(data.mlx);
 		}
 		else
-			printf("Invalid MAP.\n");
+			return (EXIT_SUCCESS);
 	}
 	else
-		printf("Invalid input.\n./cub3D [MAP.cub]\n");
+		printf("Error: Invalid input!\n./cub3D [MAP.cub]\n");
 	return (EXIT_SUCCESS);
 }
 

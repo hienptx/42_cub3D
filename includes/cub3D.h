@@ -16,6 +16,6 @@
 #define HEIGHT 640
 #define cell_size 64
 
-bool parsed_map(char *map_path, t_user_map data);
+bool parsed_map(char *map_path, t_cub3d *data);
 
 #endif
