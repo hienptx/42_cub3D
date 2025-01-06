@@ -23,6 +23,7 @@ typedef struct s_user_map
 	int				*floor;
 	int				*ceiling;
 	char			**map_data;
+	int				player_count;
 	t_player		pos;
 }					t_user_map;
 

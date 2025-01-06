@@ -16,7 +16,30 @@
 #define HEIGHT 640
 #define cell_size 64
 
-bool parsed_map(char *map_path, t_cub3d *data);
+//initialization.c
+void map_initialising(t_user_map *map);
+void player_initilising(t_player *player);
 void ft_free_map(t_user_map map);
+
+//validation.c
+bool validate_map(t_user_map *map);
+bool validate_maze(char **maze, t_user_map *map);
+bool validate_player_pos(char c, unsigned int j, unsigned int i, t_user_map *map);
+bool validate_color_values(int *color);
+
+//parsing.c
+bool parsed_map(char *map_path, t_cub3d *data);
+
+
+//cub3D_utils.c
+int error_sms(char *s, int ret);
+void ft_malloc(void **data, size_t size);
+
+//parsing_utils.c
+bool check_for_wall(char *line);
+bool get_player(char **maze, int i, int *longest_line, t_user_map *map);
+void parse_player_dir(int dx, int dy, t_user_map *map);
+void convert_to_data(t_user_map *map, char *join);
+void save_texture(char **dir, char *path);
 
 #endif

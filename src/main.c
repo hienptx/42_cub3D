@@ -185,15 +185,14 @@ void render_map(char **map, t_cub3d *data) {
     int scale_factor_y = data->img->height / data->map.map_height;
     int color;
 
-    for (int i = 0; i < data->map.map_height; i++) {
-        for (int j = 0; j < data->map.map_width; j++) {
+    for (int i = 0; map[i] != NULL; i++) {
+        for (int j = 0; map[i][j] != '\0'; j++) {
             if (map[i][j] == '1')
                 color = 0xFF0000FF; // Wall: Blue
             else if (map[i][j] == '0' || ft_strchr("NSEW", map[i][j]))
                 color = 0xFFFFFFFF; // Space: White
             else
                 color = 0x00000000; // Default: Black (or transparent)
-
             int x_start = j * scale_factor_y + 1;
             int y_start = i * scale_factor_x + 1;
             int x_end = x_start + scale_factor_x - 1;
@@ -383,30 +382,6 @@ void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int ca, int 
 	}
 }
 
-void map_initialising(t_user_map *map)
-{
-	map->map_width = 0;
-	map->map_height = 0;
-	map->pw = 0;
-	map->ph = 0;
-	map->map_data = NULL;
-	map->NO_texture = NULL;
-	map->SO_texture = NULL;
-	map->WE_texture = NULL;
-	map->NO_texture = NULL;
-	map->ceiling = NULL;
-	map->floor = NULL;
-}
-
-void player_initilising(t_player *player)
-{
-	player->angle = 0;
-	player->dx = 0;
-	player->dy = 0;
-	player->x = 0;
-	player->y = 0;
-}
-
 int32_t	main(int ac, char *av[])
 {
 	char *path;
@@ -418,7 +393,7 @@ int32_t	main(int ac, char *av[])
 		map_initialising(&data.map);
 		if (parsed_map(path, &data))
 		{
-
+			printf("Width = %i, Height = %i\n", data.map.map_width, data.map.map_height);
 			// MLX allows you to define its core behaviour before startup.
 			// mlx_set_setting(MLX_MAXIMIZED, true);
 			data.mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
@@ -426,7 +401,7 @@ int32_t	main(int ac, char *av[])
 				ft_error();
 			/* Do stuff */
 			// Create and display the image.
-			data.img = mlx_new_image(data.mlx, 512, 512);
+			data.img = mlx_new_image(data.mlx, data.map.map_width*64, data.map.map_height*64);
 			if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
 				ft_error();
 			data.pos.dx = data.map.pos.dx; 
@@ -438,7 +413,7 @@ int32_t	main(int ac, char *av[])
 			data.pos.x = data.map.pos.x * data.map.pw + data.map.pw / 2.0;
 			data.pos.y = data.map.pos.y * data.map.ph + data.map.ph / 2.0;
 			data.img2 = mlx_new_image(data.mlx, 512, 512);
-			if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, 515, 0) < 0))
+			if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, data.map.map_width*64, 0) < 0))
 				ft_error();
 
 			// Even after the image is being displayed, we can still modify the buffer.
