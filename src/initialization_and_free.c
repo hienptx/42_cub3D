@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   initialization.c                                   :+:      :+:    :+:   */
+/*   initialization_and_free.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/06 23:01:10 by hipham           ###   ########.fr       */
+/*   Updated: 2025/01/07 21:59:37 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,17 @@ void ft_free_map(t_user_map map)
 		free(map.floor);
 	if (map.ceiling != NULL)
 		free(map.ceiling);
+}
+
+void cub3d_initialising(t_cub3d *data)
+{
+	data->iheight = data->map.map_height * 64;
+	data->iwidth = data->map.map_width * 64;
+	data->pos.dx = data->map.pos.dx;
+	data->pos.dy = data->map.pos.dy;
+	data->map.pw = data->iwidth / data->map.map_width;
+	data->map.ph = data->iheight / data->map.map_height;
+	data->pos.x = data->map.pos.x * data->map.pw + data->map.pw / 2.0;
+	data->pos.y = data->map.pos.y * data->map.ph + data->map.ph / 2.0;
+	// data->pos.angle = 
 }

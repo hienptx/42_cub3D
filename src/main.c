@@ -26,6 +26,11 @@ float	deg2rad(int a)
 	return (a * M_PI / 180.0);
 }
 
+float rad2deg(float rad) 
+{
+    return rad * (180.0 / M_PI);
+}
+
 int	wall_collision(t_cub3d *data, int dir)
 {
 	int	x_offset;
@@ -73,6 +78,7 @@ int	wall_collision(t_cub3d *data, int dir)
 
 void move_forward(t_cub3d *data, int dir)
 {
+	data->pos.angle = rad2deg(atan2(-data->pos.dy, data->pos.dx));
 	if (wall_collision(data, dir))
 	{
 		return ;
@@ -145,6 +151,7 @@ int	adjust_angle(int angle)
 
 void rotate(t_cub3d *data, int unit_degree)
 {
+	data->pos.angle = rad2deg(atan2(-data->pos.dy, data->pos.dx));
 	data->pos.angle += unit_degree;
 	data->pos.angle = adjust_angle(data->pos.angle);
 	data->pos.dx = cos(deg2rad(data->pos.angle));
@@ -401,25 +408,16 @@ int32_t	main(int ac, char *av[])
 				ft_error();
 			/* Do stuff */
 			// Create and display the image.
-			data.img = mlx_new_image(data.mlx, data.map.map_width*64, data.map.map_height*64);
+			cub3d_initialising(&data);
+			data.img = mlx_new_image(data.mlx, data.iwidth, data.iheight);
 			if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
 				ft_error();
-			data.pos.dx = data.map.pos.dx; 
-			data.pos.dy = data.map.pos.dy;
-			// Calculate the size of each scaled pixel
-			data.map.pw = data.img->width / data.map.map_width;
-			data.map.ph = data.img->height / data.map.map_height;
-			// Position the player in the center of the scaled pixel
-			data.pos.x = data.map.pos.x * data.map.pw + data.map.pw / 2.0;
-			data.pos.y = data.map.pos.y * data.map.ph + data.map.ph / 2.0;
 			data.img2 = mlx_new_image(data.mlx, 512, 512);
 			if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, data.map.map_width*64, 0) < 0))
 				ft_error();
-
 			// Even after the image is being displayed, we can still modify the buffer.
 			render_map(data.map.map_data, &data);
 			put_pixel_box(&data, 0xF000000F);
-
 			// Register a hook and pass mlx as an optional param.
 			// NOTE: Do this before calling mlx_loop!
 			// mlx_loop_hook(data.mlx, ft_hook, &data);

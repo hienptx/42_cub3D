@@ -29,6 +29,8 @@ typedef struct s_user_map
 
 typedef struct s_cub3d
 {
+	uint32_t		iwidth;
+	uint32_t		iheight;
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	mlx_image_t		*img2;

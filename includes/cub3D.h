@@ -19,6 +19,7 @@
 //initialization.c
 void map_initialising(t_user_map *map);
 void player_initilising(t_player *player);
+void cub3d_initialising(t_cub3d *data);
 void ft_free_map(t_user_map map);
 
 //validation.c
