@@ -381,6 +381,11 @@ void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int ca, int 
 	for (int y = line_top; y <= line_bottom; y++) {
 		for (int j = 0; j < 8; j++)
 		{
+			 if (!data->img2) {
+				printf("Error: img2 is NULL\n");
+				return;
+			}
+
 			if (color == 0)
 				mlx_put_pixel(data->img2, 8 * x + j, y, 0x00FF00FF * 0.8); // Draw a single pixel
 			else

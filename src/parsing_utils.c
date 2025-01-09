@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:01:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/06 23:11:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/01/09 21:34:03 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void save_texture(char **dir, char *path)
 {
 	size_t len;
 
-	len = ft_strlen(path) + 1;
+	len = ft_strlen(path);
 	ft_malloc((void**)dir, len);
-	ft_memcpy(*dir, path, len);
+	ft_memcpy(*dir, path, len - 1);
 }

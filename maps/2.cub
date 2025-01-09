@@ -1,16 +1,16 @@
-NO /home/42/githubcub3d/images/NO.png
-SO /home/42/githubcub3d/images/SO.png
-WE /home/42/githubcub3d/images/WE.png
-EA /home/42/githubcub3d/images/EA.png
+NO ./images/NO.png
+SO ./images/SO.png
+WE ./images/WE.png
+EA ./images/EA.png
 
 F 225,200,0
 C 225,30,0
 
-111111111
-10000011
-100010011
-1110000W1
-10000011
-10110101
-101 1001
-111 1111
+11111111
+100001111
+10001001
+11000E11
+100000101
+ 110110101
+ 10110011
+ 1111111

@@ -1,6 +1,7 @@
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 # include "../MLX/include/MLX42/MLX42.h"
+
 typedef struct s_player
 {
 	unsigned int	x;

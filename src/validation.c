@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/06 23:16:40 by hipham           ###   ########.fr       */
+/*   Updated: 2025/01/09 21:36:13 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ bool validate_texture_path(char *path)
 	int fd;
 
 	fd = open(path, O_RDONLY);
-	printf("%s\n", path);
 	if (fd == -1)
 	{
 		perror("Error");
@@ -103,14 +102,14 @@ bool validate_map(t_user_map *map)
 	|| map->ceiling == NULL || map->floor == NULL
 	|| map->map_data == NULL)
 		return (printf("Error: Invalid map\n"), 0);
-	// if (!validate_texture_path(map->NO_texture))
-	// 	return (0);		
-	// if (!validate_texture_path(map->SO_texture))
-	// 	return (0);		
-	// if (!validate_texture_path(map->WE_texture))
-	// 	return (0);		
-	// if (!validate_texture_path(map->EA_texture))
-	// 	return (0);		
+	if (!validate_texture_path(map->NO_texture))
+		return (printf("Error: Invalid texture\n"), 0);		
+	if (!validate_texture_path(map->SO_texture))
+		return (printf("Error: Invalid texture\n"), 0);		
+	if (!validate_texture_path(map->WE_texture))
+		return (printf("Error: Invalid texture\n"), 0);		
+	if (!validate_texture_path(map->EA_texture))
+		return (printf("Error: Invalid texture\n"), 0);		
 	if (!validate_color_values(map->ceiling))
 		return (printf("Error: Invalid color\n"),0);
 	if (!validate_color_values(map->floor))

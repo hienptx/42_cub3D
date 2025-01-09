@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/07 21:59:37 by hipham           ###   ########.fr       */
+/*   Updated: 2025/01/09 21:38:12 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ void map_initialising(t_user_map *map)
 	map->player_count = 0;
 }
 
-void player_initilising(t_player *player)
-{
-	player->angle = 0;
-	player->dx = 0;
-	player->dy = 0;
-	player->x = 0;
-	player->y = 0;
-}
+// void player_initilising(t_player *player)
+// {
+// 	player->angle = 0;
+// 	player->dx = 0;
+// 	player->dy = 0;
+// 	player->x = 0;
+// 	player->y = 0;
+// }
 
 void ft_free_map(t_user_map map)
 {
@@ -57,13 +57,13 @@ void ft_free_map(t_user_map map)
 
 void cub3d_initialising(t_cub3d *data)
 {
-	data->iheight = data->map.map_height * 64;
-	data->iwidth = data->map.map_width * 64;
+	data->iheight = data->map.map_height * cell_size;
+	data->iwidth = data->map.map_width * cell_size;
 	data->pos.dx = data->map.pos.dx;
 	data->pos.dy = data->map.pos.dy;
 	data->map.pw = data->iwidth / data->map.map_width;
 	data->map.ph = data->iheight / data->map.map_height;
 	data->pos.x = data->map.pos.x * data->map.pw + data->map.pw / 2.0;
 	data->pos.y = data->map.pos.y * data->map.ph + data->map.ph / 2.0;
-	// data->pos.angle = 
+	data->pos.angle = 0;
 }
