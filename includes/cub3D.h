@@ -14,7 +14,7 @@
 
 #define WIDTH 1280
 #define HEIGHT 640
-#define cell_size 64
+#define cell_size 32
 
 //initialization.c
 void map_initialising(t_user_map *map);
