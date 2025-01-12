@@ -35,6 +35,7 @@ typedef struct s_cub3d
 	mlx_t			*mlx;
 	mlx_image_t		*img;
 	mlx_image_t		*img2;
+	mlx_texture_t	*texture[4];
 	t_player		pos;
 	t_user_map		map;
 	int				key_pressed;

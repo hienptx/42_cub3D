@@ -6,13 +6,14 @@
 #include "../includes/cub3D.h"
 #include "../MLX/include/MLX42/MLX42.h"
 #include "../MLX/include/MLX42/MLX42_Int.h"
+#include <assert.h>
 
 // #define cell_size 32
 
 void	rotate(t_cub3d *data, int unit_degree);
 void	put_pixel_box(t_cub3d *data, u_int32_t color);
 void	cast_ray(void *param);
-void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int ca, int color, int rx, int ry);
+void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, int rx, int ry);
 
 // void map_initialising(t_user_map *map)
 // {
@@ -67,26 +68,26 @@ int	wall_collision(t_cub3d *data, int dir)
 	int ipy = data->pos.y / data->map.ph;
 	int ipx_add_xo = (data->pos.x + x_offset) / data->map.pw;
 	int ipy_add_yo = (data->pos.y + y_offset) / data->map.ph;
-	// int ipx_sub_xo = (data->pos.x - x_offset) / data->map.scale_factor_x;
-	// int ipy_sub_yo = (data->pos.y - y_offset) / data->map.scale_factor_y;
+	int ipx_sub_xo = (data->pos.x - x_offset) / data->map.pw;
+	int ipy_sub_yo = (data->pos.y - y_offset) / data->map.ph;
 	if (dir == 1)	//W
 	{
-		printf("%u, %u, %f, %f\n", data->pos.x, data->pos.y, data->pos.dx, data->pos.dy);
+		// printf("%u, %u, %f, %f\n", data->pos.x, data->pos.y, data->pos.dx, data->pos.dy);
 		char c = data->map.map_data[ipy][ipx_add_xo];
 		if (c == '0' || ft_strchr("NSWE", c))
-		{
 			data->pos.x += data->pos.dx * 4;
-			cnt++;
-		}
 		char a = data->map.map_data[ipy_add_yo][ipx];
 		if (a == '0' || ft_strchr("NSWE", a))
-		{
 			data->pos.y += data->pos.dy * 4;
-			cnt++;
-		}
-		// printf("%d\n", cnt);
-		if (cnt <= 1)
-			printf("collision\n");
+	}
+	else if (dir == -1)	//S
+	{
+		char c = data->map.map_data[ipy][ipx_sub_xo];
+		if (c == '0' || ft_strchr("NSWE", c))
+			data->pos.x -= data->pos.dx * 4;
+		char a = data->map.map_data[ipy_sub_yo][ipx];
+		if (a == '0' || ft_strchr("NSWE", a))
+			data->pos.y -= data->pos.dy * 4;
 	}
 	
 	return (0);
@@ -105,11 +106,11 @@ void move_forward(t_cub3d *data, int dir)
 	// 	data->pos.y += data->pos.dy * 4;
 	// 	data->pos.x += data->pos.dx * 4;
 	// }
-	else if (dir == -1)
-	{
-		data->pos.y -= data->pos.dy * 4;
-		data->pos.x -= data->pos.dx * 4;
-	}
+	// else if (dir == -1)
+	// {
+	// 	data->pos.y -= data->pos.dy * 4;
+	// 	data->pos.x -= data->pos.dx * 4;
+	// }
 }
 
 void my_keyhook(mlx_key_data_t keydata, void* param)
@@ -156,7 +157,7 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 		cast_ray(data);
 }
 
-int	adjust_angle(int angle)
+float	adjust_angle(float angle)
 {
 	if (359 < angle)
 		angle -= 360;
@@ -264,52 +265,55 @@ void draw_line(t_cub3d *data, float start_x, float start_y, float angle, float l
 }
 
 void cast_ray(void *param) {
-	t_cub3d *data = param;
-	float angle = data->pos.angle;
-	float px = data->pos.x;
-	float py = data->pos.y;
-	float rx, ry, xo, yo, disV, disH, disT;
-	int dof, mx, my;
-	int	color;
+    t_cub3d *data = param;
+    float angle = data->pos.angle;
+    float FOV = 60.0;
+    float px = data->pos.x;
+    float py = data->pos.y;
+    int num_rays = 912;
+    float ray_angle = FOV / num_rays;  // Step size between rays
+    float start_angle = angle + (FOV / 2);  // Start from leftmost ray
+    float rx, ry, xo, yo, disV, disH, disT;
+    float dof, mx, my;
+    int color;
 
-	// render_map(data->map.map_data, data->map.map_width, data->map.map_height, 512, 512, data);
-	float ra = adjust_angle(angle + 30);
-	int i = 0;
-	while (i++ < 60)
-	{
-		disV = 100000;
-		disH = 100000;
+    float ra = start_angle;
+    int i = 0;
+	render_map(data->map.map_data, data);
+    while (i < num_rays) {
+        disV = 1000000;
+        disH = 1000000;
+        float ca = adjust_angle(ra - angle);  // Changed angle calculation
+		
 		// Vertical
 		dof = 0;
 		float tan_ra = tan(deg2rad(ra));
 		if (cos(deg2rad(ra)) > 0.001) {
-			rx = (((int)px/cell_size) * cell_size) + cell_size;
-			ry = (px-rx) * tan_ra + py;
+			rx = (((int)px / cell_size) * cell_size) + cell_size;
+			ry = (px - rx) * tan_ra + py;
 			xo = cell_size;
 			yo = -xo * tan_ra;
-		}
-		else if (cos(deg2rad(ra)) < -0.001) {
-			rx = (((int)px/cell_size) * cell_size) - 0.0001;
-			ry = (px-rx) * tan_ra + py;
+		} else if (cos(deg2rad(ra)) < -0.001) {
+			rx = (((int)px / cell_size) * cell_size) - 0.001;
+			ry = (px - rx) * tan_ra + py;
 			xo = -cell_size;
 			yo = -xo * tan_ra;
-		}
-		else {
+		} else {
 			rx = px;
 			ry = py;
 			dof = 8;
 		}
-
+		//printf("dof: %d\n", dof);
+		//assert(dof < 8);
 		while (dof < 8) {
-			mx = (int)(rx/cell_size);
-			my = (int)(ry/cell_size);
-			// int mp = my * data->map.map_width + mx;
+
+			mx = (rx / cell_size);
+			my = (ry / cell_size);
 			if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_height && 
-				data->map.map_data[my][mx] == '1') {
+				data->map.map_data[(int)my][(int)mx] == '1') {
 				dof = 8;
-				disV = sqrt(pow(rx - px, 2) + pow(ry - py, 2));	//
-			}
-			else {
+				disV = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
+			} else {
 				rx += xo;
 				ry += yo;
 				dof += 1;
@@ -319,35 +323,31 @@ void cast_ray(void *param) {
 
 		// Horizontal
 		dof = 0;
-		tan_ra = 1.0/tan_ra;
+		tan_ra = 1.0 / tan_ra;
 		if (sin(deg2rad(ra)) > 0.001) {
-			ry = (((int)py/cell_size) * cell_size) - 0.0001;
-			rx = (py-ry) * tan_ra + px;
+			ry = (((int)py / cell_size) * cell_size) - 0.001;
+			rx = (py - ry) * tan_ra + px;
 			yo = -cell_size;
 			xo = -yo * tan_ra;
-		}
-		else if (sin(deg2rad(ra)) < -0.001) {
-			ry = (((int)py/cell_size) * cell_size) + cell_size;
-			rx = (py-ry) * tan_ra + px;
+		} else if (sin(deg2rad(ra)) < -0.001) {
+			ry = (((int)py / cell_size) * cell_size) + cell_size;
+			rx = (py - ry) * tan_ra + px;
 			yo = cell_size;
 			xo = -yo * tan_ra;
-		}
-		else {
+		} else {
 			rx = px;
 			ry = py;
 			dof = 8;
 		}
 
 		while (dof < 8) {
-			mx = (int)(rx/cell_size);
-			my = (int)(ry/cell_size);
-			// int mp = my * data->map.map_width + mx;
+			mx = (int)(rx / cell_size);
+			my = (int)(ry / cell_size);
 			if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_height && 
-				data->map.map_data[my][mx] == '1') {
+				data->map.map_data[(int)my][(int)mx] == '1') {
 				dof = 8;
-				disH = sqrt(pow(rx - px, 2) + pow(ry - py, 2));	//
-			}
-			else {
+				disH = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
+			} else {
 				rx += xo;
 				ry += yo;
 				dof += 1;
@@ -355,69 +355,77 @@ void cast_ray(void *param) {
 		}
 
 		// Use closest intersection
-		if (disV < disH) {
-			rx = vx;
-			ry = vy;
-			disT = disV;
-			color = 1;
-		}
-		else
-		{
-			disT = disH;
-			color = 0;
-		}
-		// printf("Closest intersection at (%f, %f) with distance %f\n", rx, ry, disT);
-		// Draw the ray line from player position to hit point
-		// float ray_length = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
-		draw_line(data, px, py, ra, disT, 0x00FF00FF);
-		draw_wall_slice(data, i, disT, adjust_angle(angle-ra), color, rx, ry);
-		// draw_wall_slice(data, i, disT, adjust_angle(ra - angle));
-		ra = adjust_angle(ra - 1);
-	}
+        if (disV < disH) {
+            rx = vx;
+            ry = vy;
+            disT = disV;
+            color = 1;
+        } else {
+            disT = disH;
+            color = 0;
+        }
+
+        float corrected_dist = disT * cos(deg2rad(ca));  // Keep fisheye correction
+
+        // Draw wall slice first, then ray line
+        draw_wall_slice(data, i, corrected_dist, color, rx, ry);
+        draw_line(data, px, py, ra, disT, 0x00FF00FF);
+        
+        ra = adjust_angle(ra - ray_angle);  // Changed to subtract ray_angle
+        i++;
+    }
 }
 
-void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int ca, int color, int rx, int ry) {
-	mlx_texture_t* texture = mlx_load_png("./images/EA.png");
+void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, int rx, int ry) {
+    // // Select correct texture based on wall orientation
+    // if (color == 0) {
+    //     current_texture = data->texture[0];  // North/South texture
+    // } else {
+    //     current_texture = data->texture[1];  // East/West texture
+    // }
+    // int TEXTURE_HEIGHT = current_texture->height;
+    // int TEXTURE_WIDTH = current_texture->width;
 
-	int TEXTURE_HEIGHT = texture->height;
-	int TEXTURE_WIDTH = texture->width;
+	int TEXTURE_HEIGHT = data->texture[2]->height;
+	int TEXTURE_WIDTH = data->texture[2]->width;
 
-    distance_to_wall *= cos(deg2rad(ca));
-    int wall_height = (int)(6000 / distance_to_wall);
+    int wall_height = (int)(HEIGHT / distance_to_wall * 0.75);  // Changed wall height calculation
+    if (wall_height > HEIGHT) wall_height = HEIGHT;
+
+    int line_top = (HEIGHT - wall_height) / 2;
+    int line_bottom = line_top + wall_height;
     double step = 1.0 * TEXTURE_HEIGHT / wall_height;
-    int line_top = (HEIGHT / 2) - (wall_height / 2);
-    int line_bottom = (HEIGHT / 2) + (wall_height / 2);
+    double texPos = 0;
 
-    if (line_top < 0) line_top = 0;
+    // if (line_top < 0) {
+    //     texPos = -line_top * step;
+    //     line_top = 0;
+    // }
     if (line_bottom >= HEIGHT) line_bottom = HEIGHT - 1;
 
-    double texPos = (line_top - HEIGHT / 2 + wall_height / 2) * step;
+    int texX = (color == 0) ? 
+        (int)(rx * TEXTURE_WIDTH / cell_size) % TEXTURE_WIDTH :
+        (int)(ry * TEXTURE_WIDTH / cell_size) % TEXTURE_WIDTH;
 
-    int texX;
-    if (color == 0) { // horizontal hit
-        texX = (int)(rx * TEXTURE_WIDTH / cell_size) % TEXTURE_WIDTH;
-    } else { // vertical hit
-        texX = (int)(ry * TEXTURE_WIDTH / cell_size) % TEXTURE_WIDTH;
-    }
+    // Make sure texX is positive
+    if (texX < 0) texX += TEXTURE_WIDTH;
 
     for (int y = line_top; y <= line_bottom; y++) {
-        int texY = ((int)texPos) % TEXTURE_HEIGHT;
-        if (texX >= 0 && texX < TEXTURE_WIDTH && texY >= 0 && texY < TEXTURE_HEIGHT) {
-            uint8_t *pixel = &texture->pixels[(TEXTURE_WIDTH * texY + texX) * sizeof(uint32_t)];
-            uint32_t pixel_color = (pixel[0] << 24) | (pixel[1] << 16) | 
-                                 (pixel[2] << 8) | pixel[3];
-            if (color == 0) {
-                uint32_t r = ((pixel_color >> 24) & 0xFF) * 0.8;
-                uint32_t g = ((pixel_color >> 16) & 0xFF) * 0.8;
-                uint32_t b = ((pixel_color >> 8) & 0xFF) * 0.8;
-                uint32_t a = pixel_color & 0xFF;
-                pixel_color = (r << 24) | (g << 16) | (b << 8) | a;
-            }
+        int texY = (int)texPos % TEXTURE_HEIGHT;
+        uint8_t *pixel = &data->texture[2]->pixels[(TEXTURE_WIDTH * texY + texX) * 4];
+        uint32_t pixel_color = (pixel[0] << 24) | (pixel[1] << 16) | 
+                             (pixel[2] << 8) | pixel[3];
 
-            for (int j = 0; j < 8; j++) {
-                mlx_put_pixel(data->img2, 8 * x + j, y, pixel_color);
-            }
+        if (color == 0) {
+            uint32_t r = ((pixel_color >> 24) & 0xFF);
+            uint32_t g = ((pixel_color >> 16) & 0xFF);
+            uint32_t b = ((pixel_color >> 8) & 0xFF);
+            pixel_color = (r << 24) | (g << 16) | (b << 8) | 0xFF;
         }
+
+        // for (int j = 0; j < 1; j++) {
+		mlx_put_pixel(data->img2, x, y, pixel_color);
+        // }
         texPos += step;
     }
 }
@@ -433,19 +441,29 @@ int32_t	main(int ac, char *av[])
 		map_initialising(&data.map);
 		if (parsed_map(path, &data))
 		{
-			printf("Width = %i, Height = %i\n", data.map.map_width, data.map.map_height);
+			// printf("Width = %i, Height = %i\n", data.map.map_width, data.map.map_height);
 			// MLX allows you to define its core behaviour before startup.
 			// mlx_set_setting(MLX_MAXIMIZED, true);
 			data.mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
 			if (!data.mlx)
+			{
+				printf("Error: mlx_init failed\n");
 				ft_error();
+			}
 			/* Do stuff */
 			// Create and display the image.
 			cub3d_initialising(&data);
+			data.texture[2] = mlx_load_png("images/texture2.png");
+			data.texture[1] = mlx_load_png(data.map.EA_texture);
+			// data.texture[2] = mlx_load_png(data.map.WE_texture);
+			data.texture[3] = mlx_load_png(data.map.SO_texture);
 			data.img = mlx_new_image(data.mlx, data.iwidth, data.iheight);
 			if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
+			{
+				printf("Error: mlx_new_image failed\n");
 				ft_error();
-			data.img2 = mlx_new_image(data.mlx, 912, 612);
+			}
+			data.img2 = mlx_new_image(data.mlx, 912, 640);
 			if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, data.map.map_width*cell_size, 0) < 0))
 				ft_error();
 			// Even after the image is being displayed, we can still modify the buffer.
