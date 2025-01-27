@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/11 23:00:15 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/27 00:17:42 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,5 @@ void cub3d_initialising(t_cub3d *data)
 	data->map.ph = data->iheight / data->map.map_height;
 	data->pos.x = data->map.pos.x * data->map.pw + data->map.pw / 2.0;
 	data->pos.y = data->map.pos.y * data->map.ph + data->map.ph / 2.0;
-	data->pos.angle = 0;
+	data->pos.angle = M_PI_2;	//radian
 }
