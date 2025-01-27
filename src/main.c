@@ -17,23 +17,7 @@
 void	rotate(t_cub3d *data, float unit_degree);
 void	put_pixel_box(t_cub3d *data, u_int32_t color);
 void	cast_ray(void *param);
-void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, float rx, float ry);
-
-// void map_initialising(t_user_map *map)
-// {
-// 	map->map_width = 0;
-// 	map->map_height = 0;
-// 	map->pw = 0;
-// 	map->ph = 0;
-// 	map->map_data = NULL;
-// 	map->NO_texture = NULL;
-// 	map->SO_texture = NULL;
-// 	map->WE_texture = NULL;
-// 	map->NO_texture = NULL;
-// 	map->ceiling = NULL;
-// 	map->floor = NULL;
-// 	map->player_count = 0;
-// }
+void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, float rx, float ry);
 
 // Exit the program as failure.
 static void ft_error(void)
@@ -44,89 +28,89 @@ static void ft_error(void)
 
 int wall_collision(t_cub3d *data, float new_x, float new_y)
 {
-    // Define an offset value to detect collisions beforehand
-    float offset = 2;
+	// Define an offset value to detect collisions beforehand
+	float offset = 2;
 
-    // Calculate the new positions with offset in the direction of movement
-    float check_x1 = new_x + data->pos.dx * offset;
-    float check_y1 = new_y + data->pos.dy * offset;
-    float check_x2 = new_x - data->pos.dx * offset;
-    float check_y2 = new_y - data->pos.dy * offset;
+	// Calculate the new positions with offset in the direction of movement
+	float check_x1 = new_x + data->pos.dx * offset;
+	float check_y1 = new_y + data->pos.dy * offset;
+	float check_x2 = new_x - data->pos.dx * offset;
+	float check_y2 = new_y - data->pos.dy * offset;
 
-    // Calculate the map grid positions
-    int ipx1 = check_x1 / data->map.pw;
-    int ipy1 = check_y1 / data->map.ph;
-    int ipx2 = check_x2 / data->map.pw;
-    int ipy2 = check_y2 / data->map.ph;
+	// Calculate the map grid positions
+	int ipx1 = check_x1 / data->map.pw;
+	int ipy1 = check_y1 / data->map.ph;
+	int ipx2 = check_x2 / data->map.pw;
+	int ipy2 = check_y2 / data->map.ph;
 
-    // Check for collision in the new positions with offset
-    if (data->map.map_data[ipy1][ipx1] == '1' ||
-        data->map.map_data[ipy2][ipx1] == '1' ||
-        data->map.map_data[ipy1][ipx2] == '1' ||
-        data->map.map_data[ipy2][ipx2] == '1')
-    {
-        return 1; // Collision detected
-    }
+	// Check for collision in the new positions with offset
+	if (data->map.map_data[ipy1][ipx1] == '1' ||
+		data->map.map_data[ipy2][ipx1] == '1' ||
+		data->map.map_data[ipy1][ipx2] == '1' ||
+		data->map.map_data[ipy2][ipx2] == '1')
+	{
+		return 1; // Collision detected
+	}
 
-    return 0; // No collision
+	return 0; // No collision
 }
 
 void move_forward(t_cub3d *data, int dir)
 {
-    // Calculate the new position
-    float new_x = data->pos.x + dir * data->pos.dx * MOVING_SPEED;
-    float new_y = data->pos.y + dir * data->pos.dy * MOVING_SPEED;
+	// Calculate the new position
+	float new_x = data->pos.x + dir * data->pos.dx * MOVING_SPEED;
+	float new_y = data->pos.y + dir * data->pos.dy * MOVING_SPEED;
 
-    // Check for collisions
-    if (!wall_collision(data, new_x, new_y))
-    {
-        // Update the position if no collision
-        data->pos.x = new_x;
-        data->pos.y = new_y;
-    }
+	// Check for collisions
+	if (!wall_collision(data, new_x, new_y))
+	{
+		// Update the position if no collision
+		data->pos.x = new_x;
+		data->pos.y = new_y;
+	}
 }
 
 void move_left_right(t_cub3d *data, int dir)
 {
-    // Calculate the perpendicular direction
-    float perp_dx = -data->pos.dy;
-    float perp_dy = data->pos.dx;
+	// Calculate the perpendicular direction
+	float perp_dx = -data->pos.dy;
+	float perp_dy = data->pos.dx;
 
-    // Normalize the perpendicular direction
-    float length = sqrt(perp_dx * perp_dx + perp_dy * perp_dy);
-    perp_dx /= length;
-    perp_dy /= length;
+	// Normalize the perpendicular direction
+	float length = sqrt(perp_dx * perp_dx + perp_dy * perp_dy);
+	perp_dx /= length;
+	perp_dy /= length;
 
-    // Calculate the new position
-    float new_x = data->pos.x + dir * perp_dx * MOVING_SPEED;
-    float new_y = data->pos.y + dir * perp_dy * MOVING_SPEED;
+	// Calculate the new position
+	float new_x = data->pos.x + dir * perp_dx * MOVING_SPEED;
+	float new_y = data->pos.y + dir * perp_dy * MOVING_SPEED;
 
-    // Check for collisions
-    if (!wall_collision(data, new_x, new_y))
-    {
-        // Update the position if no collision
-        data->pos.x = new_x;
-        data->pos.y = new_y;
-    }
+	// Check for collisions
+	if (!wall_collision(data, new_x, new_y))
+	{
+		// Update the position if no collision
+		data->pos.x = new_x;
+		data->pos.y = new_y;
+	}
 }
 
 void handle_key_action(t_cub3d *data, int *key_pressed)
 {
-    memset(data->img2->pixels, 255, data->img2->width * data->img2->height * sizeof(int32_t));
-    put_pixel_box(data, 0xFFFFFFFF);
-    *key_pressed = true;
+	memset(data->img2->pixels, 255, data->img2->width * data->img2->height * sizeof(int32_t));
+	put_pixel_box(data, 0xFFFFFFFF);
+	*key_pressed = true;
 }
 
 void handle_key_press(t_cub3d *data, int dir, void (*move_func)(t_cub3d *, int), int *key_pressed)
 {
-    move_func(data, dir);
-    handle_key_action(data, key_pressed);
+	move_func(data, dir);
+	handle_key_action(data, key_pressed);
 }
 
 void handle_rotation(t_cub3d *data, float angle, int *key_pressed)
 {
-    rotate(data, angle);
-    handle_key_action(data, key_pressed);
+	rotate(data, angle);
+	handle_key_action(data, key_pressed);
 }
 
 void handle_movement_keys(t_cub3d *data)
@@ -280,7 +264,6 @@ void cast_ray(void *param) {
     t_cub3d *data = param;
     float angle = data->pos.angle;
     float FOV = M_PI / 3.0;
-    // float FOV = DEG2RAD(60.0); // Convert FOV to radians
     float px = data->pos.x;
     float py = data->pos.y;
     int num_rays = 912;
@@ -315,15 +298,15 @@ void cast_ray(void *param) {
         } else {
             rx = px;
             ry = py;
-            dof = 8;
+            dof = data->map.map_width;;
         }
 
-        while (dof < 8) {
+        while (dof < data->map.map_width) {
             mx = floor(rx / cell_size);
             my = floor(ry / cell_size);
             if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_height && 
                 data->map.map_data[(int)my][(int)mx] == '1') {
-                dof = 8;
+                dof = data->map.map_width;;
                 disV = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
             } else {
                 rx += xo;
@@ -349,15 +332,15 @@ void cast_ray(void *param) {
         } else {
             rx = px;
             ry = py;
-            dof = 8;
+            dof = data->map.map_height;
         }
 
-        while (dof < 8) {
+        while (dof < data->map.map_height) {
             mx = floor(rx / cell_size);
             my = floor(ry / cell_size);
             if (mx >= 0 && my >= 0 && mx < data->map.map_width && my < data->map.map_height && 
                 data->map.map_data[(int)my][(int)mx] == '1') {
-                dof = 8;
+                dof = data->map.map_height;
                 disH = sqrt(pow(rx - px, 2) + pow(ry - py, 2));
             } else {
                 rx += xo;
@@ -394,7 +377,7 @@ void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, f
     int TEXTURE_HEIGHT = data->texture[2]->height;
     int TEXTURE_WIDTH = data->texture[2]->width;
 
-    int wall_height = (int)(5 * HEIGHT / distance_to_wall); // Adjust wall height calculation
+    int wall_height = (int)(10 * HEIGHT / distance_to_wall); // Adjust wall height calculation
     if (wall_height > HEIGHT) wall_height = HEIGHT;
 
     int line_top = (HEIGHT - wall_height) / 2;
