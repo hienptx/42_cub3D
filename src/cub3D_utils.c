@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:06:34 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/06 23:06:51 by hipham           ###   ########.fr       */
+/*   Updated: 2025/01/28 03:46:00 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../include/cub3D.h"
 
 int error_sms(char *s, int ret)
 {

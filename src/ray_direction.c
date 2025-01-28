@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/28 02:43:35 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/28 04:25:30 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 void init_ray_up(t_intersection *inter, t_ray_data ray)
 {
 	inter->ry = floor(ray.py / cell_size) * cell_size - 0.01;
-	inter->rx = (ray.py - inter->ry) * ray.tan_angle + ray.px;
+	inter->rx = ray.px + (ray.py - inter->ry) * (1 / ray.tan_angle);
 	inter->yo = -cell_size;
-	inter->xo = -inter->yo * ray.tan_angle;
+	inter->xo = -inter->yo * (1 / ray.tan_angle);
 }
 
 void init_ray_down(t_intersection *inter, t_ray_data ray)
 {
 	inter->ry = floor(ray.py / cell_size) * cell_size + cell_size;
-	inter->rx = (ray.py - inter->ry) * ray.tan_angle + ray.px;
+	inter->rx = ray.px + (ray.py - inter->ry) * (1 / ray.tan_angle);
 	inter->yo = cell_size;
-	inter->xo = -inter->yo * ray.tan_angle;
+	inter->xo = -inter->yo * (1 / ray.tan_angle);
 }
 
 void init_ray_right(t_intersection *inter, t_ray_data ray)

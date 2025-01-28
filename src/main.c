@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/28 03:30:50 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/28 04:18:19 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,14 +173,14 @@ void cast_ray(void *param)
             ry = vy;
             disT = disV;
             color = 1;
-        } else {
+        } else{
             disT = disH;
             color = 0;
         }
-
 		float corrected_dist = disT * cos(ca); // Fisheye correction
 
 		// Draw wall slice first, then ray line
+		// printf("px: %f, py: %f, disT: %f\n", px, py, disT);
 		draw_wall_slice(data, i, corrected_dist, color, rx, ry);
 		draw_line(data, px, py, ra, disT, 0x00FF00FF);
 		

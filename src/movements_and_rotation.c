@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/27 22:48:58 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/28 03:57:10 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void handle_movement_keys(t_cub3d *data)
 
 	if (key_pressed)
 	{
-		printf("x = %f, y = %f\n", data->pos.dx, data->pos.dy);
+		// printf("x = %f, y = %f\n", data->pos.dx, data->pos.dy);
 		cast_ray(data);
 	}
 }

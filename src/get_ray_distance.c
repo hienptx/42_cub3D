@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/28 03:09:27 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/28 04:22:07 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static bool is_wall_hit(t_cub3d *data, int mx, int my)
 
 static void init_intersection(t_intersection *inter)
 {
-	inter->distance = 1000000;
+	inter->distance = 1000;
 	inter->dof = 0;
 }
 
@@ -46,9 +46,10 @@ float check_horizontal_intersection(t_cub3d *data, float ra, float px, float py,
 	{
 		inter.rx = px;
 		inter.ry = py;
-		inter.dof = data->map.map_height;
+		inter.dof = data->map.map_height + 100;
 	}
-	while (inter.dof < data->map.map_height)
+	// printf("H: rx=%f, ry=%f, xo=%f, yo=%f\n", inter.rx, inter.ry, inter.xo, inter.yo);
+	while (inter.dof < data->map.map_height + 100)
 	{
 		int mx = floor(inter.rx / cell_size);
 		int my = floor(inter.ry / cell_size);
@@ -82,9 +83,9 @@ float check_vertical_intersection(t_cub3d *data, float ra, float px, float py, f
 	{
 		inter.rx = px;
 		inter.ry = py;
-		inter.dof = data->map.map_width;
+		inter.dof = data->map.map_width + 100;
 	}
-	while (inter.dof < data->map.map_width)
+	while (inter.dof < data->map.map_width + 100)
 	{
 		int mx = floor(inter.rx / cell_size);
 		int my = floor(inter.ry / cell_size);
