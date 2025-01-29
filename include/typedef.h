@@ -22,6 +22,7 @@ typedef struct s_ray_data
 {
 	float	angle;
 	float	tan_angle;
+	const float	angle_step;
 	float	px;
 	float	py;
 	float	hit_x;

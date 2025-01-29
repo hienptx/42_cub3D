@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/29 09:04:20 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/29 11:20:27 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,30 +86,30 @@ void	put_pixel_box(t_cub3d *data, u_int32_t color)
 
 void render_map(char **map, t_cub3d *data)
 {
-    int scale_factor_x = data->img->width / data->map.map_width;
-    int scale_factor_y = data->img->height / data->map.map_height;
-    int color;
+	int scale_factor_x = data->img->width / data->map.map_width;
+	int scale_factor_y = data->img->height / data->map.map_height;
+	int color;
 
-    for (int i = 0; map[i] != NULL; i++) {
-        for (int j = 0; map[i][j] != '\0'; j++) {
-            if (map[i][j] == '1')
-                color = 0xFF0000FF; // Wall: Blue
-            else if (map[i][j] == '0' || ft_strchr("NSEW", map[i][j]))
-                color = 0xFFFFFFFF; // Space: White
-            else
-                color = 0x00000000; // Default: Black (or transparent)
-            int x_start = j * scale_factor_y + 1;
-            int y_start = i * scale_factor_x + 1;
-            int x_end = x_start + scale_factor_x - 1;
-            int y_end = y_start + scale_factor_y - 1;
+	for (int i = 0; map[i] != NULL; i++) {
+		for (int j = 0; map[i][j] != '\0'; j++) {
+			if (map[i][j] == '1')
+				color = 0xFF0000FF; // Wall: Blue
+			else if (map[i][j] == '0' || ft_strchr("NSEW", map[i][j]))
+				color = 0xFFFFFFFF; // Space: White
+			else
+				color = 0x00000000; // Default: Black (or transparent)
+			int x_start = j * scale_factor_y + 1;
+			int y_start = i * scale_factor_x + 1;
+			int x_end = x_start + scale_factor_x - 1;
+			int y_end = y_start + scale_factor_y - 1;
 
-            for (int y = y_start; y < y_end; y++) {
-                for (int x = x_start; x < x_end; x++) {
-                    mlx_put_pixel(data->img, x, y, color);
-                }
-            }
-        }
-    }
+			for (int y = y_start; y < y_end; y++) {
+				for (int x = x_start; x < x_end; x++) {
+					mlx_put_pixel(data->img, x, y, color);
+				}
+			}
+		}
+	}
 }
 
 void draw_line(t_cub3d *data, float start_x, float start_y, float angle, float length, int color)
@@ -154,12 +154,15 @@ static void calculate_ray_intersection(t_cub3d *data, float ray_angle, t_ray_dat
 	float disH = check_horizontal_intersection(data, ray, &rx, &ry);
 
 	// Choose closer intersection
-	if (disV < disH) {
-		ray->hit_x = vy;	//why x to y
-		ray->hit_y = vx;	//and y to x?
+	if (disV < disH)
+	{
+		ray->hit_x = vx;	//why x to y
+		ray->hit_y = vy;	//and y to x? ->somehow fixed
 		ray->distance = disV;
 		ray->color = 1;
-	} else {
+	}
+	else
+	{
 		ray->hit_x = rx;
 		ray->hit_y = ry;
 		ray->distance = disH;
@@ -167,26 +170,34 @@ static void calculate_ray_intersection(t_cub3d *data, float ray_angle, t_ray_dat
 	}
 }
 
+void	render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i, float ra)
+{
+	float ca = adjust_angle(ra - data->pos.angle); // Angle difference in radians
+	float corrected_dist = ray->distance * cos(ca); // Fisheye correction
+	draw_wall_slice(data, i, corrected_dist, ray->color, ray->hit_x, ray->hit_y);
+	draw_line(data, ray->px, ray->py, ra, ray->distance, 0x00FF00FF);
+}
+
 void cast_ray(void *param)
 {
-    t_cub3d *data = param;
-	t_ray_data ray;
-    float angle = data->pos.angle;
-    ray.px = data->pos.x;
-    ray.py = data->pos.y;
-    float ray_angle_step = FOV / NUM_RAYS; // Step size between rays in radians
-    float start_angle = angle + (FOV / 2.0); // Start from leftmost ray in radians
-	int color = 0;
-    int i = 0;
-    render_map(data->map.map_data, data);
-    while (i < NUM_RAYS) {
-		float ra = start_angle - (i * ray_angle_step);
-		float ca = adjust_angle(ra - angle); // Angle difference in radians
-		calculate_ray_intersection(data, ra, &ray);
+	t_cub3d			*data = param;
+	t_ray_data ray = {.angle_step = FOV / NUM_RAYS, .px = data->pos.x, .py = data->pos.y};
+	float			start_angle;
+	unsigned int	i;
+	float			ra;
 
-		float corrected_dist = ray.distance * cos(ca); // Fisheye correction
-		draw_wall_slice(data, i, corrected_dist, color, ray.hit_x, ray.hit_y);
-		draw_line(data, ray.px, ray.py, ra, ray.distance, 0x00FF00FF);
+	start_angle = data->pos.angle + (FOV / 2.0); // Start from leftmost ray in radians
+	render_map(data->map.map_data, data);
+	i = 0;
+	while (i < NUM_RAYS)
+	{
+		ra = start_angle - (i * ray.angle_step);
+		// float ca = adjust_angle(ra - data->pos.angle); // Angle difference in radians
+		calculate_ray_intersection(data, ra, &ray);
+		// float corrected_dist = ray.distance * cos(ca); // Fisheye correction
+		// draw_wall_slice(data, i, corrected_dist, ray.color, ray.hit_x, ray.hit_y);
+		// draw_line(data, ray.px, ray.py, ra, ray.distance, 0x00FF00FF);
+		render_single_ray(data, &ray, i, ra);
 		i++;
 	}
 }
@@ -261,7 +272,6 @@ int32_t	main(int ac, char *av[])
 		map_initialising(&data.map);
 		if (parsed_map(path, &data))
 		{
-			// printf("Width = %i, Height = %i\n", data.map.map_width, data.map.map_height);
 			// MLX allows you to define its core behaviour before startup.
 			// mlx_set_setting(MLX_MAXIMIZED, true);
 			data.mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
