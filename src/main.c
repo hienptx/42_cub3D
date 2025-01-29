@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/29 11:20:27 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/30 00:49:01 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,72 +192,65 @@ void cast_ray(void *param)
 	while (i < NUM_RAYS)
 	{
 		ra = start_angle - (i * ray.angle_step);
-		// float ca = adjust_angle(ra - data->pos.angle); // Angle difference in radians
 		calculate_ray_intersection(data, ra, &ray);
-		// float corrected_dist = ray.distance * cos(ca); // Fisheye correction
-		// draw_wall_slice(data, i, corrected_dist, ray.color, ray.hit_x, ray.hit_y);
-		// draw_line(data, ray.px, ray.py, ra, ray.distance, 0x00FF00FF);
 		render_single_ray(data, &ray, i, ra);
 		i++;
 	}
 }
 
-void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, float rx, float ry)
+static uint32_t get_pixel_color(mlx_texture_t *texture, uint32_t tex_x, uint32_t tex_y)
 {
-    // Updated to use color to select texture index if needed
-    int TEXTURE_HEIGHT = data->texture[2]->height;
-    int TEXTURE_WIDTH = data->texture[2]->width;
+	uint8_t *pixel = &texture->pixels[(texture->width * tex_y + tex_x) * 4];
+	return (pixel[0] << 24) | (pixel[1] << 16) | (pixel[2] << 8) | pixel[3];
+}
 
-    int wall_height = (int)(10 * HEIGHT / distance_to_wall); // Adjust wall height calculation
-    if (wall_height > HEIGHT) wall_height = HEIGHT;
-    double step = 1.0 * (double)TEXTURE_HEIGHT / (double)wall_height;
+static t_wall_data calculate_wall_dimensions(t_cub3d *data, double distance)
+{
+	t_wall_data wall_data;
+	wall_data.height = (int)(10 * HEIGHT / distance); // Adjust wall height calculation
+	if (wall_data.height > HEIGHT)
+		wall_data.height = HEIGHT;
+	wall_data.step = 1.0 * (double)data->texture[2]->height / (double)wall_data.height;
+	wall_data.line_top = (HEIGHT - wall_data.height) / 2;
+	wall_data.line_bottom = wall_data.line_top + wall_data.height;
+	if (wall_data.line_bottom >= HEIGHT)
+		wall_data.line_bottom = HEIGHT - 1;
+	return (wall_data);
+}
 
-    int line_top = (HEIGHT - wall_height) / 2;
-    int line_bottom = line_top + wall_height;
-    double texPos = 0;
+static uint32_t get_texture_x(float pos, u_int32_t tex_width)
+{
+    float relative_pos = fmod(pos, cell_size);
+    uint32_t tex_x = (uint32_t)((relative_pos / cell_size) * tex_width);
+    tex_x %= tex_width;
+    return (tex_x < 0) ? tex_x + tex_width : tex_x;
+}
 
-    if (line_bottom >= HEIGHT) line_bottom = HEIGHT - 1;
+void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int is_vertical, float rx, float ry)
+{
+    mlx_texture_t *texture = data->texture[2];
+    if (!texture)
+        return;
 
-	float relative_pos;
-    if (color == 0) { // Horizontal wall
-        relative_pos = fmod(rx, cell_size);
-    } else { // Vertical wall
-        relative_pos = fmod(ry, cell_size);
-    }
-    // Map the relative position to texture X coordinate
-    int texX = (int)((relative_pos / cell_size) * TEXTURE_WIDTH);
-    texX %= TEXTURE_WIDTH; // Ensure texX wraps around if necessary
+    t_wall_data wall = calculate_wall_dimensions(data, distance_to_wall);
+    wall.texture = texture;
+    uint32_t tex_x = get_texture_x(is_vertical ? ry : rx, texture->width);
+    double tex_pos = 0;
 
-    // Ensure texX is positive
-    if (texX < 0) texX += TEXTURE_WIDTH;
-    if (color == 0) { // Horizontal wall
-        texX = (int)(rx * TEXTURE_WIDTH / cell_size) % TEXTURE_WIDTH;
-    } else { // Vertical wall
-        texX = (int)(ry * TEXTURE_WIDTH / cell_size) % TEXTURE_WIDTH;
-    }
-    // Ensure texX is positive
-    if (texX < 0) texX += TEXTURE_WIDTH;
+    for (int y = wall.line_top; y <= wall.line_bottom; y++) 
+    {
+        uint32_t tex_y = (uint32_t)tex_pos % texture->height;
+        tex_y = (tex_y >= texture->height) ? texture->height - 1 : tex_y;
 
-    for (int y = line_top; y <= line_bottom; y++) {
-		int texY = (int)texPos % TEXTURE_HEIGHT; // Wrap texY within texture height
-        // int texY = (int)texPos;
-		texPos += step;
-
-		// Clamp texY to texture height
-        if (texY >= TEXTURE_HEIGHT) texY = TEXTURE_HEIGHT - 1;
-        if (texY < 0) texY = 0;
-        uint8_t *pixel = &data->texture[2]->pixels[(TEXTURE_WIDTH * texY + texX) * 4];
-        uint32_t pixel_color = (pixel[0] << 24) | (pixel[1] << 16) | 
-                                (pixel[2] << 8) | pixel[3];
-
-        if (color == 0) {
+        uint32_t pixel_color = get_pixel_color(texture, tex_x, tex_y);
+        if (!is_vertical) {
             uint32_t r = ((pixel_color >> 24) & 0xFF);
             uint32_t g = ((pixel_color >> 16) & 0xFF);
             uint32_t b = ((pixel_color >> 8) & 0xFF);
             pixel_color = (r << 24) | (g << 16) | (b << 8) | 0xFF;
         }
-
         mlx_put_pixel(data->img2, x, y, pixel_color);
+        tex_pos += wall.step;
     }
 }
 

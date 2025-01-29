@@ -31,6 +31,15 @@ typedef struct s_ray_data
 	float	color;
 }			t_ray_data;
 
+typedef struct s_wall_data {
+	int height;
+	int line_top;
+	int line_bottom;
+	double step;
+	uint32_t tex_x;
+	mlx_texture_t *texture;
+}	t_wall_data;
+
 typedef struct s_player
 {
 	unsigned int	x;
