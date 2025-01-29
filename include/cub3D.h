@@ -14,7 +14,10 @@
 
 #define WIDTH 1280
 #define HEIGHT 640
+#define SCREEN_WIDTH 912
+#define SCREEN_HEIGHT 640
 #define cell_size 32
+#define NUM_RAYS SCREEN_WIDTH
 #define MOVING_SPEED 4
 #define FOV M_PI / 3.0
 
@@ -62,13 +65,13 @@ void	cast_ray(void *param);
 void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, float rx, float ry);
 
 //ray_direction.c
-void init_ray_up(t_intersection *inter, t_ray_data ray);
-void init_ray_down(t_intersection *inter, t_ray_data ray);
-void init_ray_right(t_intersection *inter, t_ray_data ray);
-void init_ray_left(t_intersection *inter, t_ray_data ray);
+void init_ray_up(t_intersection *inter, t_ray_data *ray);
+void init_ray_down(t_intersection *inter, t_ray_data *ray);
+void init_ray_right(t_intersection *inter, t_ray_data *ray);
+void init_ray_left(t_intersection *inter, t_ray_data *ray);
 
 //get_ray_distance.c
-float check_horizontal_intersection(t_cub3d *data, float ra, float px, float py, float *rx, float *ry);
-float check_vertical_intersection(t_cub3d *data, float ra, float px, float py, float *vx, float *vy);
+float check_horizontal_intersection(t_cub3d *data, t_ray_data *ray, float *rx, float *ry);
+float check_vertical_intersection(t_cub3d *data, t_ray_data *ray, float *vx, float *vy);
 
 #endif

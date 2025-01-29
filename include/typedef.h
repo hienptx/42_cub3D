@@ -18,6 +18,10 @@ typedef struct s_ray_data
 	float	tan_angle;
 	float	px;
 	float	py;
+	float	hit_x;
+	float	hit_y;
+	float	distance;
+	float	color;
 }			t_ray_data;
 
 typedef struct s_player

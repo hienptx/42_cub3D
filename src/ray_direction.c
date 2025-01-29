@@ -6,40 +6,40 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/28 04:25:30 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/29 07:07:51 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-void init_ray_up(t_intersection *inter, t_ray_data ray)
+void init_ray_up(t_intersection *inter, t_ray_data *ray)
 {
-	inter->ry = floor(ray.py / cell_size) * cell_size - 0.01;
-	inter->rx = ray.px + (ray.py - inter->ry) * (1 / ray.tan_angle);
+	inter->ry = floor(ray->py / cell_size) * cell_size - 0.01;
+	inter->rx = ray->px + (ray->py - inter->ry) * (1 / ray->tan_angle);
 	inter->yo = -cell_size;
-	inter->xo = -inter->yo * (1 / ray.tan_angle);
+	inter->xo = -inter->yo * (1 / ray->tan_angle);
 }
 
-void init_ray_down(t_intersection *inter, t_ray_data ray)
+void init_ray_down(t_intersection *inter, t_ray_data *ray)
 {
-	inter->ry = floor(ray.py / cell_size) * cell_size + cell_size;
-	inter->rx = ray.px + (ray.py - inter->ry) * (1 / ray.tan_angle);
+	inter->ry = floor(ray->py / cell_size) * cell_size + cell_size;
+	inter->rx = ray->px + (ray->py - inter->ry) * (1 / ray->tan_angle);
 	inter->yo = cell_size;
-	inter->xo = -inter->yo * (1 / ray.tan_angle);
+	inter->xo = -inter->yo * (1 / ray->tan_angle);
 }
 
-void init_ray_right(t_intersection *inter, t_ray_data ray)
+void init_ray_right(t_intersection *inter, t_ray_data *ray)
 {
-	inter->rx = floor(ray.px / cell_size) * cell_size + cell_size;
-	inter->ry = (ray.px - inter->rx) * ray.tan_angle + ray.py;
+	inter->rx = floor(ray->px / cell_size) * cell_size + cell_size;
+	inter->ry = (ray->px - inter->rx) * ray->tan_angle + ray->py;
 	inter->xo = cell_size;
-	inter->yo = -inter->xo * ray.tan_angle;
+	inter->yo = -inter->xo * ray->tan_angle;
 }
 
-void init_ray_left(t_intersection *inter, t_ray_data ray)
+void init_ray_left(t_intersection *inter, t_ray_data *ray)
 {
-	inter->rx = floor(ray.px / cell_size) * cell_size - 0.01;
-	inter->ry = (ray.px - inter->rx) * ray.tan_angle + ray.py;
+	inter->rx = floor(ray->px / cell_size) * cell_size - 0.01;
+	inter->ry = (ray->px - inter->rx) * ray->tan_angle + ray->py;
 	inter->xo = -cell_size;
-	inter->yo = -inter->xo * ray.tan_angle;
+	inter->yo = -inter->xo * ray->tan_angle;
 }

@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/28 04:18:19 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/29 08:12:31 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,46 +145,48 @@ void draw_line(t_cub3d *data, float start_x, float start_y, float angle, float l
 	}
 }
 
+static void calculate_ray_intersection(t_cub3d *data, float ray_angle, t_ray_data *ray)
+{
+	ray->angle = ray_angle;
+	ray->tan_angle = tan(ray_angle);
+	float vx, vy, rx, ry;
+	float disV = check_vertical_intersection(data, ray, &vx, &vy);
+	float disH = check_horizontal_intersection(data, ray, &rx, &ry);
+
+	// Choose closer intersection
+	if (disV < disH) {
+		ray->hit_x = vy;	//why x to y
+		ray->hit_y = vx;	//and y to x?
+		ray->distance = disV;
+		ray->color = 1;
+	} else {
+		ray->hit_x = rx;
+		ray->hit_y = ry;
+		ray->distance = disH;
+		ray->color = 0;
+	}
+}
+
 void cast_ray(void *param)
 {
     t_cub3d *data = param;
     float angle = data->pos.angle;
-    float px = data->pos.x;
-    float py = data->pos.y;
-    int num_rays = 912;
-    float ray_angle = FOV / num_rays; // Step size between rays in radians
+	t_ray_data ray;
+    ray.px = data->pos.x;
+    ray.py = data->pos.y;
+    float ray_angle_step = FOV / NUM_RAYS; // Step size between rays in radians
     float start_angle = angle + (FOV / 2.0); // Start from leftmost ray in radians
-	float disT = 0;
 	int color = 0;
-	float ra = start_angle;
-	// printf("%f\n", ra);
     int i = 0;
     render_map(data->map.map_data, data);
-    while (i < num_rays) {
-		float vx, vy, rx, ry;
+    while (i < NUM_RAYS) {
+		float ra = start_angle - (i * ray_angle_step);
 		float ca = adjust_angle(ra - angle); // Angle difference in radians
+		calculate_ray_intersection(data, ra, &ray);
 
-		float disV = check_vertical_intersection(data, ra, px, py, &vx, &vy);
-		float disH = check_horizontal_intersection(data, ra, px, py, &rx, &ry);
-
-		// Determine closest intersection
-		if (disV < disH) {
-            rx = vx;
-            ry = vy;
-            disT = disV;
-            color = 1;
-        } else{
-            disT = disH;
-            color = 0;
-        }
-		float corrected_dist = disT * cos(ca); // Fisheye correction
-
-		// Draw wall slice first, then ray line
-		// printf("px: %f, py: %f, disT: %f\n", px, py, disT);
-		draw_wall_slice(data, i, corrected_dist, color, rx, ry);
-		draw_line(data, px, py, ra, disT, 0x00FF00FF);
-		
-		ra = adjust_angle(ra - ray_angle); // Increment angle in radians
+		float corrected_dist = ray.distance * cos(ca); // Fisheye correction
+		draw_wall_slice(data, i, corrected_dist, color, ray.hit_x, ray.hit_y);
+		draw_line(data, ray.px, ray.py, ra, ray.distance, 0x00FF00FF);
 		i++;
 	}
 }

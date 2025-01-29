@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/28 04:22:07 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/29 07:56:23 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,27 @@ static void init_intersection(t_intersection *inter)
 	inter->dof = 0;
 }
 
-float check_horizontal_intersection(t_cub3d *data, float ra, float px, float py, float *rx, float *ry)
+float check_horizontal_intersection(t_cub3d *data, t_ray_data *ray, float *rx, float *ry)
 {
 	t_intersection inter;
-	t_ray_data ray = {ra, tan(ra), px, py};
 
 	init_intersection(&inter);
-	if (sin(ra) > 0.001)
+	if (sin(ray->angle) > 0.001)
 		init_ray_up(&inter, ray);
-	else if (sin(ra) < -0.001)
+	else if (sin(ray->angle) < -0.001)
 		init_ray_down(&inter, ray);
 	else
 	{
-		inter.rx = px;
-		inter.ry = py;
-		inter.dof = data->map.map_height + 100;
+		inter.dof = data->map.map_height;
 	}
 	// printf("H: rx=%f, ry=%f, xo=%f, yo=%f\n", inter.rx, inter.ry, inter.xo, inter.yo);
-	while (inter.dof < data->map.map_height + 100)
+	while (inter.dof < data->map.map_height)
 	{
 		int mx = floor(inter.rx / cell_size);
 		int my = floor(inter.ry / cell_size);
 		if (is_wall_hit(data, mx, my))
 		{
-			inter.distance = sqrt(pow(inter.rx - px, 2) + pow(inter.ry - py, 2));
+			inter.distance = sqrt(pow(inter.rx - data->pos.x, 2) + pow(inter.ry - data->pos.y, 2));
 			*rx = inter.rx;
 			*ry = inter.ry;
 			break;
@@ -67,31 +64,28 @@ float check_horizontal_intersection(t_cub3d *data, float ra, float px, float py,
 	return (inter.distance);
 }
 
-float check_vertical_intersection(t_cub3d *data, float ra, float px, float py, float *vx, float *vy)
+float check_vertical_intersection(t_cub3d *data, t_ray_data *ray, float *vx, float *vy)
 {
 	t_intersection inter;
-	t_ray_data ray = {ra, tan(ra), px, py};
-	// float tan_ra;
 
-	// tan_ra = tan(ra);
 	init_intersection(&inter);
-	if (cos(ra) > 0.001)
+	if (cos(ray->angle) > 0.001)
 		init_ray_right(&inter, ray);
-	else if (cos(ra) < -0.001)
+	else if (cos(ray->angle) < -0.001)
 		init_ray_left(&inter, ray);
 	else
 	{
-		inter.rx = px;
-		inter.ry = py;
-		inter.dof = data->map.map_width + 100;
+		*vx = data->pos.x;
+		*vy = data->pos.y;
+		inter.dof = data->map.map_width;
 	}
-	while (inter.dof < data->map.map_width + 100)
+	while (inter.dof < data->map.map_width)
 	{
 		int mx = floor(inter.rx / cell_size);
 		int my = floor(inter.ry / cell_size);
 		if (is_wall_hit(data, mx, my))
 		{
-			inter.distance = sqrt(pow(inter.rx - px, 2) + pow(inter.ry - py, 2));
+			inter.distance = sqrt(pow(inter.rx - data->pos.x, 2) + pow(inter.ry - data->pos.y, 2));
 			*vx = inter.rx;
 			*vy = inter.ry;
 			break;
@@ -100,5 +94,6 @@ float check_vertical_intersection(t_cub3d *data, float ra, float px, float py, f
 		inter.ry += inter.yo;
 		inter.dof++;
 	}
+	// printf("V: rx=%f, ry=%f, xo=%f, yo=%f, distance: %f\n", inter.rx, inter.ry, inter.xo, inter.yo, inter.distance);
 	return (inter.distance);
 }
