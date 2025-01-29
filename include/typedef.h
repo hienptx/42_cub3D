@@ -2,6 +2,11 @@
 # define TYPEDEF_H
 # include "../MLX/include/MLX42/MLX42.h"
 
+typedef enum e_ray_dir{
+	DIR_HORIZONTAL,
+	DIR_VERTICAL
+}	t_ray_dir;
+
 typedef struct s_intersection
 {
 	float	rx;
@@ -10,6 +15,7 @@ typedef struct s_intersection
 	float	yo;
 	float	distance;
 	int		dof;
+	t_ray_dir	dir;
 }			t_intersection;
 
 typedef struct s_ray_data

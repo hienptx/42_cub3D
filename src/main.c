@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/29 08:12:31 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/01/29 09:04:20 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,8 +170,8 @@ static void calculate_ray_intersection(t_cub3d *data, float ray_angle, t_ray_dat
 void cast_ray(void *param)
 {
     t_cub3d *data = param;
-    float angle = data->pos.angle;
 	t_ray_data ray;
+    float angle = data->pos.angle;
     ray.px = data->pos.x;
     ray.py = data->pos.y;
     float ray_angle_step = FOV / NUM_RAYS; // Step size between rays in radians

@@ -20,6 +20,8 @@
 #define NUM_RAYS SCREEN_WIDTH
 #define MOVING_SPEED 4
 #define FOV M_PI / 3.0
+#define MAX_MAP_WIDTH 240
+#define MAX_MAP_HEIGHT 240
 
 //initialization.c
 void map_initialising(t_user_map *map);
