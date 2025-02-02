@@ -56,7 +56,6 @@ void my_keyhook(mlx_key_data_t keydata, void* param);
 float adjust_angle(float angle);
 void rotate(t_cub3d *data, float unit_degree);
 void cast_ray(void *param);
-void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, float rx, float ry);
 void render_map(char **map, t_cub3d *data);
 void draw_line(t_cub3d *data, float start_x, float start_y, float angle, float length, int color);
 
@@ -64,7 +63,8 @@ void draw_line(t_cub3d *data, float start_x, float start_y, float angle, float l
 void	rotate(t_cub3d *data, float unit_degree);
 void	put_pixel_box(t_cub3d *data, u_int32_t color);
 void	cast_ray(void *param);
-void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, float rx, float ry);
+// void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int color, float rx, float ry);
+void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, t_ray_data *ray);
 
 //ray_direction.c
 void init_ray_up(t_intersection *inter, t_ray_data *ray);

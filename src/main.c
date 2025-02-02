@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/30 00:49:01 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/02 01:15:58 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,8 @@ void	render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i, float ra)
 {
 	float ca = adjust_angle(ra - data->pos.angle); // Angle difference in radians
 	float corrected_dist = ray->distance * cos(ca); // Fisheye correction
-	draw_wall_slice(data, i, corrected_dist, ray->color, ray->hit_x, ray->hit_y);
+	// draw_wall_slice(data, i, corrected_dist, ray->color, ray->hit_x, ray->hit_y);
+	draw_wall_slice(data, i, corrected_dist, ray);
 	draw_line(data, ray->px, ray->py, ra, ray->distance, 0x00FF00FF);
 }
 
@@ -223,27 +224,75 @@ static uint32_t get_texture_x(float pos, u_int32_t tex_width)
     float relative_pos = fmod(pos, cell_size);
     uint32_t tex_x = (uint32_t)((relative_pos / cell_size) * tex_width);
     tex_x %= tex_width;
-    return (tex_x < 0) ? tex_x + tex_width : tex_x;
+    // return (tex_x < 0) ? tex_x + tex_width : tex_x;
+	return(tex_x);
 }
 
-void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int is_vertical, float rx, float ry)
-{
-    mlx_texture_t *texture = data->texture[2];
-    if (!texture)
-        return;
+// mlx_texture_t *get_wall_texture(t_cub3d *data, t_ray_data *ray)
+// {
+// 	printf("dirX: %f, dirY: %f, color: %f\n", ray->dirX, ray->dirY, ray->color);
+// 	if (ray->color == 0) 
+// 	{
+//         if (ray->dirY > 0 && ray->dirX < M_PI) 
+// 			return(data->texture[1]); // east
+// 		else
+// 			return(data->texture[0]); //west
+//     } 
+// 	else
+// 	{
+//         if (ray->dirX > 0 && ray->dirX < M_PI) //south
+// 			return(data->texture[3]);	 
+// 		else // North
+// 			return(data->texture[2]);	 
+// 	}
+// }
 
+mlx_texture_t *get_wall_texture(t_cub3d *data, t_ray_data *ray)
+{
+	if (ray->color == 0) // Vertical wall hit (East/West)
+	{
+		if (ray->dirX >= 0)  // Moving right → East wall
+			return (data->texture[3]); // South
+		else  // Moving left → West wall
+			return (data->texture[2]); // North
+	} 
+	else // Horizontal wall hit (North/South)
+	{
+		if (ray->dirY >= 0)  // Moving down → South wall
+			return (data->texture[1]); // East
+		else  // Moving up → North wall
+			return (data->texture[0]); // West
+	}
+}
+
+void load_png_texture(t_cub3d *data)
+{	
+	data->texture[0] = mlx_load_png(data->map.WE_texture); 
+	data->texture[1] = mlx_load_png(data->map.EA_texture); 
+	data->texture[2] = mlx_load_png(data->map.NO_texture); 
+	data->texture[3] = mlx_load_png(data->map.SO_texture); 
+}
+// void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, int is_vertical, float rx, float ry)
+void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, t_ray_data *ray)
+{
+    // mlx_texture_t *texture = data->texture[2];
+    // if (!texture)
+    //     return;
+	load_png_texture(data);
     t_wall_data wall = calculate_wall_dimensions(data, distance_to_wall);
-    wall.texture = texture;
-    uint32_t tex_x = get_texture_x(is_vertical ? ry : rx, texture->width);
+    // wall.texture = texture;
+	wall.texture = get_wall_texture(data, ray);
+    // uint32_t tex_x = get_texture_x(is_vertical ? ry : rx, texture->width);
+    uint32_t tex_x = get_texture_x(ray->color ? ray->hit_y : ray->hit_x, wall.texture->width);
     double tex_pos = 0;
 
     for (int y = wall.line_top; y <= wall.line_bottom; y++) 
     {
-        uint32_t tex_y = (uint32_t)tex_pos % texture->height;
-        tex_y = (tex_y >= texture->height) ? texture->height - 1 : tex_y;
+        uint32_t tex_y = (uint32_t)tex_pos % wall.texture->height;
+        tex_y = (tex_y >= wall.texture->height) ? wall.texture->height - 1 : tex_y;
 
-        uint32_t pixel_color = get_pixel_color(texture, tex_x, tex_y);
-        if (!is_vertical) {
+        uint32_t pixel_color = get_pixel_color(wall.texture, tex_x, tex_y);
+        if (!ray->color) {
             uint32_t r = ((pixel_color >> 24) & 0xFF);
             uint32_t g = ((pixel_color >> 16) & 0xFF);
             uint32_t b = ((pixel_color >> 8) & 0xFF);
@@ -276,10 +325,10 @@ int32_t	main(int ac, char *av[])
 			/* Do stuff */
 			// Create and display the image.
 			cub3d_initialising(&data);
-			data.texture[2] = mlx_load_png("images/texture2.png");
-			data.texture[1] = mlx_load_png(data.map.EA_texture);
-			// data.texture[2] = mlx_load_png(data.map.WE_texture);
-			data.texture[3] = mlx_load_png(data.map.SO_texture);
+			// data.texture[2] = mlx_load_png("images/texture2.png");
+			// data.texture[1] = mlx_load_png(data.map.EA_texture);
+			// // data.texture[2] = mlx_load_png(data.map.WE_texture);
+			// data.texture[3] = mlx_load_png(data.map.SO_texture);
 			data.img = mlx_new_image(data.mlx, data.iwidth, data.iheight);
 			if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
 			{
@@ -301,7 +350,7 @@ int32_t	main(int ac, char *av[])
 			ft_free_map(data.map);
 		}
 		else
-			return (EXIT_SUCCESS);
+			return (printf("Invalid Map\n"), EXIT_SUCCESS);
 	}
 	else
 		printf("Error: Invalid input!\n./cub3D [MAP.cub]\n");

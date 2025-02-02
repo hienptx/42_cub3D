@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:46:15 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/28 01:48:04 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:30:19 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void parse_color(char *line, t_user_map *map)
 			ft_malloc((void**)&map->floor, sizeof(color_arr));
 			ft_memcpy(map->floor, color_arr, sizeof(color_arr));
 		}
+		map->color_count++;
 		ft_free(color);
 		ft_free(arr);
 	}
@@ -54,7 +55,8 @@ void parse_texture(char *line, t_user_map *map)
 	while(arr[i] != NULL)
 		i++;
 	if (i == 2)
-	{
+	{	
+		map->texture_count++;
 		if (ft_strcmp(arr[0], "NO") == 0)
 			save_texture(&map->NO_texture, arr[1]);
 		else if (ft_strcmp(arr[0], "SO") == 0)

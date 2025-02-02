@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/28 01:48:08 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:25:56 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,8 @@ bool validate_map(t_user_map *map)
 	if (map->NO_texture == NULL || map->SO_texture == NULL 
 	|| map->WE_texture == NULL || map->EA_texture == NULL
 	|| map->ceiling == NULL || map->floor == NULL
-	|| map->map_data == NULL)
+	|| map->map_data == NULL || map->texture_count > 4
+	|| map->color_count > 2)
 		return (printf("Error: Invalid map\n"), 0);
 	if (!validate_texture_path(map->NO_texture))
 		return (printf("Error: Invalid texture\n"), 0);		

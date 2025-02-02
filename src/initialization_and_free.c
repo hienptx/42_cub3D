@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization_and_free.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/28 01:50:30 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/01 23:20:22 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ void map_initialising(t_user_map *map)
 	map->ceiling = NULL;
 	map->floor = NULL;
 	map->player_count = 0;
+	map->texture_count = 0;
+	map->color_count = 0;
 }
 
 // void player_initilising(t_player *player)

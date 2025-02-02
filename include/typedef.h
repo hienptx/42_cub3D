@@ -2,43 +2,47 @@
 # define TYPEDEF_H
 # include "../MLX/include/MLX42/MLX42.h"
 
-typedef enum e_ray_dir{
+typedef enum e_ray_dir
+{
 	DIR_HORIZONTAL,
 	DIR_VERTICAL
-}	t_ray_dir;
+}					t_ray_dir;
 
 typedef struct s_intersection
 {
-	float	rx;
-	float	ry;
-	float	xo;
-	float	yo;
-	float	distance;
-	int		dof;
-	t_ray_dir	dir;
-}			t_intersection;
+	float			rx;
+	float			ry;
+	float			xo;
+	float			yo;
+	float			distance;
+	int				dof;
+	t_ray_dir		dir;
+}					t_intersection;
 
 typedef struct s_ray_data
 {
-	float	angle;
-	float	tan_angle;
-	const float	angle_step;
-	float	px;
-	float	py;
-	float	hit_x;
-	float	hit_y;
-	float	distance;
-	float	color;
-}			t_ray_data;
+	float			angle;
+	float			tan_angle;
+	const float		angle_step;
+	float			px;
+	float			py;
+	float			hit_x;
+	float			hit_y;
+	float			distance;
+	float			color;
+	float			dirX;
+	float			dirY;
+}					t_ray_data;
 
-typedef struct s_wall_data {
-	int height;
-	int line_top;
-	int line_bottom;
-	double step;
-	uint32_t tex_x;
-	mlx_texture_t *texture;
-}	t_wall_data;
+typedef struct s_wall_data
+{
+	int				height;
+	int				line_top;
+	int				line_bottom;
+	double			step;
+	uint32_t		tex_x;
+	mlx_texture_t	*texture;
+}					t_wall_data;
 
 typedef struct s_player
 {
@@ -53,8 +57,8 @@ typedef struct s_user_map
 {
 	int				map_width;
 	int				map_height;
-	float			pw; //(pixel_width = scale_factor_x)
-	float			ph; //(pixel_height = scale_factor_y)
+	float pw; //(pixel_width = scale_factor_x)
+	float ph; //(pixel_height = scale_factor_y)
 	char			*NO_texture;
 	char			*SO_texture;
 	char			*WE_texture;
@@ -63,6 +67,8 @@ typedef struct s_user_map
 	int				*ceiling;
 	char			**map_data;
 	int				player_count;
+	int				texture_count;
+	int				color_count;
 	t_player		pos;
 }					t_user_map;
 
@@ -76,6 +82,7 @@ typedef struct s_cub3d
 	mlx_texture_t	*texture[4];
 	t_player		pos;
 	t_user_map		map;
+	t_ray_data		ray;
 	int				key_pressed;
 }					t_cub3d;
 

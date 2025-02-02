@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_ray_distance.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/29 08:59:41 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/02 00:09:57 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,20 @@ static void	init_ray_direction(t_intersection *inter, t_ray_data *ray, \
 {
 	if (dir == DIR_HORIZONTAL)
 	{
-		if (sin(ray->angle) > 0.001)
+		ray->dirX = sin(ray->angle);  
+		if (ray->dirX > 0.001)
 			init_ray_up(inter, ray);
-		else if (sin(ray->angle) < -0.001)
+		else if (ray->dirX < -0.001)
 			init_ray_down(inter, ray);
 		else
 			inter->dof = MAX_MAP_HEIGHT;
 	}
 	else
 	{
-		if (cos(ray->angle) > 0.001)
+		ray->dirY = cos(ray->angle); 
+		if (ray->dirY > 0.001)
 			init_ray_right(inter, ray);
-		else if (cos(ray->angle) < -0.001)
+		else if (ray->dirY < -0.001)
 			init_ray_left(inter, ray);
 		else
 			inter->dof = MAX_MAP_WIDTH;
