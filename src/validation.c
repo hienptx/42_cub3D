@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/02 02:37:03 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:41:42 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ bool validate_maze(char **maze, t_user_map *map)
 			return (0);
 	}
 	if (map->player_count != 1)
-		return (0);
+		return (printf("Invalid number of player\n"), 0);
 	map->map_width = longest_line;	
 	return (1);	
 }
@@ -97,10 +97,11 @@ bool validate_color_values(int *color, int size)
 bool validate_map(t_user_map *map)
 {
 	if (map->NO_texture == NULL || map->SO_texture == NULL 
-	|| map->WE_texture == NULL || map->EA_texture == NULL
-	|| map->ceiling == NULL || map->floor == NULL
-	|| map->map_data == NULL || map->texture_count > 4
-	|| map->color_count > 2)
+	|| map->WE_texture == NULL || map->EA_texture == NULL || map->texture_count > 4)
+		return (printf("Error: Invalid texture\n"), 0);
+	if (map->ceiling == NULL || map->floor == NULL || map->color_count > 2)
+		return (printf("Error: Invalid color\n"), 0);
+	if (map->map_data == NULL)
 		return (printf("Error: Invalid map\n"), 0);
 	if (!validate_texture_path(map->NO_texture))
 		return (printf("Error: Invalid texture\n"), 0);		

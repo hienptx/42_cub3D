@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:06:34 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/02 01:56:27 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:20:30 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,9 @@ void load_png_texture(t_cub3d *data)
 	data->texture[1] = mlx_load_png(data->map.EA_texture); 
 	data->texture[2] = mlx_load_png(data->map.NO_texture); 
 	data->texture[3] = mlx_load_png(data->map.SO_texture); 
+}
+
+float rad2deg(float rad) 
+{
+    return rad * (180.0 / M_PI);
 }

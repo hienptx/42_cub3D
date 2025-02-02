@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/01 23:20:22 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/02 15:33:15 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,11 @@ void ft_free_map(t_user_map map)
 
 void cub3d_initialising(t_cub3d *data)
 {
-	data->iheight = data->map.map_height * cell_size;
-	data->iwidth = data->map.map_width * cell_size;
+	data->cell_size = 256 / data->map.map_width; 	
+	data->iheight = data->map.map_height * data->cell_size;
+	data->iwidth = data->map.map_width * data->cell_size;
+	// data->iheight = data->map.map_height * cell_size;
+	// data->iwidth = data->map.map_width * cell_size;
 	data->pos.dx = data->map.pos.dx;
 	data->pos.dy = data->map.pos.dy;
 	data->map.pw = data->iwidth / data->map.map_width;

@@ -83,6 +83,7 @@ typedef struct s_cub3d
 	t_player		pos;
 	t_user_map		map;
 	t_ray_data		ray;
+	float			cell_size;
 	int				key_pressed;
 }					t_cub3d;
 

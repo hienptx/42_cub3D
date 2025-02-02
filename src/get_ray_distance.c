@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/02 00:09:57 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/02 15:41:19 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,15 @@ static bool	is_wall_hit(t_cub3d *data, int mx, int my)
 // }
 
 static void	init_ray_direction(t_intersection *inter, t_ray_data *ray, \
-															t_ray_dir dir)
+															t_ray_dir dir, float cell_size)
 {
 	if (dir == DIR_HORIZONTAL)
 	{
 		ray->dirX = sin(ray->angle);  
 		if (ray->dirX > 0.001)
-			init_ray_up(inter, ray);
+			init_ray_up(inter, ray, cell_size);
 		else if (ray->dirX < -0.001)
-			init_ray_down(inter, ray);
+			init_ray_down(inter, ray, cell_size);
 		else
 			inter->dof = MAX_MAP_HEIGHT;
 	}
@@ -43,9 +43,9 @@ static void	init_ray_direction(t_intersection *inter, t_ray_data *ray, \
 	{
 		ray->dirY = cos(ray->angle); 
 		if (ray->dirY > 0.001)
-			init_ray_right(inter, ray);
+			init_ray_right(inter, ray, cell_size);
 		else if (ray->dirY < -0.001)
-			init_ray_left(inter, ray);
+			init_ray_left(inter, ray, cell_size);
 		else
 			inter->dof = MAX_MAP_WIDTH;
 	}
@@ -59,14 +59,14 @@ static float	check_intersection(t_cub3d *data, t_ray_data *ray, float *x, \
 		.dof = 0,
 		.dir = dir
 	};
-	init_ray_direction(&inter, ray, dir);
+	init_ray_direction(&inter, ray, dir, data->cell_size);
 
 	int max_dof = (dir == DIR_HORIZONTAL) ? data->map.map_height : data->map.map_width;
 
 	while (inter.dof < max_dof)
 	{
-		int mx = floor(inter.rx / cell_size);
-		int my = floor(inter.ry / cell_size);
+		int mx = floor(inter.rx / data->cell_size);
+		int my = floor(inter.ry / data->cell_size);
 		
 		if (is_wall_hit(data, mx, my))
 		{

@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/02 02:07:34 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:54:54 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ float adjust_angle(float angle)
 
 void rotate(t_cub3d *data, float unit_degree)
 {
-	data->pos.angle += unit_degree;
+	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	data->pos.angle = adjust_angle(data->pos.angle);
+	data->pos.angle += unit_degree;
 	// printf("angle: %f\n", data->pos.angle);
 	data->pos.dx = cos(data->pos.angle);
 	data->pos.dy = -sin(data->pos.angle);
@@ -65,14 +66,20 @@ void	put_pixel_box(t_cub3d *data, u_int32_t color)
 	size_t	i;
 	size_t	j;
 	size_t	dir;
-
+	int px;
+	int py;
+	
 	i = 0;
 	while (i < sizeof(x_margin) / sizeof(int))
 	{
 		j = 0 ;
 		while (j < sizeof(y_margin) / sizeof(int))
 		{
-			mlx_put_pixel(data->img, data->pos.x + x_margin[i], data->pos.y + y_margin[j], color);
+			px = data->pos.x + x_margin[i];
+			py = data->pos.y + y_margin[j];
+			if (px >= 0 && px < (int)data->img->width && py >= 0 && py < (int)data->img->height)
+				mlx_put_pixel(data->img, px, py, color);
+			// mlx_put_pixel(data->img, data->pos.x + x_margin[i], data->pos.y + y_margin[j], color);
 			j++;
 		}
 		i++;
@@ -80,7 +87,9 @@ void	put_pixel_box(t_cub3d *data, u_int32_t color)
 	dir = 1;
 	while (dir < 13)
 	{
-		mlx_put_pixel(data->img, data->pos.x + data->pos.dx * dir, data->pos.y + data->pos.dy * dir, color);
+		if (px >= 0 && px < (int)data->img->width && py >= 0 && py < (int)data->img->height)
+			mlx_put_pixel(data->img, px, py, color);
+		// mlx_put_pixel(data->img, data->pos.x + data->pos.dx * dir, data->pos.y + data->pos.dy * dir, color);
 		dir++;
 	}
 }
@@ -229,7 +238,7 @@ int32_t	main(int ac, char *av[])
 				ft_error();
 			}
 			data.img2 = mlx_new_image(data.mlx, 912, 640);
-			if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, data.map.map_width*cell_size, 0) < 0))
+			if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, 256, 0) < 0))
 				ft_error();
 			// Even after the image is being displayed, we can still modify the buffer.
 			render_map(data.map.map_data, &data);

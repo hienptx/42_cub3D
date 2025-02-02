@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements_and_rotation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/01/28 03:57:10 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/02 16:26:30 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void move_forward(t_cub3d *data, int dir)
 	float new_y = data->pos.y + dir * data->pos.dy * MOVING_SPEED;
 
 	// Check for collisions
+	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	if (!wall_collision(data, new_x, new_y))
 	{
 		// Update the position if no collision
@@ -73,6 +74,7 @@ void move_left_right(t_cub3d *data, int dir)
 	float new_y = data->pos.y + dir * perp_dy * MOVING_SPEED;
 
 	// Check for collisions
+	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	if (!wall_collision(data, new_x, new_y))
 	{
 		// Update the position if no collision

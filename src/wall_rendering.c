@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/02 03:21:28 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/02 16:37:39 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ static t_wall_data	calculate_wall_dimensions(t_cub3d *data, double distance)
 {
 	t_wall_data	wall_data;
 
-	wall_data.height = (int)(20 * HEIGHT / distance);
+	// wall_data.height = (int)(20 * HEIGHT / distance);
+	wall_data.height = (int)(HEIGHT / 1.5 * data->cell_size / distance);
 		// Adjust wall height calculation
 	if (wall_data.height > HEIGHT)
 		wall_data.height = HEIGHT;
@@ -38,7 +39,7 @@ static t_wall_data	calculate_wall_dimensions(t_cub3d *data, double distance)
 	return (wall_data);
 }
 
-static uint32_t	get_texture_x(float pos, u_int32_t tex_width)
+static uint32_t	get_texture_x(float pos, u_int32_t tex_width, float cell_size)
 {
 	float		relative_pos;
 	uint32_t	tex_x;
@@ -77,7 +78,7 @@ void floor_drawing(t_cub3d *data, t_wall_data wall, int x)
 {
     uint32_t floor_color;
 
-    floor_color = get_rgba(data->map.floor[0], data->map.floor[1], data->map.floor[2], 50);
+    floor_color = get_rgba(data->map.floor[0], data->map.floor[1], data->map.floor[2], 155);
     while (wall.line_bottom < HEIGHT)
     {
         mlx_put_pixel(data->img2, x, wall.line_bottom, floor_color);
@@ -90,8 +91,8 @@ void ceiling_drawing(t_cub3d *data, t_wall_data wall, int x)
     uint32_t ceiling_color;
     int i;
     
-    i = 1;
-    ceiling_color = get_rgba(data->map.ceiling[0], data->map.ceiling[1], data->map.ceiling[2], 235);
+    i = 0;
+    ceiling_color = get_rgba(data->map.ceiling[0], data->map.ceiling[1], data->map.ceiling[2], 155);
     while (i < wall.line_top)
     {
         mlx_put_pixel(data->img2, x, i, ceiling_color);
@@ -114,7 +115,7 @@ void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
 	wall = calculate_wall_dimensions(data, distance_to_wall);
 	wall.texture = get_wall_texture(data, ray);
 	tex_x = get_texture_x(ray->color ? ray->hit_y : ray->hit_x,
-			wall.texture->width);
+			wall.texture->width, data->cell_size);
 	tex_pos = 0;
 	for (int y = wall.line_top; y <= wall.line_bottom; y++)
 	{

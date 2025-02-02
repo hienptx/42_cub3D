@@ -16,7 +16,7 @@
 # define HEIGHT 640
 # define SCREEN_WIDTH 912
 # define SCREEN_HEIGHT 640
-# define cell_size 32
+// # define cell_size 32
 # define NUM_RAYS SCREEN_WIDTH
 # define MOVING_SPEED 4
 # define FOV M_PI / 3.0
@@ -43,6 +43,7 @@ bool	parsed_map(char *map_path, t_cub3d *data);
 int		error_sms(char *s, int ret);
 void	ft_malloc(void **data, size_t size);
 void	load_png_texture(t_cub3d *data);
+float	rad2deg(float rad);
 
 //parsing_utils.c
 bool	check_for_wall(char *line);
@@ -71,10 +72,10 @@ void	render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
 			float ra);
 
 //ray_direction.c
-void	init_ray_up(t_intersection *inter, t_ray_data *ray);
-void	init_ray_down(t_intersection *inter, t_ray_data *ray);
-void	init_ray_right(t_intersection *inter, t_ray_data *ray);
-void	init_ray_left(t_intersection *inter, t_ray_data *ray);
+void	init_ray_up(t_intersection *inter, t_ray_data *ray, float cell_size);
+void	init_ray_down(t_intersection *inter, t_ray_data *ray, float cell_size);
+void	init_ray_right(t_intersection *inter, t_ray_data *ray, float cell_size);
+void	init_ray_left(t_intersection *inter, t_ray_data *ray, float cell_size);
 
 //get_ray_distance.c
 float	check_horizontal_intersection(t_cub3d *data, t_ray_data *ray, float *rx,
