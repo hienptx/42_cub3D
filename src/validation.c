@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/01 23:25:56 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/02 02:37:03 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,19 @@ bool validate_player_pos(char c, unsigned int j, unsigned int i, t_user_map *map
 	return (1);
 }
 
-bool validate_color_values(int *color)
+bool validate_color_values(int *color, int size)
 {
-	int i;
+	int i = 0;
 
-	i = 0;
-	while (color[i])
+	while (i < size)
 	{
-		if (color[i ] < 0 || color[i] > 255)
-			return(0);
+		if (color[i] < 0 || color[i] > 255) 
+			return (false);
 		i++;
 	}
-	if (i != 2)
-		return (0);
-	return (1);
+	if (i != 3)
+		return (false);
+	return (true);
 }
 
 bool validate_map(t_user_map *map)
@@ -111,9 +110,9 @@ bool validate_map(t_user_map *map)
 		return (printf("Error: Invalid texture\n"), 0);		
 	if (!validate_texture_path(map->EA_texture))
 		return (printf("Error: Invalid texture\n"), 0);		
-	if (!validate_color_values(map->ceiling))
+	if (!validate_color_values(map->ceiling, 3))
 		return (printf("Error: Invalid color\n"),0);
-	if (!validate_color_values(map->floor))
+	if (!validate_color_values(map->floor, 3))
 		return (printf("Error: Invalid color\n"),0);
 	if (!validate_maze(map->map_data, map))
 		return (printf("Error: Invalid maze\n"),0);

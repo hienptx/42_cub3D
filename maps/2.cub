@@ -3,8 +3,8 @@ SO ./images/SOUTH_100.png
 WE ./images/WEST_100.png
 EA ./images/EAST_100.png
 
-F 225,200,0
-C 225,30,0
+F 101,67,33
+C 211,211,211
 
 11111111
 10010011

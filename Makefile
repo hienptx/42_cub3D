@@ -16,7 +16,8 @@ SRCS	:= $(addprefix $(SRC_DIR)/, \
             validation.c \
             movements_and_rotation.c \
 			ray_direction.c \
-			get_ray_distance.c)
+			get_ray_distance.c \
+			wall_rendering.c)
 OBJS	:= ${SRCS:.c=.o}
 
 all: libmlx $(NAME)

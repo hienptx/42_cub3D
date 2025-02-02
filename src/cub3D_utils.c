@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:06:34 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/28 03:46:00 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/02 01:56:27 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,12 @@ void ft_malloc(void **data, size_t size)
 		printf("Malloc failed to allocate memory\n");
 		exit(EXIT_FAILURE);
 	}
+}
+
+void load_png_texture(t_cub3d *data)
+{	
+	data->texture[0] = mlx_load_png(data->map.WE_texture); 
+	data->texture[1] = mlx_load_png(data->map.EA_texture); 
+	data->texture[2] = mlx_load_png(data->map.NO_texture); 
+	data->texture[3] = mlx_load_png(data->map.SO_texture); 
 }

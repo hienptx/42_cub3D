@@ -1,10 +1,10 @@
-NO ./images/NORTH.png
-SO ./images/SOUTH.png
-WE ./images/WEST.png
-EA ./images/EAST.png
+NO ./images/N_wide.png
+SO ./images/S_wide.png
+WE ./images/W_wide.png
+EA ./images/E_wide.png
 
-F 225,200,0
-C 225,30,0
+F 75,37,24
+C 135,206,235
 
 11111111
 10010011
