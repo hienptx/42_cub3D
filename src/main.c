@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/02 01:15:58 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/02 01:25:35 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,7 +208,7 @@ static uint32_t get_pixel_color(mlx_texture_t *texture, uint32_t tex_x, uint32_t
 static t_wall_data calculate_wall_dimensions(t_cub3d *data, double distance)
 {
 	t_wall_data wall_data;
-	wall_data.height = (int)(10 * HEIGHT / distance); // Adjust wall height calculation
+	wall_data.height = (int)(15 * HEIGHT / distance); // Adjust wall height calculation
 	if (wall_data.height > HEIGHT)
 		wall_data.height = HEIGHT;
 	wall_data.step = 1.0 * (double)data->texture[2]->height / (double)wall_data.height;
@@ -249,18 +249,18 @@ static uint32_t get_texture_x(float pos, u_int32_t tex_width)
 
 mlx_texture_t *get_wall_texture(t_cub3d *data, t_ray_data *ray)
 {
-	if (ray->color == 0) // Vertical wall hit (East/West)
+	if (ray->color == 0)
 	{
-		if (ray->dirX >= 0)  // Moving right → East wall
+		if (ray->dirX >= 0)
 			return (data->texture[3]); // South
-		else  // Moving left → West wall
+		else 
 			return (data->texture[2]); // North
 	} 
-	else // Horizontal wall hit (North/South)
+	else
 	{
-		if (ray->dirY >= 0)  // Moving down → South wall
+		if (ray->dirY >= 0)
 			return (data->texture[1]); // East
-		else  // Moving up → North wall
+		else
 			return (data->texture[0]); // West
 	}
 }
@@ -278,7 +278,7 @@ void draw_wall_slice(t_cub3d *data, int x, double distance_to_wall, t_ray_data *
     // mlx_texture_t *texture = data->texture[2];
     // if (!texture)
     //     return;
-	load_png_texture(data);
+	// load_png_texture(data);
     t_wall_data wall = calculate_wall_dimensions(data, distance_to_wall);
     // wall.texture = texture;
 	wall.texture = get_wall_texture(data, ray);
@@ -325,6 +325,7 @@ int32_t	main(int ac, char *av[])
 			/* Do stuff */
 			// Create and display the image.
 			cub3d_initialising(&data);
+			load_png_texture(&data);
 			// data.texture[2] = mlx_load_png("images/texture2.png");
 			// data.texture[1] = mlx_load_png(data.map.EA_texture);
 			// // data.texture[2] = mlx_load_png(data.map.WE_texture);

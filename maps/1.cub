@@ -1,7 +1,7 @@
-NO ./images/N32.png
-SO ./images/S32.png
-WE ./images/W32.png
-EA ./images/E32.png
+NO ./images/NORTH.png
+SO ./images/SOUTH.png
+WE ./images/WEST.png
+EA ./images/EAST.png
 
 F 225,200,0
 C 225,30,0
