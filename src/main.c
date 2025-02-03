@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/02 16:54:54 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/03 05:05:55 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,10 +108,10 @@ void render_map(char **map, t_cub3d *data)
 				color = 0xFFFFFFFF; // Space: White
 			else
 				color = 0x00000000; // Default: Black (or transparent)
-			int x_start = j * scale_factor_y + 1;
-			int y_start = i * scale_factor_x + 1;
-			int x_end = x_start + scale_factor_x - 1;
-			int y_end = y_start + scale_factor_y - 1;
+			int x_start = j * scale_factor_y;
+			int y_start = i * scale_factor_x;
+			int x_end = x_start + scale_factor_x;
+			int y_end = y_start + scale_factor_y;
 
 			for (int y = y_start; y < y_end; y++) {
 				for (int x = x_start; x < x_end; x++) {

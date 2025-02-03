@@ -46,12 +46,12 @@ typedef struct s_wall_data
 
 typedef struct s_player
 {
-	unsigned int	x;
-	unsigned int	y;
-	float			dx;
-	float			dy;
-	float			angle;
-}					t_player;
+	float	x;
+	float	y;
+	float	dx;
+	float	dy;
+	float	angle;
+}			t_player;
 
 typedef struct s_user_map
 {
