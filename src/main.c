@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 05:54:02 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 06:12:27 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -208,12 +208,6 @@ void cast_ray(void *param)
 	}
 }
 
-void	error_sms(char *s)
-{
-	printf("%s\n", s);
-	exit(EXIT_FAILURE);
-}
-
 int32_t	main(int ac, char *av[])
 {
 	char	*path;
@@ -221,20 +215,20 @@ int32_t	main(int ac, char *av[])
 
 	if (ac != 2)
 	{
-		error_sms("Error: Invalid input!\n./cub3D [MAP.cub]\n");
+		error_sms(ERR_MSG_INVALID_ARG);
 	}
 	path = av[1];
 	map_initialising(&data.map);
-	if (parsed_map(path, &data) != 0)
+	if (parsed_map(path, &data) == 0)
 	{
-		error_sms("Error: Invalid map\n");
+		error_sms(ERR_MSG_INVALID_MAP);
 	}
 	// MLX allows you to define its core behaviour before startup.
 	// mlx_set_setting(MLX_MAXIMIZED, true);
 	data.mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
 	if (!data.mlx)
 	{
-		error_sms("Error: mlx_init failed\n");
+		ft_error();
 	}
 	/* Do stuff */
 	// Create and display the image.
@@ -243,7 +237,7 @@ int32_t	main(int ac, char *av[])
 	data.img = mlx_new_image(data.mlx, data.iwidth, data.iheight);
 	if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
 	{
-		error_sms("Error: mlx_new_image failed\n");
+		ft_error();
 	}
 	data.img2 = mlx_new_image(data.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, 0, 0) < 0))

@@ -22,6 +22,8 @@
 # define FOV M_PI / 3.0
 # define MAX_MAP_WIDTH 240
 # define MAX_MAP_HEIGHT 240
+# define ERR_MSG_INVALID_MAP "Error: Invalid map\n"
+# define ERR_MSG_INVALID_ARG "Error: Invalid input!\n./cub3D [MAP.cub]\n"
 
 //initialization.c
 void	map_initialising(t_user_map *map);
@@ -40,7 +42,7 @@ bool	validate_color_values(int *color, int size);
 bool	parsed_map(char *map_path, t_cub3d *data);
 
 //cub3D_utils.c
-int		error_sms(char *s, int ret);
+int		error_sms(char *s);
 void	ft_malloc(void **data, size_t size);
 void	load_png_texture(t_cub3d *data);
 float	rad2deg(float rad);

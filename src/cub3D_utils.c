@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:06:34 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/02 16:20:30 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/03 06:07:55 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-int error_sms(char *s, int ret)
+int error_sms(char *s)
 {
 	printf("Error: %s\n", s);
-	return(ret);
+	exit(EXIT_FAILURE);
 }
 
 void ft_malloc(void **data, size_t size)
