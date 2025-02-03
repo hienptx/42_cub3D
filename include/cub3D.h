@@ -14,8 +14,8 @@
 
 # define WIDTH 1280
 # define HEIGHT 640
-# define SCREEN_WIDTH 912
-# define SCREEN_HEIGHT 640
+# define SCREEN_WIDTH WIDTH
+# define SCREEN_HEIGHT HEIGHT
 // # define cell_size 32
 # define NUM_RAYS SCREEN_WIDTH
 # define MOVING_SPEED 4
