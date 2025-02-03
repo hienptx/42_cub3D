@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   wall_rendering.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/03 10:26:13 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:55:13 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
-
-static uint32_t	get_pixel_color(mlx_texture_t *texture, uint32_t tex_x,
-		uint32_t tex_y)
-{
-	uint8_t	*pixel;
-
-	pixel = &texture->pixels[(texture->width * tex_y + tex_x) * 4];
-	return ((pixel[0] << 24) | (pixel[1] << 16) | (pixel[2] << 8) | pixel[3]);
-}
 
 static t_wall_data	calculate_wall_dimensions(t_cub3d *data, double distance)
 {

@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/02 15:33:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/03 13:47:42 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,6 @@ void map_initialising(t_user_map *map)
 	map->texture_count = 0;
 	map->color_count = 0;
 }
-
-// void player_initilising(t_player *player)
-// {
-// 	player->angle = 0;
-// 	player->dx = 0;
-// 	player->dy = 0;
-// 	player->x = 0;
-// 	player->y = 0;
-// }
 
 void ft_free_map(t_user_map map)
 {

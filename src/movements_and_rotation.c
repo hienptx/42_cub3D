@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements_and_rotation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 09:56:04 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:00:43 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,11 @@ void handle_movement_keys(t_cub3d *data)
 		handle_rotation(data, M_PI_16, &key_pressed);
 	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
 		handle_rotation(data, -M_PI_16, &key_pressed);
-
+	else if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE))
+	{
+		data->wp.is_flash_active = true;
+		trigger_flash(data);
+	}
 	if (key_pressed)
 	{
 		// printf("x = %f, y = %f\n", data->pos.dx, data->pos.dy);

@@ -27,7 +27,6 @@
 
 //initialization.c
 void	map_initialising(t_user_map *map);
-void	player_initilising(t_player *player);
 void	cub3d_initialising(t_cub3d *data);
 void	ft_free_map(t_user_map map);
 
@@ -45,7 +44,7 @@ bool	parsed_map(char *map_path, t_cub3d *data);
 int		error_sms(char *s);
 void	ft_malloc(void **data, size_t size);
 void	load_png_texture(t_cub3d *data);
-float	rad2deg(float rad);
+void ft_error(void);
 
 //parsing_utils.c
 bool	check_for_wall(char *line);
@@ -84,5 +83,10 @@ float	check_horizontal_intersection(t_cub3d *data, t_ray_data *ray, float *rx,
 			float *ry);
 float	check_vertical_intersection(t_cub3d *data, t_ray_data *ray, float *vx,
 			float *vy);
+// weapon.c
+void put_weapon(t_cub3d *data);
+
+uint32_t	get_pixel_color(mlx_texture_t *texture, uint32_t tex_x, uint32_t tex_y);
+void trigger_flash(t_cub3d *data);
 
 #endif

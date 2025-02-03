@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 06:12:27 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 17:58:28 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,6 @@
 #define DEG2RAD(angle_in_degrees) ((angle_in_degrees) * M_PI / 180.0)
 #define RAD2DEG(angle_in_radians) ((angle_in_radians) * 180.0 / M_PI)
 
-
-// Exit the program as failure.
-static void ft_error(void)
-{
-	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
-	exit(EXIT_FAILURE);
-}
 
 void my_keyhook(mlx_key_data_t keydata, void* param)
 {
@@ -206,6 +199,7 @@ void cast_ray(void *param)
 		render_single_ray(data, &ray, i, ra);
 		i++;
 	}
+	put_weapon(data);
 }
 
 int32_t	main(int ac, char *av[])
@@ -236,9 +230,7 @@ int32_t	main(int ac, char *av[])
 	load_png_texture(&data);
 	data.img = mlx_new_image(data.mlx, data.iwidth, data.iheight);
 	if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
-	{
 		ft_error();
-	}
 	data.img2 = mlx_new_image(data.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!data.img2 || (mlx_image_to_window(data.mlx, data.img2, 0, 0) < 0))
 		ft_error();
