@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:46:15 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/01 23:30:19 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/03 18:57:48 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void parse_color(char *line, t_user_map *map)
 	
 	arr = ft_split(line, ' ');
 	i = 0;
-	while(arr[i] != NULL)
-		i++;
+	while (arr[i] != NULL)
+		i ++;
 	if (i == 2)
 	{
 		i = -1;
@@ -71,30 +71,30 @@ void parse_texture(char *line, t_user_map *map)
 
 bool parsed_maze(char **line, int fd, t_user_map *map)
 {
-    char *tmp;
-    char *join;
+	char	*tmp;
+	char	*join;
 
 	join = ft_strdup("");
-    while (*line)
-    {
-        tmp = *line;
-        while (*tmp != '\0' && ft_isspace(*tmp))
-            tmp++;
-        if (*tmp == '1')
-        {
-            tmp = join;
-            join = ft_strjoin(join, *line);
+	while (*line)
+	{
+		tmp = *line;
+		while (*tmp != '\0' && ft_isspace(*tmp))
+			tmp++;
+		if (*tmp == '1')
+		{
+			tmp = join;
+			join = ft_strjoin(join, *line);
 			free(tmp);
-        }
-        else
-        {
-            if (join != NULL)
-                free(join);
-			return(free(*line), 0);
-        }        
-        free(*line);
-        *line = get_next_line(fd);
-    }
+		}
+		else
+		{
+			if (join != NULL)
+				free(join);
+			return (free(*line), 0);
+		}
+		free(*line);
+		*line = get_next_line(fd);
+	}
 	return (convert_to_data(map, join), 1);
 }
 
@@ -123,11 +123,11 @@ bool map_parsing(int fd, t_user_map *map)
 				return (1);
 		}
 		else
-			return(printf("Error: Invalid maze\n"),free(line), 0);
+			return (printf("Error: Invalid maze\n"), free(line), 0);
 		free(line);
 		line = get_next_line(fd);
 	}
-	return(1);			
+	return (1);
 }
 
 bool parsed_map(char *map_path, t_cub3d *data)
@@ -149,6 +149,6 @@ bool parsed_map(char *map_path, t_cub3d *data)
 		}	
 	}
 	else
-		return(0);
-	return(1);
+		return (0);
+	return (1);
 }

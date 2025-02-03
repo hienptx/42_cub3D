@@ -6,42 +6,49 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 09:56:04 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:47:55 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 #define M_PI_16 M_PI_4 / 4.0
 
-int wall_collision(t_cub3d *data, float new_x, float new_y)
+int	check_collision(t_cub3d *data, float x, float y)
 {
-	// Define an offset value to detect collisions beforehand
-	float offset = 2;
+	int	ipx;
+	int	ipy;
 
-	// Calculate the new positions with offset in the direction of movement
-	float check_x1 = new_x + data->pos.dx * offset;
-	float check_y1 = new_y + data->pos.dy * offset;
-	float check_x2 = new_x - data->pos.dx * offset;
-	float check_y2 = new_y - data->pos.dy * offset;
-
-	// Calculate the map grid positions
-	int ipx1 = check_x1 / data->map.pw;
-	int ipy1 = check_y1 / data->map.ph;
-	int ipx2 = check_x2 / data->map.pw;
-	int ipy2 = check_y2 / data->map.ph;
-
-	return (data->map.map_data[ipy1][ipx1] == '1' ||
-		data->map.map_data[ipy2][ipx1] == '1' ||
-		data->map.map_data[ipy1][ipx2] == '1' ||
-		data->map.map_data[ipy2][ipx2] == '1');
+	ipx = x / data->map.pw;
+	ipy = y / data->map.ph;
+	return (data->map.map_data[ipy][ipx] == '1');
 }
 
-void move_forward(t_cub3d *data, int dir)
+int	wall_collision(t_cub3d *data, float new_x, float new_y)
 {
-	// Calculate the new position
-	float new_x = data->pos.x + dir * data->pos.dx * MOVING_SPEED;
-	float new_y = data->pos.y + dir * data->pos.dy * MOVING_SPEED;
+	float	offset;
+	float	check_x1;
+	float	check_y1;
+	float	check_x2;
+	float	check_y2;
 
+	offset = 2;
+	check_x1 = new_x + data->pos.dx * offset;
+	check_y1 = new_y + data->pos.dy * offset;
+	check_x2 = new_x - data->pos.dx * offset;
+	check_y2 = new_y - data->pos.dy * offset;
+	return (check_collision(data, check_x1, check_y1) || \
+			check_collision(data, check_x2, check_y1) || \
+			check_collision(data, check_x1, check_y2) || \
+			check_collision(data, check_x2, check_y2));
+}
+
+void	move_forward(t_cub3d *data, int dir)
+{
+	float	new_y;
+	float	new_x;
+
+	new_y = data->pos.y + dir * data->pos.dy * MOVING_SPEED;
+	new_x = data->pos.x + dir * data->pos.dx * MOVING_SPEED;
 	// Check for collisions
 	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	if (!wall_collision(data, new_x, new_y))
@@ -52,21 +59,21 @@ void move_forward(t_cub3d *data, int dir)
 	}
 }
 
-void move_left_right(t_cub3d *data, int dir)
+void	move_left_right(t_cub3d *data, int dir)
 {
-	// Calculate the perpendicular direction
-	float perp_dx = -data->pos.dy;
-	float perp_dy = data->pos.dx;
+	float	perp_dx;
+	float	perp_dy;
+	float	length;
+	float	new_x;
+	float	new_y;
 
-	// Normalize the perpendicular direction
-	float length = sqrt(perp_dx * perp_dx + perp_dy * perp_dy);
+	perp_dx = -data->pos.dy;
+	perp_dy = data->pos.dx;
+	length = sqrt(perp_dx * perp_dx + perp_dy * perp_dy);
 	perp_dx /= length;
 	perp_dy /= length;
-
-	// Calculate the new position
-	float new_x = data->pos.x + dir * perp_dx * MOVING_SPEED;
-	float new_y = data->pos.y + dir * perp_dy * MOVING_SPEED;
-
+	new_x = data->pos.x + dir * perp_dx * MOVING_SPEED;
+	new_y = data->pos.y + dir * perp_dy * MOVING_SPEED;
 	// Check for collisions
 	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	if (!wall_collision(data, new_x, new_y))

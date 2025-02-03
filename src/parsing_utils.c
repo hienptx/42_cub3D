@@ -6,24 +6,24 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:01:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/03 10:14:59 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:50:25 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-bool check_for_wall(char *line)
+bool	check_for_wall(char *line)
 {
-	while(*line != '\0')
+	while (*line != '\0')
 	{
 		if (*line != '1' && *line != ' ')
-			return(0);
+			return (0);
 		line++ ;
 	}
 	return (1);
 }
 
-bool get_player(char **maze, int i, size_t *longest_line, t_user_map *map)
+bool	get_player(char **maze, int i, size_t *longest_line, t_user_map *map)
 {
 	size_t j;
 	
@@ -37,10 +37,10 @@ bool get_player(char **maze, int i, size_t *longest_line, t_user_map *map)
 				return (printf("Maze is not closed\n"), 0);
 		}
 		if(!validate_player_pos(maze[i][j], j, i, map))
-			return(0);
-		j++;	
+			return (0);
+		j ++;
 	}
-	if (j > *longest_line)	
+	if (j > *longest_line)
 		*longest_line = j;
 	return (1);
 }
@@ -54,10 +54,10 @@ void parse_player_dir(int dx, int dy, t_user_map *map)
 void convert_to_data(t_user_map *map, char *join)
 {
 	if (join != NULL)
-    {
-        map->map_data = ft_split(join, '\n');
-        free(join);
-    }
+	{
+		map->map_data = ft_split(join, '\n');
+		free(join);
+	}
 }
 
 void save_texture(char **dir, char *path)

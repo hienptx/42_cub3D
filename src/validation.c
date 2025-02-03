@@ -6,13 +6,13 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/03 10:16:26 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 19:02:27 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-bool validate_texture_path(char *path)
+bool	validate_texture_path(char *path)
 {
 	int fd;
 
@@ -26,7 +26,7 @@ bool validate_texture_path(char *path)
 	return (1);
 }
 
-bool validate_maze(char **maze, t_user_map *map)
+bool	validate_maze(char **maze, t_user_map *map)
 {
 	char	*last_1;
 	size_t	i;
@@ -56,7 +56,7 @@ bool validate_maze(char **maze, t_user_map *map)
 }
 
 // NO(0, -1); SO(0, 1); EA(1, 0); WE(-1,0) 
-bool validate_player_pos(char c, unsigned int j, unsigned int i, t_user_map *map)
+bool	validate_player_pos(char c, unsigned int j, unsigned int i, t_user_map *map)
 {
 	if (ft_strchr("NSEW", c))
 	{
@@ -79,7 +79,7 @@ bool validate_player_pos(char c, unsigned int j, unsigned int i, t_user_map *map
 	return (1);
 }
 
-bool validate_color_values(int *color, size_t size)
+bool	validate_color_values(int *color, size_t size)
 {
 	size_t	i;
 
@@ -88,7 +88,7 @@ bool validate_color_values(int *color, size_t size)
 	{
 		if (color[i] < 0 || color[i] > 255) 
 			return (false);
-		i++;
+		i++ ;
 	}
 	if (i != 3)
 		return (false);

@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 06:12:27 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 18:26:59 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,8 @@ static void calculate_ray_intersection(t_cub3d *data, float ray_angle, t_ray_dat
 	// Choose closer intersection
 	if (disV < disH)
 	{
-		ray->hit_x = vx;	//why x to y
-		ray->hit_y = vy;	//and y to x? ->somehow fixed
+		ray->hit_x = vx;
+		ray->hit_y = vy;
 		ray->distance = disV;
 		ray->color = 1;
 	}
