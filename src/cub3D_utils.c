@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:06:34 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/03 06:07:55 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:00:57 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void load_png_texture(t_cub3d *data)
 	data->texture[3] = mlx_load_png(data->map.SO_texture); 
 }
 
-float rad2deg(float rad) 
-{
-    return rad * (180.0 / M_PI);
-}
+// float rad2deg(float rad) 
+// {
+//     return rad * (180.0 / M_PI);
+// }

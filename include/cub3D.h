@@ -36,7 +36,7 @@ bool	validate_map(t_user_map *map);
 bool	validate_maze(char **maze, t_user_map *map);
 bool	validate_player_pos(char c, unsigned int j, unsigned int i,
 			t_user_map *map);
-bool	validate_color_values(int *color, int size);
+bool	validate_color_values(int *color, size_t size);
 
 //parsing.c
 bool	parsed_map(char *map_path, t_cub3d *data);
@@ -49,7 +49,7 @@ float	rad2deg(float rad);
 
 //parsing_utils.c
 bool	check_for_wall(char *line);
-bool	get_player(char **maze, int i, int *longest_line, t_user_map *map);
+bool	get_player(char **maze, int i, size_t *longest_line, t_user_map *map);
 void	parse_player_dir(int dx, int dy, t_user_map *map);
 void	convert_to_data(t_user_map *map, char *join);
 void	save_texture(char **dir, char *path);

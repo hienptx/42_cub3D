@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:01:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/01/28 01:47:58 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/03 10:14:59 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ bool check_for_wall(char *line)
 	{
 		if (*line != '1' && *line != ' ')
 			return(0);
-		line++;	
+		line++ ;
 	}
 	return (1);
 }
 
-bool get_player(char **maze, int i, int *longest_line, t_user_map *map)
+bool get_player(char **maze, int i, size_t *longest_line, t_user_map *map)
 {
-	int j;
+	size_t j;
 	
 	j = 0;
 	while (maze[i][j] != '\0')

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   get_ray_distance.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/02 15:41:19 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/03 10:21:02 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-static bool	is_wall_hit(t_cub3d *data, int mx, int my)
+static bool	is_wall_hit(t_cub3d *data, unsigned int mx, unsigned int my)
 {
 	return (mx >= 0 && my >= 0 && \
 			mx < data->map.map_width && \
@@ -29,6 +29,9 @@ static bool	is_wall_hit(t_cub3d *data, int mx, int my)
 static void	init_ray_direction(t_intersection *inter, t_ray_data *ray, \
 															t_ray_dir dir, float cell_size)
 {
+	inter->distance = 1000;
+	inter->dof = 0;
+	inter->dir = dir;
 	if (dir == DIR_HORIZONTAL)
 	{
 		ray->dirX = sin(ray->angle);  
@@ -54,19 +57,16 @@ static void	init_ray_direction(t_intersection *inter, t_ray_data *ray, \
 static float	check_intersection(t_cub3d *data, t_ray_data *ray, float *x, \
 													float *y, t_ray_dir dir)
 {
-	t_intersection inter = {
-		.distance = 1000,
-		.dof = 0,
-		.dir = dir
-	};
+	t_intersection inter;
+
 	init_ray_direction(&inter, ray, dir, data->cell_size);
 
 	int max_dof = (dir == DIR_HORIZONTAL) ? data->map.map_height : data->map.map_width;
 
 	while (inter.dof < max_dof)
 	{
-		int mx = floor(inter.rx / data->cell_size);
-		int my = floor(inter.ry / data->cell_size);
+		unsigned int mx = floor(inter.rx / data->cell_size);
+		unsigned int my = floor(inter.ry / data->cell_size);
 		
 		if (is_wall_hit(data, mx, my))
 		{

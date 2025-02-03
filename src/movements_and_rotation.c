@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements_and_rotation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/02 16:26:30 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/03 09:56:04 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,16 +30,10 @@ int wall_collision(t_cub3d *data, float new_x, float new_y)
 	int ipx2 = check_x2 / data->map.pw;
 	int ipy2 = check_y2 / data->map.ph;
 
-	// Check for collision in the new positions with offset
-	if (data->map.map_data[ipy1][ipx1] == '1' ||
+	return (data->map.map_data[ipy1][ipx1] == '1' ||
 		data->map.map_data[ipy2][ipx1] == '1' ||
 		data->map.map_data[ipy1][ipx2] == '1' ||
-		data->map.map_data[ipy2][ipx2] == '1')
-	{
-		return 1; // Collision detected
-	}
-
-	return 0; // No collision
+		data->map.map_data[ipy2][ipx2] == '1');
 }
 
 void move_forward(t_cub3d *data, int dir)

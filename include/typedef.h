@@ -1,6 +1,7 @@
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 # include "../MLX/include/MLX42/MLX42.h"
+# include <stddef.h>
 
 typedef enum e_ray_dir
 {
@@ -55,8 +56,8 @@ typedef struct s_player
 
 typedef struct s_user_map
 {
-	int				map_width;
-	int				map_height;
+	size_t			map_width;
+	size_t			map_height;
 	float pw; //(pixel_width = scale_factor_x)
 	float ph; //(pixel_height = scale_factor_y)
 	char			*NO_texture;

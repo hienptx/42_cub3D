@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/02 16:41:42 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/03 10:16:26 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ bool validate_texture_path(char *path)
 
 bool validate_maze(char **maze, t_user_map *map)
 {
-	char *last_1;
-	int i;
-	int longest_line;
+	char	*last_1;
+	size_t	i;
+	size_t	longest_line;
 	
 	longest_line = 0;
 	i = 0;
@@ -79,10 +79,11 @@ bool validate_player_pos(char c, unsigned int j, unsigned int i, t_user_map *map
 	return (1);
 }
 
-bool validate_color_values(int *color, int size)
+bool validate_color_values(int *color, size_t size)
 {
-	int i = 0;
+	size_t	i;
 
+	i = 0;
 	while (i < size)
 	{
 		if (color[i] < 0 || color[i] > 255) 

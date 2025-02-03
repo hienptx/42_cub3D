@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wall_rendering.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/02 16:37:39 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/03 10:26:13 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ static t_wall_data	calculate_wall_dimensions(t_cub3d *data, double distance)
 {
 	t_wall_data	wall_data;
 
-	// wall_data.height = (int)(20 * HEIGHT / distance);
 	wall_data.height = (int)(HEIGHT / 1.5 * data->cell_size / distance);
 		// Adjust wall height calculation
 	if (wall_data.height > HEIGHT)
@@ -108,9 +107,6 @@ void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
 	double		tex_pos;
 	uint32_t	tex_y;
 	uint32_t	pixel_color;
-	uint32_t	r;
-	uint32_t	g;
-	uint32_t	b;
 
 	wall = calculate_wall_dimensions(data, distance_to_wall);
 	wall.texture = get_wall_texture(data, ray);
@@ -123,13 +119,6 @@ void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
 		tex_y = (tex_y >= wall.texture->height) ? wall.texture->height
 			- 1 : tex_y;
 		pixel_color = get_pixel_color(wall.texture, tex_x, tex_y);
-		if (!ray->color)
-		{
-			r = ((pixel_color >> 24) & 0xFF);
-			g = ((pixel_color >> 16) & 0xFF);
-			b = ((pixel_color >> 8) & 0xFF);
-			pixel_color = (r << 24) | (g << 16) | (b << 8) | 0xFF;
-		}
 		mlx_put_pixel(data->img2, x, y, pixel_color);
 		tex_pos += wall.step;
 	}
