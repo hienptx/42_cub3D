@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/03 19:05:54 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/04 21:34:10 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	floor_drawing(t_cub3d *data, t_wall_data wall, int x)
 void	ceiling_drawing(t_cub3d *data, t_wall_data wall, int x)
 {
 	uint32_t	ceiling_color;
-	uint32_t	i;
+	size_t		i;
 
 	i = 0;
 	ceiling_color = get_rgba(data->map.ceiling[0], data->map.ceiling[1], data->map.ceiling[2], 155);
@@ -112,7 +112,7 @@ void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
 	tex_x = get_texture_x(ray->color ? ray->hit_y : ray->hit_x, \
 			wall.texture->width, data->cell_size);
 	tex_pos = 0;
-	for (int y = wall.line_top; y <= wall.line_bottom; y++)
+	for (unsigned int y = wall.line_top; y <= wall.line_bottom; y++)
 	{
 		tex_y = (uint32_t)tex_pos % wall.texture->height;
 		tex_y = (tex_y >= wall.texture->height) ? wall.texture->height

@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 18:26:59 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/05 00:06:39 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,21 @@
 #define DEG2RAD(angle_in_degrees) ((angle_in_degrees) * M_PI / 180.0)
 #define RAD2DEG(angle_in_radians) ((angle_in_radians) * 180.0 / M_PI)
 
-
 // Exit the program as failure.
-static void ft_error(void)
+static void	ft_error(void)
 {
 	fprintf(stderr, "%s", mlx_strerror(mlx_errno));
 	exit(EXIT_FAILURE);
 }
 
-void my_keyhook(mlx_key_data_t keydata, void* param)
+void	my_keyhook(mlx_key_data_t keydata, void* param)
 {
-	t_cub3d *data = param;
-	mlx_t* mlx = data->mlx;
+	t_cub3d	*data;
+	mlx_t*	mlx;
+
 	(void) keydata;
+	data = param;
+	mlx = data->mlx;
 
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 	{
@@ -41,7 +43,7 @@ void my_keyhook(mlx_key_data_t keydata, void* param)
 }
 
 // Adjust angle to be within [0, 2*PI)
-float adjust_angle(float angle)
+float	adjust_angle(float angle)
 {
 	// angle = fmod(angle, 2.0f * M_PI);
 	if (angle < 0)
@@ -49,7 +51,7 @@ float adjust_angle(float angle)
 	return angle;
 }
 
-void rotate(t_cub3d *data, float unit_degree)
+void	rotate(t_cub3d *data, float unit_degree)
 {
 	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	data->pos.angle = adjust_angle(data->pos.angle);
@@ -59,16 +61,15 @@ void rotate(t_cub3d *data, float unit_degree)
 	data->pos.dy = -sin(data->pos.angle);
 }
 
-void	put_pixel_box(t_cub3d *data, u_int32_t color)
+void	put_pixel_player(t_cub3d *data, u_int32_t color)
 {
-	const int x_margin[7] = {-3, -2, -1, 0 ,1, 2, 3};
-	const int y_margin[7] = {-3, -2, -1, 0 ,1, 2, 3};
-	size_t	i;
-	size_t	j;
-	size_t	dir;
-	int px;
-	int py;
-	
+	const int		x_margin[7] = {-3, -2, -1, 0 ,1, 2, 3};
+	const int		y_margin[7] = {-3, -2, -1, 0 ,1, 2, 3};
+	unsigned int	px;
+	unsigned int	py;
+	size_t			i;
+	size_t			j;
+
 	i = 0;
 	while (i < sizeof(x_margin) / sizeof(int))
 	{
@@ -77,52 +78,69 @@ void	put_pixel_box(t_cub3d *data, u_int32_t color)
 		{
 			px = data->pos.x + x_margin[i];
 			py = data->pos.y + y_margin[j];
-			if (px >= 0 && px < (int)data->img->width && py >= 0 && py < (int)data->img->height)
+			if (px < data->img->width && py < data->img->height)
 				mlx_put_pixel(data->img, px, py, color);
-			// mlx_put_pixel(data->img, data->pos.x + x_margin[i], data->pos.y + y_margin[j], color);
 			j++;
 		}
 		i++;
 	}
-	dir = 1;
-	while (dir < 13)
-	{
-		if (px >= 0 && px < (int)data->img->width && py >= 0 && py < (int)data->img->height)
-			mlx_put_pixel(data->img, px, py, color);
-		// mlx_put_pixel(data->img, data->pos.x + data->pos.dx * dir, data->pos.y + data->pos.dy * dir, color);
-		dir++;
+}
+
+void draw_cell(mlx_image_t *img, int x_start, int y_start, int scale_factor_x, int scale_factor_y, int color)
+{
+	int	y;
+	int	x;
+
+	y = y_start;
+	while (y < y_start + scale_factor_y) {
+		x = x_start;
+		while (x < x_start + scale_factor_x) {
+			mlx_put_pixel(img, x, y, color);
+			x++;
+		}
+		y++;
 	}
+}
+
+int get_minimap_color(char cell)
+{
+	if (cell == '1')
+		return (0xFF00003F);
+	else if (cell == '0' || ft_strchr("NSEW", cell))
+		return (0xFFFFFF3F);
+	return (0);
 }
 
 void render_map(char **map, t_cub3d *data)
 {
-	int scale_factor_x = data->img->width / data->map.map_width;
-	int scale_factor_y = data->img->height / data->map.map_height;
+	int scale_factor_x;
+	int scale_factor_y;
 	int color;
+	int	i;
+	int	j;
 
-	for (int i = 0; map[i] != NULL; i++) {
-		for (int j = 0; map[i][j] != '\0'; j++) {
-			if (map[i][j] == '1')
-				color = 0xFF0000FF; // Wall: Blue
-			else if (map[i][j] == '0' || ft_strchr("NSEW", map[i][j]))
-				color = 0xFFFFFFFF; // Space: White
-			else
-				color = 0x00000000; // Default: Black (or transparent)
-			int x_start = j * scale_factor_y;
-			int y_start = i * scale_factor_x;
-			int x_end = x_start + scale_factor_x;
-			int y_end = y_start + scale_factor_y;
-
-			for (int y = y_start; y < y_end; y++) {
-				for (int x = x_start; x < x_end; x++) {
-					mlx_put_pixel(data->img, x, y, color);
-				}
-			}
+	scale_factor_x = data->img->width / data->map.map_width;
+	scale_factor_y = data->img->height / data->map.map_height;
+	i = 0;
+	while (map[i] != NULL)
+	{
+		j = 0;
+		while (map[i][j] != '\0') {
+			color = get_minimap_color(map[i][j]);
+			draw_cell(data->img, j * scale_factor_y, i * scale_factor_x, scale_factor_x, scale_factor_y, color);
+			j++;
 		}
+		i++;
 	}
 }
 
-void draw_line(t_cub3d *data, float start_x, float start_y, float angle, float length, int color)
+// void calculate_end_point(float start_x, float start_y, float angle, float length, int *end_x, int *end_y)
+// {
+// 	*end_x = (int)(start_x + length * cos(angle));
+// 	*end_y = (int)(start_y + length * -sin(angle));
+// }
+
+void draw_ray(t_cub3d *data, float start_x, float start_y, float angle, float length, int color)
 {
 	float end_x = start_x + length * cos(angle);
 	float end_y = start_y + length * -sin(angle);
@@ -185,7 +203,7 @@ void	render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i, float ra)
 	float ca = adjust_angle(ra - data->pos.angle); // Angle difference in radians
 	float corrected_dist = ray->distance * cos(ca); // Fisheye correction
 	draw_wall_slice(data, i, corrected_dist, ray);
-	draw_line(data, ray->px, ray->py, ra, ray->distance, 0x00FF00FF);
+	draw_ray(data, ray->px, ray->py, ra, ray->distance, 0x00FF00FF);
 }
 
 void cast_ray(void *param)
@@ -196,8 +214,8 @@ void cast_ray(void *param)
 	unsigned int	i;
 	float			ra;
 
-	render_map(data->map.map_data, data);
 	start_angle = data->pos.angle + (FOV / 2.0); // Start from leftmost ray in radians
+	render_map(data->map.map_data, data);
 	i = 0;
 	while (i < NUM_RAYS)
 	{
@@ -206,6 +224,7 @@ void cast_ray(void *param)
 		render_single_ray(data, &ray, i, ra);
 		i++;
 	}
+	mlx_image_to_window(data->mlx, data->img, 0, 0);
 }
 
 int32_t	main(int ac, char *av[])
@@ -244,7 +263,7 @@ int32_t	main(int ac, char *av[])
 		ft_error();
 	// Even after the image is being displayed, we can still modify the buffer.
 	render_map(data.map.map_data, &data);
-	put_pixel_box(&data, 0xF000000F);
+	put_pixel_player(&data, 0xF000000F);
 	// Register a hook and pass mlx as an optional param.
 	// NOTE: Do this before calling mlx_loop!
 	// mlx_loop_hook(data.mlx, ft_hook, &data);

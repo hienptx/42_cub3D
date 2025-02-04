@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 18:47:55 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/04 23:35:52 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ void	move_left_right(t_cub3d *data, int dir)
 void handle_key_action(t_cub3d *data, int *key_pressed)
 {
 	memset(data->img2->pixels, 255, data->img2->width * data->img2->height * sizeof(int32_t));
-	put_pixel_box(data, 0xFFFFFFFF);
+	put_pixel_player(data, 0xFFFFFFFF);
 	*key_pressed = true;
 }
 

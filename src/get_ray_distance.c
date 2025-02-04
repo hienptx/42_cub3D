@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 10:21:02 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/04 21:32:47 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 static bool	is_wall_hit(t_cub3d *data, unsigned int mx, unsigned int my)
 {
-	return (mx >= 0 && my >= 0 && \
-			mx < data->map.map_width && \
+	return (mx < data->map.map_width && \
 			my < data->map.map_height && \
 			data->map.map_data[my][mx] == '1');
 }
