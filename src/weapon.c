@@ -6,32 +6,18 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 13:53:19 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/03 18:01:30 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/04 19:07:41 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
 
-
-
-uint32_t	get_pixel_color(mlx_texture_t *texture, uint32_t tex_x, uint32_t tex_y)
+void	put_object(t_cub3d *data, mlx_texture_t *obj, float obj_x, float obj_y)
 {
-	uint8_t	*pixel;
-	uint32_t a;
+	unsigned int	i;
+	unsigned int	j;
+	uint32_t		pix_color;
 
-	pixel = &texture->pixels[(texture->width * tex_y + tex_x) * 4];
-	a = pixel[3];
-	if(a == 0)
-		return(0x00000000);
-	return ((pixel[0] << 24) | (pixel[1] << 16) | (pixel[2] << 8) | pixel[3]);
-}
-
-void put_object(t_cub3d *data, mlx_texture_t *obj, float obj_x, float obj_y)
-{
-	unsigned int i;
-	unsigned int j;
-	uint32_t pix_color;
-	
 	i = 0;
 	while (i < obj->width)
 	{
@@ -41,7 +27,8 @@ void put_object(t_cub3d *data, mlx_texture_t *obj, float obj_x, float obj_y)
 			pix_color = get_pixel_color(obj, i, j);
 			if (pix_color != 0x00000000)
 			{
-				if ((obj_x + i) < data->img2->width && (obj_y + j) < data->img2->height) 
+				if ((obj_x + i) < data->img2->width && (obj_y
+						+ j) < data->img2->height)
 					mlx_put_pixel(data->img2, obj_x + i, obj_y + j, pix_color);
 			}
 			j++;
@@ -50,30 +37,45 @@ void put_object(t_cub3d *data, mlx_texture_t *obj, float obj_x, float obj_y)
 	}
 }
 
-void trigger_flash(t_cub3d *data)
+void	trigger_flash(t_cub3d *data)
 {
-	if (data.)
+	data->wp.is_flash_active = true;
 	data->wp.flash_x = (data->img2->width) / 3.25;
 	data->wp.flash_y = (data->img2->height / 2);
-	data->wp.timer = 10;
+	data->wp.timer = time(NULL);
 }
 
-void put_weapon(t_cub3d *data)
+void	reset_trigger(t_cub3d *data)
 {
-	t_weapon weapon;
+	data->wp.is_flash_active = false;
+	data->wp.flash_x = 0;
+	data->wp.flash_y = 0;
+	data->wp.timer = 0;
+}
 
-	weapon = data->wp;
-	weapon.gun_x = (data->img2->width - weapon.texture[0]->width) / 2;
-	weapon.gun_y = (data->img2->height * 4 / 3) - weapon.texture[0]->height;
-	weapon.aim_x = (data->img2->width - weapon.texture[1]->width) / 2;
-	weapon.aim_y = (data->img2->height - weapon.texture[1]->height) / 2;
-	put_object(data, weapon.texture[0], weapon.gun_x, weapon.gun_y);
-	put_object(data, weapon.texture[1], weapon.aim_x, weapon.aim_y);
-	if (weapon.is_flash_active == true && weapon.timer > 0)
+void	update_game_state(void *param)
+{
+	t_cub3d	*data;
+
+	data = param;
+	if (data->wp.is_flash_active)
 	{
-		put_object(data, weapon.texture[2], weapon.flash_x, weapon.flash_y);
-		weapon.timer--;
-		if (weapon.timer == 0)
-			weapon.is_flash_active = false;
+		if (time(NULL) - data->wp.timer > 0.005)
+			reset_trigger(data);
 	}
+	cast_ray(data);
+	put_weapon(data);
+}
+
+void	put_weapon(t_cub3d *data)
+{
+	t_weapon *weapon = &data->wp;
+	weapon->gun_x = (data->img2->width - weapon->texture[0]->width) / 2;
+	weapon->gun_y = (data->img2->height * 4 / 3) - weapon->texture[0]->height;
+	weapon->aim_x = (data->img2->width - weapon->texture[1]->width) / 2;
+	weapon->aim_y = (data->img2->height - weapon->texture[1]->height) / 2;
+	if (weapon->is_flash_active)
+		put_object(data, weapon->texture[2], weapon->flash_x, weapon->flash_y);
+	put_object(data, weapon->texture[0], weapon->gun_x, weapon->gun_y);
+	put_object(data, weapon->texture[1], weapon->aim_x, weapon->aim_y);
 }

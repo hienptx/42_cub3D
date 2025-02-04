@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:01:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/03 10:14:59 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/04 18:16:16 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,19 @@ void save_texture(char **dir, char *path)
 	len = ft_strlen(path);
 	*dir = ft_calloc(len, 1);
 	ft_memcpy(*dir, path, len - 1);
+}
+
+void copy_color(t_user_map *map, int *color_arr, size_t size, char *line)
+{
+	
+	if (!ft_strcmp(line, "F"))
+	{
+		ft_malloc((void**)&map->floor, size);
+		ft_memcpy(map->floor, color_arr, size);
+	}
+	if (!ft_strcmp(line, "C"))
+	{
+		ft_malloc((void**)&map->ceiling, size);
+		ft_memcpy(map->ceiling, color_arr, size);	
+	}
 }

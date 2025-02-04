@@ -1,6 +1,7 @@
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 # include "../MLX/include/MLX42/MLX42.h"
+# include <time.h>
 # include <stddef.h>
 
 typedef enum e_ray_dir
@@ -85,7 +86,7 @@ typedef struct s_weapon
 	float			aim_x;
 	float			aim_y;
 	float			duration;
-	float			timer;
+	time_t			timer;
 }	t_weapon;
 
 typedef struct s_cub3d

@@ -18,7 +18,8 @@ SRCS	:= $(addprefix $(SRC_DIR)/, \
 			ray_direction.c \
 			get_ray_distance.c \
 			wall_rendering.c \
-			weapon.c)
+			weapon.c \
+			rendering_utils.c)
 OBJS	:= ${SRCS:.c=.o}
 
 all: libmlx $(NAME)

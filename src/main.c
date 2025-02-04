@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/03 17:58:28 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/04 19:02:02 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -184,7 +184,7 @@ void	render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i, float ra)
 void cast_ray(void *param)
 {
 	t_cub3d			*data = param;
-	t_ray_data ray = {.angle_step = FOV / NUM_RAYS, .px = data->pos.x, .py = data->pos.y};
+	t_ray_data ray = {.angle_step = FOV / NUM_RAYS, .px = data->pos.x, .py = data->pos.y};;
 	float			start_angle;
 	unsigned int	i;
 	float			ra;
@@ -228,6 +228,7 @@ int32_t	main(int ac, char *av[])
 	// Create and display the image.
 	cub3d_initialising(&data);
 	load_png_texture(&data);
+	reset_trigger(&data);
 	data.img = mlx_new_image(data.mlx, data.iwidth, data.iheight);
 	if (!data.img || (mlx_image_to_window(data.mlx, data.img, 0, 0) < 0))
 		ft_error();
@@ -241,7 +242,11 @@ int32_t	main(int ac, char *av[])
 	// NOTE: Do this before calling mlx_loop!
 	// mlx_loop_hook(data.mlx, ft_hook, &data);
 	mlx_key_hook(data.mlx, &my_keyhook, &data);
+	mlx_loop_hook(data.mlx, update_game_state, &data);
 	mlx_loop(data.mlx);
+	mlx_delete_image(data.mlx, data.img);
+	mlx_delete_image(data.mlx, data.img2);
+	ft_delete_texture(&data);
 	mlx_terminate(data.mlx);
 	ft_free_map(data.map);
 }
