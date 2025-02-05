@@ -6,11 +6,11 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/09 17:12:16 by hipham            #+#    #+#             */
-/*   Updated: 2024/12/23 16:56:29 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 12:57:18 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../includes/libft.h"
 
 static char	*panic(char *str)
 {
@@ -118,19 +118,19 @@ char	*get_next_line(int fd)
 	return (return_line);
 }
 
-// int	main(void)
-// {
-// 	char	*line;
-// 	int		fd;
+int	main(void)
+{
+	char	*line;
+	int		fd;
 
-// 	fd = open("onlynl.txt", O_RDONLY);
-// 	if (fd == -1)
-// 		return (0);
-// 	while ((line = get_next_line(fd)))
-// 	{
-// 		printf("%s", line);
-// 		free(line);
-// 	}
-// 	close(fd);
-// 	return (0);
-// }
+	fd = open("onlynl.txt", O_RDONLY);
+	if (fd == -1)
+		return (0);
+	while ((line = get_next_line(fd)))
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
+}

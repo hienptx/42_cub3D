@@ -1,8 +1,8 @@
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 # include "../MLX/include/MLX42/MLX42.h"
-# include <time.h>
 # include <stddef.h>
+# include <time.h>
 
 typedef enum e_ray_dir
 {
@@ -25,7 +25,7 @@ typedef struct s_ray_data
 {
 	float			angle;
 	float			tan_angle;
-	const float		angle_step;
+	float			angle_step;
 	float			px;
 	float			py;
 	float			hit_x;
@@ -34,6 +34,10 @@ typedef struct s_ray_data
 	float			color;
 	float			dirX;
 	float			dirY;
+	float			vx;
+	float			vy;
+	float			rx;
+	float			ry;
 }					t_ray_data;
 
 typedef struct s_wall_data
@@ -48,12 +52,12 @@ typedef struct s_wall_data
 
 typedef struct s_player
 {
-	float	x;
-	float	y;
-	float	dx;
-	float	dy;
-	float	angle;
-}			t_player;
+	float			x;
+	float			y;
+	float			dx;
+	float			dy;
+	float			angle;
+}					t_player;
 
 typedef struct s_user_map
 {
@@ -71,6 +75,7 @@ typedef struct s_user_map
 	int				player_count;
 	int				texture_count;
 	int				color_count;
+	bool			valid_status;
 	t_player		pos;
 }					t_user_map;
 
@@ -79,7 +84,7 @@ typedef struct s_weapon
 	mlx_texture_t	*texture[3];
 	bool			is_shooting;
 	bool			is_flash_active;
-	float 			flash_x;
+	float			flash_x;
 	float			flash_y;
 	float			gun_x;
 	float			gun_y;
@@ -87,7 +92,7 @@ typedef struct s_weapon
 	float			aim_y;
 	float			duration;
 	time_t			timer;
-}	t_weapon;
+}					t_weapon;
 
 typedef struct s_cub3d
 {
