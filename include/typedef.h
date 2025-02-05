@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   typedef.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 23:31:29 by hipham            #+#    #+#             */
+/*   Updated: 2025/02/05 23:40:21 by hipham           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 # include "../MLX/include/MLX42/MLX42.h"
@@ -24,7 +36,7 @@ typedef struct s_ray
 	int		e2;
 	float	end_x;
 	float	end_y;
-}		t_ray;
+}					t_ray;
 
 typedef struct s_intersection
 {
@@ -50,8 +62,8 @@ typedef struct s_ray_data
 	float			hit_y;
 	float			distance;
 	float			color;
-	float			dirX;
-	float			dirY;
+	float			dirx;
+	float			diry;
 	float			vx;
 	float			vy;
 	float			rx;
@@ -78,18 +90,20 @@ typedef struct s_player
 	float			dx;
 	float			dy;
 	float			angle;
+	unsigned int	px;
+	unsigned int	py;
 }					t_player;
 
 typedef struct s_user_map
 {
 	size_t			map_width;
 	size_t			map_height;
-	float pw; //(pixel_width = scale_factor_x)
-	float ph; //(pixel_height = scale_factor_y)
-	char			*NO_texture;
-	char			*SO_texture;
-	char			*WE_texture;
-	char			*EA_texture;
+	float			pw; //(pixel_width = scale_factor_x)
+	float			ph; //(pixel_height = scale_factor_y)
+	char			*no_texture;
+	char			*so_texture;
+	char			*we_texture;
+	char			*ea_texture;
 	int				*floor;
 	int				*ceiling;
 	char			**map_data;
@@ -98,6 +112,9 @@ typedef struct s_user_map
 	int				color_count;
 	bool			valid_status;
 	t_player		pos;
+	int				scale_factor_x;
+	int				scale_factor_y;
+	int				color;
 }					t_user_map;
 
 typedef struct s_weapon

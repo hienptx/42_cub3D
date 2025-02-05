@@ -29,18 +29,20 @@ OBJS	:= ${SRCS:.c=.o}
 all: libmlx $(NAME)
 
 libmlx:
+	@echo "Creating MLX..."
 	@cmake $(LIBMLX) -B $(LIBMLX)/build && make -C $(LIBMLX)/build -j4
 
 %.o: %.c
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(OBJS) $(LIBS) $(LIBFT) $(HEADERS) -o $(NAME) $(LEAKS)
+	@$(CC) $(OBJS) $(LIBS) $(LIBFT) $(HEADERS) -o $(NAME)
 
 $(LIBFT):
-	make -C $(LIBFT_PATH)
+	@make -C $(LIBFT_PATH)
 
 clean:
+	@echo "Cleaning up..."
 	@rm -rf $(OBJS)
 	@rm -rf $(LIBMLX)/build
 	@make -C $(LIBFT_PATH) clean

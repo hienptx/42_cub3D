@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 19:32:18 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:34:29 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,14 @@ mlx_texture_t	*get_wall_texture(t_cub3d *data, t_ray_data *ray)
 {
 	if (ray->color == 0)
 	{
-		if (ray->dirX >= 0)
+		if (ray->dirx >= 0)
 			return (data->texture[3]);
 		else
 			return (data->texture[2]);
 	}
 	else
 	{
-		if (ray->dirY >= 0)
+		if (ray->diry >= 0)
 			return (data->texture[1]);
 		else
 			return (data->texture[0]);

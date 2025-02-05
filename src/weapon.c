@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 13:53:19 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 11:48:38 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 22:41:08 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	update_game_state(void *param)
 			reset_trigger(data);
 	}
 	cast_ray(data);
-	put_weapon(data);
 }
 
 void	put_weapon(t_cub3d *data)

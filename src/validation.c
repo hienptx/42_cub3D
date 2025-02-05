@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 13:13:16 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:40:04 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	validate_maze(char **maze, t_user_map *map)
 	return (1);
 }
 
-// NO(0, -1); SO(0, 1); EA(1, 0); WE(-1,0)
+// no(0, -1); so(0, 1); ea(1, 0); we(-1,0)
 bool	validate_player_pos(char c, unsigned int j, unsigned int i,
 		t_user_map *map)
 {
@@ -98,21 +98,21 @@ bool	validate_color_values(int *color, size_t size)
 
 bool	validate_map(t_user_map *map)
 {
-	if (map->NO_texture == NULL || map->SO_texture == NULL
-		|| map->WE_texture == NULL || map->EA_texture == NULL
+	if (map->no_texture == NULL || map->so_texture == NULL
+		|| map->we_texture == NULL || map->ea_texture == NULL
 		|| map->texture_count > 4)
 		return (printf("Error: Invalid texture\n"), 0);
 	if (map->ceiling == NULL || map->floor == NULL || map->color_count > 2)
 		return (printf("Error: Invalid color\n"), 0);
 	if (map->map_data == NULL || map->valid_status == 1)
 		return (printf("Error: Invalid map data\n"), 0);
-	if (!validate_texture_path(map->NO_texture))
+	if (!validate_texture_path(map->no_texture))
 		return (printf("Error: Invalid texture\n"), 0);
-	if (!validate_texture_path(map->SO_texture))
+	if (!validate_texture_path(map->so_texture))
 		return (printf("Error: Invalid texture\n"), 0);
-	if (!validate_texture_path(map->WE_texture))
+	if (!validate_texture_path(map->we_texture))
 		return (printf("Error: Invalid texture\n"), 0);
-	if (!validate_texture_path(map->EA_texture))
+	if (!validate_texture_path(map->ea_texture))
 		return (printf("Error: Invalid texture\n"), 0);
 	if (!validate_color_values(map->ceiling, 3))
 		return (printf("Error: Invalid color\n"), 0);

@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:46:15 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 22:03:46 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:38:27 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ void	parse_color(char *line, t_user_map *map)
 	{
 		i = -1;
 		color = ft_split(arr[1], ',');
+		map->color_count++;
 		while (color[++i])
 			color_arr[i] = ft_atoi(color[i]);
-		copy_color(map, color_arr, sizeof(color_arr), arr[0]);
-		map->color_count++;
+		if (map->color_count < 3)
+			copy_color(map, color_arr, sizeof(color_arr), arr[0]);
 		ft_free(color);
 		ft_free(arr);
 	}
@@ -51,13 +52,13 @@ void	parse_texture(char *line, t_user_map *map)
 	if (i == 2)
 	{
 		if (ft_strcmp(arr[0], "NO") == 0)
-			save_texture(&map->NO_texture, arr[1]);
+			save_texture(&map->no_texture, arr[1]);
 		else if (ft_strcmp(arr[0], "SO") == 0)
-			save_texture(&map->SO_texture, arr[1]);
+			save_texture(&map->so_texture, arr[1]);
 		else if (ft_strcmp(arr[0], "WE") == 0)
-			save_texture(&map->WE_texture, arr[1]);
+			save_texture(&map->we_texture, arr[1]);
 		else if (ft_strcmp(arr[0], "EA") == 0)
-			save_texture(&map->EA_texture, arr[1]);
+			save_texture(&map->ea_texture, arr[1]);
 	}
 	ft_free(arr);
 }

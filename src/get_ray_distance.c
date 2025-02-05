@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/05 19:12:49 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:35:07 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,20 @@ static void	init_ray_direction(t_intersection *inter, t_ray_data *ray,
 	inter->dir = dir;
 	if (dir == DIR_HORIZONTAL)
 	{
-		ray->dirX = sin(ray->angle);
-		if (ray->dirX > 0.001)
+		ray->dirx = sin(ray->angle);
+		if (ray->dirx > 0.001)
 			init_ray_up(inter, ray, cell_size);
-		else if (ray->dirX < -0.001)
+		else if (ray->dirx < -0.001)
 			init_ray_down(inter, ray, cell_size);
 		else
 			inter->dof = MAX_MAP_HEIGHT;
 	}
 	else
 	{
-		ray->dirY = cos(ray->angle);
-		if (ray->dirY > 0.001)
+		ray->diry = cos(ray->angle);
+		if (ray->diry > 0.001)
 			init_ray_right(inter, ray, cell_size);
-		else if (ray->dirY < -0.001)
+		else if (ray->diry < -0.001)
 			init_ray_left(inter, ray, cell_size);
 		else
 			inter->dof = MAX_MAP_WIDTH;

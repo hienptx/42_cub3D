@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3D.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
+/*   Updated: 2025/02/05 23:43:37 by hipham           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -18,12 +30,10 @@
 # define SCREEN_WIDTH WIDTH
 # define SCREEN_HEIGHT HEIGHT
 # define NUM_RAYS SCREEN_WIDTH
-# define MOVING_SPEED 4
+# define MOVING_SPEED 1
 # define FOV M_PI / 3.0
 # define MAX_MAP_WIDTH 240
 # define MAX_MAP_HEIGHT 240
-// # define ERR_MSG_INVALID_MAP "Error: Invalid map\n"
-// # define ERR_MSG_INVALID_ARG "Error: Invalid input!\n./cub3D [MAP.cub]\n"
 
 //initialization.c
 void		map_initialising(t_user_map *map);
@@ -95,6 +105,7 @@ void		init_ray_left(t_intersection *inter, t_ray_data *ray,
 // get_ray_distance.c
 float		check_horizontal_intersection(t_cub3d *data, float *rx, float *ry);
 float		check_vertical_intersection(t_cub3d *data, float *vx, float *vy);
+
 // weapon.c
 void		put_weapon(t_cub3d *data);
 void		update_game_state(void *param);
@@ -108,5 +119,6 @@ uint32_t	get_texture_x(float pos, u_int32_t tex_width, float cell_size);
 int			get_rgba(int r, int g, int b, int a);
 void		load_png_texture(t_cub3d *data);
 bool		check_for_wall(char *line);
+void		init_ray_values(t_ray *val, t_ray_data *ray, float angle);
 
 #endif

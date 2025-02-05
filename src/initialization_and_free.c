@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 19:12:56 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:37:29 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	map_initialising(t_user_map *map)
 	map->pw = 0;
 	map->ph = 0;
 	map->map_data = NULL;
-	map->NO_texture = NULL;
-	map->SO_texture = NULL;
-	map->WE_texture = NULL;
-	map->EA_texture = NULL;
+	map->no_texture = NULL;
+	map->so_texture = NULL;
+	map->we_texture = NULL;
+	map->ea_texture = NULL;
 	map->ceiling = NULL;
 	map->floor = NULL;
 	map->player_count = 0;
@@ -35,14 +35,14 @@ void	ft_free_map(t_user_map *map)
 {
 	if (map->map_data != NULL)
 		ft_free(map->map_data);
-	if (map->NO_texture != NULL)
-		free(map->NO_texture);
-	if (map->SO_texture != NULL)
-		free(map->SO_texture);
-	if (map->WE_texture != NULL)
-		free(map->WE_texture);
-	if (map->EA_texture != NULL)
-		free(map->EA_texture);
+	if (map->no_texture != NULL)
+		free(map->no_texture);
+	if (map->so_texture != NULL)
+		free(map->so_texture);
+	if (map->we_texture != NULL)
+		free(map->we_texture);
+	if (map->ea_texture != NULL)
+		free(map->ea_texture);
 	if (map->floor != NULL)
 		free(map->floor);
 	if (map->ceiling != NULL)
@@ -51,7 +51,10 @@ void	ft_free_map(t_user_map *map)
 
 void	cub3d_initialising(t_cub3d *data)
 {
-	data->cell_size = 256 / data->map.map_width;
+	if (data->map.map_width < 10)
+		data->cell_size = 16;
+	else
+		data->cell_size = 256 / data->map.map_width;
 	data->iheight = data->map.map_height * data->cell_size;
 	data->iwidth = data->map.map_width * data->cell_size;
 	data->pos.dx = data->map.pos.dx;
@@ -76,8 +79,8 @@ void	ft_delete_texture(t_cub3d *data)
 
 void	ft_free_texture(t_cub3d *data)
 {
-	free(data->map.EA_texture);
-	free(data->map.NO_texture);
-	free(data->map.SO_texture);
-	free(data->map.WE_texture);
+	free(data->map.ea_texture);
+	free(data->map.no_texture);
+	free(data->map.so_texture);
+	free(data->map.we_texture);
 }
