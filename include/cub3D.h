@@ -28,7 +28,7 @@
 //initialization.c
 void		map_initialising(t_user_map *map);
 void		cub3d_initialising(t_cub3d *data);
-void		ft_free_map(t_user_map map);
+void		ft_free_map(t_user_map *map);
 void		ft_delete_texture(t_cub3d *data);
 void		ft_free_texture(t_cub3d *data);
 
@@ -61,8 +61,7 @@ void		copy_color(t_user_map *map, int *color_arr, size_t size,
 //movements_and_rotation.c
 float		adjust_angle(float angle);
 void		rotate(t_cub3d *data, float unit_degree);
-void		draw_ray(t_cub3d *data, float start_x, float start_y, float angle,
-				float length, int color);
+void		draw_ray(t_cub3d *data, float angle, int color);
 void		move_forward(t_cub3d *data, int dir);
 void		move_left_right(t_cub3d *data, int dir);
 
@@ -94,10 +93,8 @@ void		init_ray_left(t_intersection *inter, t_ray_data *ray,
 				float cell_size);
 
 // get_ray_distance.c
-float		check_horizontal_intersection(t_cub3d *data, t_ray_data *ray,
-				float *rx, float *ry);
-float		check_vertical_intersection(t_cub3d *data, t_ray_data *ray,
-				float *vx, float *vy);
+float		check_horizontal_intersection(t_cub3d *data, float *rx, float *ry);
+float		check_vertical_intersection(t_cub3d *data, float *vx, float *vy);
 // weapon.c
 void		put_weapon(t_cub3d *data);
 void		update_game_state(void *param);

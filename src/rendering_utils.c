@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:09:10 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 02:37:10 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 22:08:31 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,19 @@ void	load_png_texture(t_cub3d *data)
 	data->wp.texture[0] = mlx_load_png("./images/g.png");
 	data->wp.texture[1] = mlx_load_png("./images/aiming.png");
 	data->wp.texture[2] = mlx_load_png("./images/flash.png");
+}
+
+void	init_ray_values(t_ray *val, t_ray_data *ray, float angle)
+{
+	val->end_x = ray->px + ray->distance * cos(angle);
+	val->end_y = ray->py + ray->distance * -sin(angle);
+	val->x1 = (int)ray->px;
+	val->y1 = (int)ray->py;
+	val->x2 = (int)val->end_x;
+	val->y2 = (int)val->end_y;
+	val->dx = abs(val->x2 - val->x1);
+	val->dy = abs(val->y2 - val->y1);
+	val->sx = val->x1 < val->x2 ? 1 : -1;
+	val->sy = val->y1 < val->y2 ? 1 : -1;
+	val->err = (val->dx > val->dy ? val->dx : -val->dy) / 2;
 }

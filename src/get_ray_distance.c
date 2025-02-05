@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/05 13:34:27 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 19:12:49 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,24 +46,25 @@ static void	init_ray_direction(t_intersection *inter, t_ray_data *ray,
 	}
 }
 
-static float	check_intersection(t_cub3d *data, t_ray_data *ray, float *x,
+static float	check_intersection(t_cub3d *data, float *x,
 		float *y, t_ray_dir dir)
 {
 	t_intersection	inter;
 	int				max_dof;
-	unsigned int	mx;
-	unsigned int	my;
 
-	init_ray_direction(&inter, ray, dir, data->cell_size);
-	max_dof = (dir == DIR_HORIZONTAL) ? data->map.map_height : data->map.map_width;
+	init_ray_direction(&inter, &data->ray, dir, data->cell_size);
+	if (dir == DIR_HORIZONTAL)
+		max_dof = data->map.map_height;
+	else
+		max_dof = data->map.map_width;
 	while (inter.dof < max_dof)
 	{
-		mx = floor(inter.rx / data->cell_size);
-		my = floor(inter.ry / data->cell_size);
-		if (is_wall_hit(data, mx, my))
+		inter.mx = floor(inter.rx / data->cell_size);
+		inter.my = floor(inter.ry / data->cell_size);
+		if (is_wall_hit(data, inter.mx, inter.my))
 		{
-			inter.distance = sqrt(pow(inter.rx - data->pos.x, 2) +
-									pow(inter.ry - data->pos.y, 2));
+			inter.distance = sqrt(pow(inter.rx - data->pos.x, 2)
+					+ pow(inter.ry - data->pos.y, 2));
 			*x = inter.rx;
 			*y = inter.ry;
 			break ;
@@ -75,14 +76,14 @@ static float	check_intersection(t_cub3d *data, t_ray_data *ray, float *x,
 	return (inter.distance);
 }
 
-float	check_horizontal_intersection(t_cub3d *data, t_ray_data *ray, float *rx,
+float	check_horizontal_intersection(t_cub3d *data, float *rx,
 		float *ry)
 {
-	return (check_intersection(data, ray, rx, ry, DIR_HORIZONTAL));
+	return (check_intersection(data, rx, ry, DIR_HORIZONTAL));
 }
 
-float	check_vertical_intersection(t_cub3d *data, t_ray_data *ray, float *vx,
+float	check_vertical_intersection(t_cub3d *data, float *vx,
 		float *vy)
 {
-	return (check_intersection(data, ray, vx, vy, DIR_VERTICAL));
+	return (check_intersection(data, vx, vy, DIR_VERTICAL));
 }

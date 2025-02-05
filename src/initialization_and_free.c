@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 13:23:30 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 19:12:56 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	map_initialising(t_user_map *map)
 	map->NO_texture = NULL;
 	map->SO_texture = NULL;
 	map->WE_texture = NULL;
-	map->NO_texture = NULL;
+	map->EA_texture = NULL;
 	map->ceiling = NULL;
 	map->floor = NULL;
 	map->player_count = 0;
@@ -31,22 +31,22 @@ void	map_initialising(t_user_map *map)
 	map->valid_status = 0;
 }
 
-void	ft_free_map(t_user_map map)
+void	ft_free_map(t_user_map *map)
 {
-	if (map.map_data != NULL)
-		ft_free(map.map_data);
-	if (map.NO_texture != NULL)
-		free(map.NO_texture);
-	if (map.SO_texture != NULL)
-		free(map.SO_texture);
-	if (map.WE_texture != NULL)
-		free(map.WE_texture);
-	if (map.EA_texture != NULL)
-		free(map.EA_texture);
-	if (map.floor != NULL)
-		free(map.floor);
-	if (map.ceiling != NULL)
-		free(map.ceiling);
+	if (map->map_data != NULL)
+		ft_free(map->map_data);
+	if (map->NO_texture != NULL)
+		free(map->NO_texture);
+	if (map->SO_texture != NULL)
+		free(map->SO_texture);
+	if (map->WE_texture != NULL)
+		free(map->WE_texture);
+	if (map->EA_texture != NULL)
+		free(map->EA_texture);
+	if (map->floor != NULL)
+		free(map->floor);
+	if (map->ceiling != NULL)
+		free(map->ceiling);
 }
 
 void	cub3d_initialising(t_cub3d *data)

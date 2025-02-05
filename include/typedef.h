@@ -10,6 +10,22 @@ typedef enum e_ray_dir
 	DIR_VERTICAL
 }					t_ray_dir;
 
+typedef struct s_ray
+{
+	int		x1;
+	int		y1;
+	int		x2;
+	int		y2;
+	int		dx;
+	int		dy;
+	int		sx;
+	int		sy;
+	int		err;
+	int		e2;
+	float	end_x;
+	float	end_y;
+}		t_ray;
+
 typedef struct s_intersection
 {
 	float			rx;
@@ -18,6 +34,8 @@ typedef struct s_intersection
 	float			yo;
 	float			distance;
 	int				dof;
+	unsigned int	mx;
+	unsigned int	my;
 	t_ray_dir		dir;
 }					t_intersection;
 
@@ -38,6 +56,8 @@ typedef struct s_ray_data
 	float			vy;
 	float			rx;
 	float			ry;
+	float			end_x;
+	float			end_y;
 }					t_ray_data;
 
 typedef struct s_wall_data
@@ -46,6 +66,7 @@ typedef struct s_wall_data
 	unsigned int	line_top;
 	unsigned int	line_bottom;
 	double			step;
+	double			tex_pos;
 	uint32_t		tex_x;
 	mlx_texture_t	*texture;
 }					t_wall_data;

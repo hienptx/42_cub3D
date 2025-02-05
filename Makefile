@@ -1,5 +1,6 @@
-NAME	:= Game
+NAME	:= cub3D
 CFLAGS	:= -g -Ofast -Wextra -Wall -Werror -I./includes -Wunreachable-code -Ofast
+LEAKS = -L../../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 LIBMLX	:= ./MLX
 LIBFT_PATH	:= ./libft
 SRC_DIR := ./src
@@ -34,7 +35,7 @@ libmlx:
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS) $(LIBFT)
-	@$(CC) $(OBJS) $(LIBS) $(LIBFT) $(HEADERS) -o $(NAME)
+	@$(CC) $(OBJS) $(LIBS) $(LIBFT) $(HEADERS) -o $(NAME) $(LEAKS)
 
 $(LIBFT):
 	make -C $(LIBFT_PATH)

@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 01:41:48 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 13:29:27 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 22:07:49 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	render_map(char **map, t_cub3d *data)
 		{
 			color = get_minimap_color(map[i][j]);
 			draw_cell(data->img, j * scale_factor_y, i * scale_factor_x,
-					scale_factor_x, scale_factor_y, color);
+				scale_factor_x, scale_factor_y, color);
 			j++;
 		}
 		i++;
@@ -97,48 +97,28 @@ void	render_map(char **map, t_cub3d *data)
 // 	*end_y = (int)(start_y + length * -sin(angle));
 // }
 
-void	draw_ray(t_cub3d *data, float start_x, float start_y, float angle,
-		float length, int color)
+void	draw_ray(t_cub3d *data, float angle, int color)
 {
-	float	end_x;
-	float	end_y;
-	int		x1;
-	int		y1;
-	int		x2;
-	int		y2;
-	int		dx;
-	int		dy;
-	int		sx;
-	int		sy;
-	int		err;
-	int		e2;
+	t_ray		val;
+	t_ray_data	ray;
 
-	end_x = start_x + length * cos(angle);
-	end_y = start_y + length * -sin(angle);
-	x1 = (int)start_x;
-	y1 = (int)start_y;
-	x2 = (int)end_x;
-	y2 = (int)end_y;
-	dx = abs(x2 - x1);
-	dy = abs(y2 - y1);
-	sx = x1 < x2 ? 1 : -1;
-	sy = y1 < y2 ? 1 : -1;
-	err = (dx > dy ? dx : -dy) / 2;
+	ray = data->ray;
+	init_ray_values(&val, &ray, angle);
 	while (1)
 	{
-		mlx_put_pixel(data->img, x1, y1, color);
-		if (x1 == x2 && y1 == y2)
+		mlx_put_pixel(data->img, val.x1, val.y1, color);
+		if (val.x1 == val.x2 && val.y1 == val.y2)
 			break ;
-		e2 = err;
-		if (e2 > -dx)
+		val.e2 = val.err;
+		if (val.e2 > -val.dx)
 		{
-			err -= dy;
-			x1 += sx;
+			val.err -= val.dy;
+			val.x1 += val.sx;
 		}
-		if (e2 < dy)
+		if (val.e2 < val.dy)
 		{
-			err += dx;
-			y1 += sy;
+			val.err += val.dx;
+			val.y1 += val.sy;
 		}
 	}
 }

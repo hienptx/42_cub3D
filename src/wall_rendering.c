@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 01:23:03 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 19:32:18 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	floor_drawing(t_cub3d *data, t_wall_data wall, int x)
 
 void	ceiling_drawing(t_cub3d *data, t_wall_data wall, int x)
 {
-	uint32_t	ceiling_color;
-	unsigned int			i;
+	uint32_t		ceiling_color;
+	unsigned int	i;
 
 	i = 0;
 	ceiling_color = get_rgba(data->map.ceiling[0], data->map.ceiling[1],
@@ -77,26 +77,28 @@ void	ceiling_drawing(t_cub3d *data, t_wall_data wall, int x)
 void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
 		t_ray_data *ray)
 {
-	t_wall_data	wall;
-	uint32_t	tex_x;
-	double		tex_pos;
-	uint32_t	tex_y;
-	uint32_t	pixel_color;
+	t_wall_data		wall;
+	uint32_t		tex_x;
+	uint32_t		tex_y;
+	uint32_t		pixel_color;
+	unsigned int	y;
 
 	wall = calculate_wall_dimensions(data, distance_to_wall);
 	wall.texture = get_wall_texture(data, ray);
-	tex_x = get_texture_x(ray->color ? ray->hit_y : ray->hit_x,
-							wall.texture->width,
-							data->cell_size);
-	tex_pos = 0;
-	for (unsigned int y = wall.line_top; y <= wall.line_bottom; y++)
+	if (ray->color)
+		tex_x = get_texture_x(ray->hit_y, wall.texture->width, data->cell_size);
+	else
+		tex_x = get_texture_x(ray->hit_x, wall.texture->width, data->cell_size);
+	wall.tex_pos = 0;
+	y = wall.line_top - 1;
+	while (++y <= wall.line_bottom)
 	{
-		tex_y = (uint32_t)tex_pos % wall.texture->height;
-		tex_y = (tex_y >= wall.texture->height) ? wall.texture->height
-			- 1 : tex_y;
+		tex_y = (uint32_t)wall.tex_pos % wall.texture->height;
+		if (tex_y >= wall.texture->height)
+			tex_y = wall.texture->height - 1;
 		pixel_color = get_pixel_color(wall.texture, tex_x, tex_y);
 		mlx_put_pixel(data->img2, x, y, pixel_color);
-		tex_pos += wall.step;
+		wall.tex_pos += wall.step;
 	}
 	floor_drawing(data, wall, x);
 	ceiling_drawing(data, wall, x);
