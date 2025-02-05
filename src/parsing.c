@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:46:15 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 23:38:27 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:53:03 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ bool	map_parsing(char *line, int fd, t_user_map *map)
 				return (0);
 		}
 		else
-			return (printf("Error: Invalid maze\n"), free(line), 0);
+			map->valid_status = 1;
 		free(line);
 		line = get_next_line(fd);
 	}
