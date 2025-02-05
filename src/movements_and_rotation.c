@@ -3,25 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   movements_and_rotation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/04 23:35:52 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/05 11:46:18 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
-#define M_PI_16 M_PI_4 / 4.0
 
-int	check_collision(t_cub3d *data, float x, float y)
-{
-	int	ipx;
-	int	ipy;
-
-	ipx = x / data->map.pw;
-	ipy = y / data->map.ph;
-	return (data->map.map_data[ipy][ipx] == '1');
-}
+// #define M_PI_16 M_PI_4 / 4.0
 
 int	wall_collision(t_cub3d *data, float new_x, float new_y)
 {
@@ -36,10 +27,19 @@ int	wall_collision(t_cub3d *data, float new_x, float new_y)
 	check_y1 = new_y + data->pos.dy * offset;
 	check_x2 = new_x - data->pos.dx * offset;
 	check_y2 = new_y - data->pos.dy * offset;
-	return (check_collision(data, check_x1, check_y1) || \
-			check_collision(data, check_x2, check_y1) || \
-			check_collision(data, check_x1, check_y2) || \
-			check_collision(data, check_x2, check_y2));
+	return (check_collision(data, check_x1, check_y1)
+		|| check_collision(data, check_x2, check_y1)
+		|| check_collision(data, check_x1, check_y2)
+		|| check_collision(data, check_x2, check_y2));
+}
+
+void	rotate(t_cub3d *data, float unit_degree)
+{
+	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
+	data->pos.angle = adjust_angle(data->pos.angle);
+	data->pos.angle += unit_degree;
+	data->pos.dx = cos(data->pos.angle);
+	data->pos.dy = -sin(data->pos.angle);
 }
 
 void	move_forward(t_cub3d *data, int dir)
@@ -49,11 +49,9 @@ void	move_forward(t_cub3d *data, int dir)
 
 	new_y = data->pos.y + dir * data->pos.dy * MOVING_SPEED;
 	new_x = data->pos.x + dir * data->pos.dx * MOVING_SPEED;
-	// Check for collisions
 	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	if (!wall_collision(data, new_x, new_y))
 	{
-		// Update the position if no collision
 		data->pos.x = new_x;
 		data->pos.y = new_y;
 	}
@@ -74,56 +72,10 @@ void	move_left_right(t_cub3d *data, int dir)
 	perp_dy /= length;
 	new_x = data->pos.x + dir * perp_dx * MOVING_SPEED;
 	new_y = data->pos.y + dir * perp_dy * MOVING_SPEED;
-	// Check for collisions
 	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	if (!wall_collision(data, new_x, new_y))
 	{
-		// Update the position if no collision
 		data->pos.x = new_x;
 		data->pos.y = new_y;
-	}
-}
-
-void handle_key_action(t_cub3d *data, int *key_pressed)
-{
-	memset(data->img2->pixels, 255, data->img2->width * data->img2->height * sizeof(int32_t));
-	put_pixel_player(data, 0xFFFFFFFF);
-	*key_pressed = true;
-}
-
-void handle_key_press(t_cub3d *data, int dir, void (*move_func)(t_cub3d *, int), int *key_pressed)
-{
-	move_func(data, dir);
-	handle_key_action(data, key_pressed);
-}
-
-void handle_rotation(t_cub3d *data, float angle, int *key_pressed)
-{
-	rotate(data, angle);
-	handle_key_action(data, key_pressed);
-}
-
-void handle_movement_keys(t_cub3d *data)
-{
-	mlx_t* mlx = data->mlx;
-	int key_pressed = false;
-
-	if (mlx_is_key_down(mlx, MLX_KEY_W))
-		handle_key_press(data, 1, move_forward, &key_pressed);
-	if (mlx_is_key_down(mlx, MLX_KEY_S))
-		handle_key_press(data, -1, move_forward, &key_pressed);
-	if (mlx_is_key_down(mlx, MLX_KEY_A))
-		handle_key_press(data, -1, move_left_right, &key_pressed);
-	if (mlx_is_key_down(mlx, MLX_KEY_D))
-		handle_key_press(data, 1, move_left_right, &key_pressed);
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		handle_rotation(data, M_PI_16, &key_pressed);
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		handle_rotation(data, -M_PI_16, &key_pressed);
-
-	if (key_pressed)
-	{
-		// printf("x = %f, y = %f\n", data->pos.dx, data->pos.dy);
-		cast_ray(data);
 	}
 }

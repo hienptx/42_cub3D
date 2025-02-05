@@ -1,6 +1,7 @@
 #ifndef TYPEDEF_H
 # define TYPEDEF_H
 # include "../MLX/include/MLX42/MLX42.h"
+# include <time.h>
 # include <stddef.h>
 
 typedef enum e_ray_dir
@@ -73,6 +74,21 @@ typedef struct s_user_map
 	t_player		pos;
 }					t_user_map;
 
+typedef struct s_weapon
+{
+	mlx_texture_t	*texture[3];
+	bool			is_shooting;
+	bool			is_flash_active;
+	float 			flash_x;
+	float			flash_y;
+	float			gun_x;
+	float			gun_y;
+	float			aim_x;
+	float			aim_y;
+	float			duration;
+	time_t			timer;
+}	t_weapon;
+
 typedef struct s_cub3d
 {
 	uint32_t		iwidth;
@@ -84,6 +100,7 @@ typedef struct s_cub3d
 	t_player		pos;
 	t_user_map		map;
 	t_ray_data		ray;
+	t_weapon		wp;
 	float			cell_size;
 	int				key_pressed;
 }					t_cub3d;

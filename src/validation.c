@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/03 19:02:27 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/05 13:13:16 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	validate_texture_path(char *path)
 {
-	int fd;
+	int	fd;
 
 	fd = open(path, O_RDONLY);
 	if (fd == -1)
@@ -31,10 +31,10 @@ bool	validate_maze(char **maze, t_user_map *map)
 	char	*last_1;
 	size_t	i;
 	size_t	longest_line;
-	
+
 	longest_line = 0;
 	i = 0;
-	while(maze[i] != NULL)
+	while (maze[i] != NULL)
 		i++;
 	map->map_height = i;
 	if (!check_for_wall(maze[0]) || !check_for_wall(maze[i - 1]))
@@ -51,26 +51,27 @@ bool	validate_maze(char **maze, t_user_map *map)
 	}
 	if (map->player_count != 1)
 		return (printf("Invalid number of player\n"), 0);
-	map->map_width = longest_line;	
-	return (1);	
+	map->map_width = longest_line;
+	return (1);
 }
 
-// NO(0, -1); SO(0, 1); EA(1, 0); WE(-1,0) 
-bool	validate_player_pos(char c, unsigned int j, unsigned int i, t_user_map *map)
+// NO(0, -1); SO(0, 1); EA(1, 0); WE(-1,0)
+bool	validate_player_pos(char c, unsigned int j, unsigned int i,
+		t_user_map *map)
 {
 	if (ft_strchr("NSEW", c))
 	{
 		map->player_count += 1;
 		map->pos.x = j;
 		map->pos.y = i;
-		if(c == 'N')
-			parse_player_dir(0, -1, map);	
-		else if(c == 'S')
-			parse_player_dir(0, 1, map);	
-		else if(c == 'E')
-			parse_player_dir(1, 0, map);	
-		else if(c == 'W')
-			parse_player_dir(-1, 0, map);			
+		if (c == 'N')
+			parse_player_dir(0, -1, map);
+		else if (c == 'S')
+			parse_player_dir(0, 1, map);
+		else if (c == 'E')
+			parse_player_dir(1, 0, map);
+		else if (c == 'W')
+			parse_player_dir(-1, 0, map);
 	}
 	else if (ft_strchr("01 ", c))
 		;
@@ -86,37 +87,38 @@ bool	validate_color_values(int *color, size_t size)
 	i = 0;
 	while (i < size)
 	{
-		if (color[i] < 0 || color[i] > 255) 
+		if (color[i] < 0 || color[i] > 255)
 			return (false);
-		i++ ;
+		i++;
 	}
 	if (i != 3)
 		return (false);
 	return (true);
 }
 
-bool validate_map(t_user_map *map)
+bool	validate_map(t_user_map *map)
 {
-	if (map->NO_texture == NULL || map->SO_texture == NULL 
-	|| map->WE_texture == NULL || map->EA_texture == NULL || map->texture_count > 4)
+	if (map->NO_texture == NULL || map->SO_texture == NULL
+		|| map->WE_texture == NULL || map->EA_texture == NULL
+		|| map->texture_count > 4)
 		return (printf("Error: Invalid texture\n"), 0);
 	if (map->ceiling == NULL || map->floor == NULL || map->color_count > 2)
 		return (printf("Error: Invalid color\n"), 0);
-	if (map->map_data == NULL)
-		return (printf("Error: Invalid map\n"), 0);
+	if (map->map_data == NULL || map->valid_status == 1)
+		return (printf("Error: Invalid map data\n"), 0);
 	if (!validate_texture_path(map->NO_texture))
-		return (printf("Error: Invalid texture\n"), 0);		
+		return (printf("Error: Invalid texture\n"), 0);
 	if (!validate_texture_path(map->SO_texture))
-		return (printf("Error: Invalid texture\n"), 0);		
+		return (printf("Error: Invalid texture\n"), 0);
 	if (!validate_texture_path(map->WE_texture))
-		return (printf("Error: Invalid texture\n"), 0);		
+		return (printf("Error: Invalid texture\n"), 0);
 	if (!validate_texture_path(map->EA_texture))
-		return (printf("Error: Invalid texture\n"), 0);		
+		return (printf("Error: Invalid texture\n"), 0);
 	if (!validate_color_values(map->ceiling, 3))
-		return (printf("Error: Invalid color\n"),0);
+		return (printf("Error: Invalid color\n"), 0);
 	if (!validate_color_values(map->floor, 3))
-		return (printf("Error: Invalid color\n"),0);
+		return (printf("Error: Invalid color\n"), 0);
 	if (!validate_maze(map->map_data, map))
-		return (printf("Error: Invalid maze\n"),0);
+		return (printf("Error: Invalid maze\n"), 0);
 	return (1);
 }

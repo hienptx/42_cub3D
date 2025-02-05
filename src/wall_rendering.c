@@ -3,30 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   wall_rendering.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/04 21:34:10 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/05 01:23:03 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
-
-static uint32_t	get_pixel_color(mlx_texture_t *texture, uint32_t tex_x,
-		uint32_t tex_y)
-{
-	uint8_t	*pixel;
-
-	pixel = &texture->pixels[(texture->width * tex_y + tex_x) * 4];
-	return ((pixel[0] << 24) | (pixel[1] << 16) | (pixel[2] << 8) | pixel[3]);
-}
 
 static t_wall_data	calculate_wall_dimensions(t_cub3d *data, double distance)
 {
 	t_wall_data	wall_data;
 
 	wall_data.height = (int)(HEIGHT / 1.5 * data->cell_size / distance);
-		// Adjust wall height calculation
 	if (wall_data.height > HEIGHT)
 		wall_data.height = HEIGHT;
 	wall_data.step = 1.0 * (double)data->texture[3]->height
@@ -38,45 +28,30 @@ static t_wall_data	calculate_wall_dimensions(t_cub3d *data, double distance)
 	return (wall_data);
 }
 
-static uint32_t	get_texture_x(float pos, u_int32_t tex_width, float cell_size)
-{
-	float		relative_pos;
-	uint32_t	tex_x;
-
-	relative_pos = fmod(pos, cell_size);
-	tex_x = (uint32_t)((relative_pos / cell_size) * tex_width);
-	tex_x %= tex_width;
-	return (tex_x);
-}
-
 mlx_texture_t	*get_wall_texture(t_cub3d *data, t_ray_data *ray)
 {
 	if (ray->color == 0)
 	{
 		if (ray->dirX >= 0)
-			return (data->texture[3]); // South
+			return (data->texture[3]);
 		else
-			return (data->texture[2]); // North
+			return (data->texture[2]);
 	}
 	else
 	{
 		if (ray->dirY >= 0)
-			return (data->texture[1]); // East
+			return (data->texture[1]);
 		else
-			return (data->texture[0]); // West
+			return (data->texture[0]);
 	}
-}
-
-int	get_rgba(int r, int g, int b, int a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
 }
 
 void	floor_drawing(t_cub3d *data, t_wall_data wall, int x)
 {
-	uint32_t floor_color;
+	uint32_t	floor_color;
 
-	floor_color = get_rgba(data->map.floor[0], data->map.floor[1], data->map.floor[2], 155);
+	floor_color = get_rgba(data->map.floor[0], data->map.floor[1],
+			data->map.floor[2], 155);
 	while (wall.line_bottom < HEIGHT)
 	{
 		mlx_put_pixel(data->img2, x, wall.line_bottom, floor_color);
@@ -87,14 +62,15 @@ void	floor_drawing(t_cub3d *data, t_wall_data wall, int x)
 void	ceiling_drawing(t_cub3d *data, t_wall_data wall, int x)
 {
 	uint32_t	ceiling_color;
-	size_t		i;
+	unsigned int			i;
 
 	i = 0;
-	ceiling_color = get_rgba(data->map.ceiling[0], data->map.ceiling[1], data->map.ceiling[2], 155);
+	ceiling_color = get_rgba(data->map.ceiling[0], data->map.ceiling[1],
+			data->map.ceiling[2], 155);
 	while (i < wall.line_top)
 	{
 		mlx_put_pixel(data->img2, x, i, ceiling_color);
-		i++ ;
+		i++;
 	}
 }
 
@@ -109,8 +85,9 @@ void	draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
 
 	wall = calculate_wall_dimensions(data, distance_to_wall);
 	wall.texture = get_wall_texture(data, ray);
-	tex_x = get_texture_x(ray->color ? ray->hit_y : ray->hit_x, \
-			wall.texture->width, data->cell_size);
+	tex_x = get_texture_x(ray->color ? ray->hit_y : ray->hit_x,
+							wall.texture->width,
+							data->cell_size);
 	tex_pos = 0;
 	for (unsigned int y = wall.line_top; y <= wall.line_bottom; y++)
 	{
