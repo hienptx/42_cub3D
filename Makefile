@@ -9,21 +9,19 @@ LIBFT := $(LIBFT_PATH)/libft.a
 HEADERS	:= -I ./include -I $(LIBMLX)/include
 LIBS	:= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 SRCS	:= $(addprefix $(SRC_DIR)/, \
-            cub3D_utils.c \
-            initialization_and_free.c \
-            main.c \
-            parsing_utils.c \
-            parsing.c \
-            validation.c \
-            movements_and_rotation.c \
+			cub3D_utils.c \
+			initialization_and_free.c \
+			main.c \
+			parsing_utils.c \
+			parsing.c \
+			validation.c \
+			movements_and_rotation.c \
 			ray_direction.c \
 			get_ray_distance.c \
 			wall_rendering.c \
-			weapon.c \
 			rendering_utils.c \
 			keys.c \
-			rays.c \
-			minimap.c)
+			rays.c)
 OBJS	:= ${SRCS:.c=.o}
 
 all: libmlx $(NAME)

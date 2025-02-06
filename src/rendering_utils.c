@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:09:10 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 23:39:04 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/06 10:05:16 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,6 @@ void	load_png_texture(t_cub3d *data)
 	data->texture[1] = mlx_load_png(data->map.ea_texture);
 	data->texture[2] = mlx_load_png(data->map.no_texture);
 	data->texture[3] = mlx_load_png(data->map.so_texture);
-	data->wp.texture[0] = mlx_load_png("./images/g.png");
-	data->wp.texture[1] = mlx_load_png("./images/aiming.png");
-	data->wp.texture[2] = mlx_load_png("./images/flash.png");
 }
 
 void	init_ray_values(t_ray *val, t_ray_data *ray, float angle)

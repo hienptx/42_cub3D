@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization_and_free.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 23:37:29 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/06 10:05:03 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,6 @@ void	ft_delete_texture(t_cub3d *data)
 	mlx_delete_texture(data->texture[1]);
 	mlx_delete_texture(data->texture[2]);
 	mlx_delete_texture(data->texture[3]);
-	mlx_delete_texture(data->wp.texture[0]);
-	mlx_delete_texture(data->wp.texture[1]);
-	mlx_delete_texture(data->wp.texture[2]);
 }
 
 void	ft_free_texture(t_cub3d *data)

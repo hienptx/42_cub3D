@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:31:29 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 23:40:21 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/06 10:04:50 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,21 +117,6 @@ typedef struct s_user_map
 	int				color;
 }					t_user_map;
 
-typedef struct s_weapon
-{
-	mlx_texture_t	*texture[3];
-	bool			is_shooting;
-	bool			is_flash_active;
-	float			flash_x;
-	float			flash_y;
-	float			gun_x;
-	float			gun_y;
-	float			aim_x;
-	float			aim_y;
-	float			duration;
-	time_t			timer;
-}					t_weapon;
-
 typedef struct s_cub3d
 {
 	uint32_t		iwidth;
@@ -143,7 +128,6 @@ typedef struct s_cub3d
 	t_player		pos;
 	t_user_map		map;
 	t_ray_data		ray;
-	t_weapon		wp;
 	float			cell_size;
 	int				key_pressed;
 }					t_cub3d;

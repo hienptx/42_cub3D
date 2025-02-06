@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements_and_rotation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/05 22:23:53 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/06 09:14:13 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	wall_collision(t_cub3d *data, float new_x, float new_y)
 	float	check_x2;
 	float	check_y2;
 
-	offset = 1;
+	offset = 2;
 	check_x1 = new_x + data->pos.dx * offset;
 	check_y1 = new_y + data->pos.dy * offset;
 	check_x2 = new_x - data->pos.dx * offset;

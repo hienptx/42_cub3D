@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 23:43:37 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/06 10:07:32 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,6 @@ void		draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
 void		render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
 				float ra);
 
-// minimap.c
-void		render_map(char **map, t_cub3d *data);
-void		rotate(t_cub3d *data, float unit_degree);
-void		put_pixel_player(t_cub3d *data, u_int32_t color);
-
 // ray_direction.c
 void		init_ray_up(t_intersection *inter, t_ray_data *ray,
 				float cell_size);
@@ -105,14 +100,6 @@ void		init_ray_left(t_intersection *inter, t_ray_data *ray,
 // get_ray_distance.c
 float		check_horizontal_intersection(t_cub3d *data, float *rx, float *ry);
 float		check_vertical_intersection(t_cub3d *data, float *vx, float *vy);
-
-// weapon.c
-void		put_weapon(t_cub3d *data);
-void		update_game_state(void *param);
-void		trigger_flash(t_cub3d *data);
-void		reset_trigger(t_cub3d *data);
-void		put_object(t_cub3d *data, mlx_texture_t *obj, float obj_x,
-				float obj_y);
 
 // rendering_utils.c
 uint32_t	get_texture_x(float pos, u_int32_t tex_width, float cell_size);
