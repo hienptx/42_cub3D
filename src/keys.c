@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 01:24:09 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 11:48:14 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/06 08:57:07 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ static void	handle_key_action(t_cub3d *data, int *key_pressed)
 {
 	memset(data->img2->pixels, 255, data->img2->width * data->img2->height
 		* sizeof(int32_t));
-	put_pixel_player(data, 0xFFFFFFFF);
 	*key_pressed = true;
 }
 
@@ -59,11 +58,9 @@ void	handle_movement_keys(t_cub3d *data)
 	if (mlx_is_key_down(mlx, MLX_KEY_D))
 		handle_key_press(data, 1, move_left_right, &key_pressed);
 	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		handle_rotation(data, M_PI_4 / 4, &key_pressed);
+		handle_rotation(data, M_PI_4 / 8, &key_pressed);
 	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		handle_rotation(data, -M_PI_4 / 4, &key_pressed);
-	if (mlx_is_key_down(data->mlx, MLX_KEY_SPACE))
-		trigger_flash(data);
+		handle_rotation(data, -M_PI_4 / 8, &key_pressed);
 	if (key_pressed)
 		cast_ray(data);
 }

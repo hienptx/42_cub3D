@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rays.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/05 23:43:40 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/06 08:56:54 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void	render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
 	ca = adjust_angle(ra - data->pos.angle);
 	corrected_dist = ray->distance * cos(ca);
 	draw_wall_slice(data, i, corrected_dist, ray);
-	draw_ray(data, ra, 0x00FF00FF);
 }
 
 t_ray_data	init_ray(t_cub3d *data)
@@ -71,7 +70,6 @@ void	cast_ray(void *param)
 	data = param;
 	data->ray = init_ray(data);
 	start_angle = data->pos.angle + (FOV / 2.0);
-	render_map(data->map.map_data, data);
 	i = 0;
 	while (i < NUM_RAYS)
 	{
@@ -80,6 +78,4 @@ void	cast_ray(void *param)
 		render_single_ray(data, &data->ray, i, ra);
 		i++;
 	}
-	mlx_image_to_window(data->mlx, data->img, 0, 0);
-	put_weapon(data);
 }

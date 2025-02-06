@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/05 19:17:13 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/06 08:58:20 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ void	put_win_and_images(t_cub3d *data)
 	if (!data->mlx)
 		ft_error();
 	cub3d_initialising(data);
-	data->img = mlx_new_image(data->mlx, data->iwidth, data->iheight);
-	if (!data->img || (mlx_image_to_window(data->mlx, data->img, 0, 0) < 0))
-		ft_error();
 	data->img2 = mlx_new_image(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!data->img2 || (mlx_image_to_window(data->mlx, data->img2, 0, 0) < 0))
 		ft_error();
@@ -64,9 +61,7 @@ int32_t	main(int ac, char *av[])
 		error_sms("Error: Invalid map\n");
 	}
 	put_win_and_images(&data);
-	reset_trigger(&data);
 	mlx_key_hook(data.mlx, &my_keyhook, &data);
-	mlx_loop_hook(data.mlx, update_game_state, &data);
 	mlx_loop(data.mlx);
 	ft_delete_texture(&data);
 	mlx_terminate(data.mlx);
