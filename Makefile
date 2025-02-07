@@ -21,7 +21,8 @@ SRCS	:= $(addprefix $(SRC_DIR)/, \
 			wall_rendering.c \
 			rendering_utils.c \
 			keys.c \
-			rays.c)
+			rays.c \
+			utils.c)
 OBJS	:= ${SRCS:.c=.o}
 
 all: libmlx $(NAME)

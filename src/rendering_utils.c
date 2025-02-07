@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:09:10 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/06 10:05:16 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 14:23:17 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,17 @@ uint32_t	get_texture_x(float pos, u_int32_t tex_width, float cell_size)
 void	load_png_texture(t_cub3d *data)
 {
 	data->texture[0] = mlx_load_png(data->map.we_texture);
+	if (!data->texture[0])
+		ft_error();
 	data->texture[1] = mlx_load_png(data->map.ea_texture);
+	if (!data->texture[1])
+		ft_error();
 	data->texture[2] = mlx_load_png(data->map.no_texture);
+	if (!data->texture[2])
+		ft_error();
 	data->texture[3] = mlx_load_png(data->map.so_texture);
+	if (!data->texture[3])
+		ft_error();
 }
 
 void	init_ray_values(t_ray *val, t_ray_data *ray, float angle)

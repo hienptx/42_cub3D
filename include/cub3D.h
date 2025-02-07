@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/06 10:07:32 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:42:27 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void		my_keyhook(mlx_key_data_t keydata, void *param);
 
 // rays.c
 void		cast_ray(void *param);
-void		draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
+void		draw_single_slice(t_cub3d *data, int x, double distance_to_wall,
 				t_ray_data *ray);
 void		render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
 				float ra);
@@ -107,5 +107,8 @@ int			get_rgba(int r, int g, int b, int a);
 void		load_png_texture(t_cub3d *data);
 bool		check_for_wall(char *line);
 void		init_ray_values(t_ray *val, t_ray_data *ray, float angle);
+
+//utils.c
+mlx_texture_t	*get_wall_texture(t_cub3d *data, t_ray_data *ray);
 
 #endif

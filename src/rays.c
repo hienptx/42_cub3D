@@ -6,7 +6,7 @@
 /*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/06 08:56:54 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 15:24:10 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
 
 	ca = adjust_angle(ra - data->pos.angle);
 	corrected_dist = ray->distance * cos(ca);
-	draw_wall_slice(data, i, corrected_dist, ray);
+	draw_single_slice(data, i, corrected_dist, ray);
 }
 
 t_ray_data	init_ray(t_cub3d *data)
