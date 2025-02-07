@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 15:42:27 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 19:13:31 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 # include "../MLX/include/MLX42/MLX42.h"
-# include "../include/typedef.h"
+# include "../include/typedef_bonus.h"
 # include "../libft/includes/get_next_line.h"
 # include "../libft/includes/libft.h"
 # include <fcntl.h>
@@ -82,10 +82,15 @@ void		my_keyhook(mlx_key_data_t keydata, void *param);
 
 // rays.c
 void		cast_ray(void *param);
-void		draw_single_slice(t_cub3d *data, int x, double distance_to_wall,
+void		draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
 				t_ray_data *ray);
 void		render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
 				float ra);
+
+// minimap.c
+void		render_map(char **map, t_cub3d *data);
+void		rotate(t_cub3d *data, float unit_degree);
+void		put_pixel_player(t_cub3d *data, u_int32_t color);
 
 // ray_direction.c
 void		init_ray_up(t_intersection *inter, t_ray_data *ray,
@@ -101,14 +106,19 @@ void		init_ray_left(t_intersection *inter, t_ray_data *ray,
 float		check_horizontal_intersection(t_cub3d *data, float *rx, float *ry);
 float		check_vertical_intersection(t_cub3d *data, float *vx, float *vy);
 
+// weapon.c
+void		put_weapon(t_cub3d *data);
+void		update_game_state(void *param);
+void		trigger_flash(t_cub3d *data);
+void		reset_trigger(t_cub3d *data);
+void		put_object(t_cub3d *data, mlx_texture_t *obj, float obj_x,
+				float obj_y);
+
 // rendering_utils.c
 uint32_t	get_texture_x(float pos, u_int32_t tex_width, float cell_size);
 int			get_rgba(int r, int g, int b, int a);
 void		load_png_texture(t_cub3d *data);
 bool		check_for_wall(char *line);
 void		init_ray_values(t_ray *val, t_ray_data *ray, float angle);
-
-//utils.c
-mlx_texture_t	*get_wall_texture(t_cub3d *data, t_ray_data *ray);
 
 #endif

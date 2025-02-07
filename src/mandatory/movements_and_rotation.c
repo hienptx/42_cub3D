@@ -1,18 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movements_and_rotation_bonus.c                     :+:      :+:    :+:   */
+/*   movements_and_rotation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 19:52:09 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 18:09:01 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
-
-// #define M_PI_16 M_PI_4 / 4.0
+#include "../include/cub3D.h"
 
 int	wall_collision(t_cub3d *data, float new_x, float new_y)
 {
@@ -34,8 +32,7 @@ int	wall_collision(t_cub3d *data, float new_x, float new_y)
 void	rotate(t_cub3d *data, float unit_degree)
 {
 	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
-	data->pos.angle = adjust_angle(data->pos.angle);
-	data->pos.angle += unit_degree;
+	data->pos.angle = adjust_angle(data->pos.angle + unit_degree);
 	data->pos.dx = cos(data->pos.angle);
 	data->pos.dy = -sin(data->pos.angle);
 }
@@ -47,7 +44,6 @@ void	move_forward(t_cub3d *data, int dir)
 
 	new_y = data->pos.y + dir * data->pos.dy * MOVING_SPEED;
 	new_x = data->pos.x + dir * data->pos.dx * MOVING_SPEED;
-	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	if (!wall_collision(data, new_x, new_y))
 	{
 		data->pos.x = new_x;
@@ -70,7 +66,6 @@ void	move_left_right(t_cub3d *data, int dir)
 	perp_dy /= length;
 	new_x = data->pos.x + dir * perp_dx * MOVING_SPEED;
 	new_y = data->pos.y + dir * perp_dy * MOVING_SPEED;
-	data->pos.angle = atan2(-data->pos.dy, data->pos.dx);
 	if (!wall_collision(data, new_x, new_y))
 	{
 		data->pos.x = new_x;

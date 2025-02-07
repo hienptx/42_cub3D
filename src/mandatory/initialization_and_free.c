@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-<<<<<<< HEAD
 /*   initialization_and_free.c                          :+:      :+:    :+:   */
-=======
-/*   initialization_and_free_bonus.c                    :+:      :+:    :+:   */
->>>>>>> origin/mandatory
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2025/02/07 18:09:25 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
-=======
-/*   Updated: 2025/02/07 19:50:20 by hipham           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/cub3D_bonus.h"
->>>>>>> origin/mandatory
 
 void	map_initialising(t_user_map *map)
 {
@@ -85,12 +73,6 @@ void	ft_delete_texture(t_cub3d *data)
 	mlx_delete_texture(data->texture[1]);
 	mlx_delete_texture(data->texture[2]);
 	mlx_delete_texture(data->texture[3]);
-<<<<<<< HEAD
-=======
-	mlx_delete_texture(data->wp.texture[0]);
-	mlx_delete_texture(data->wp.texture[1]);
-	mlx_delete_texture(data->wp.texture[2]);
->>>>>>> origin/mandatory
 }
 
 void	ft_free_texture(t_cub3d *data)

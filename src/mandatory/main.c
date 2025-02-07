@@ -1,20 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main_bonus.c                                       :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 15:08:29 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../MLX/include/MLX42/MLX42_Int.h"
-#include "../include/cub3D_bonus.h"
-
-// #define DEG2RAD(angle_in_degrees) ((angle_in_degrees)*M_PI / 180.0)
-// #define RAD2DEG(angle_in_radians) ((angle_in_radians)*180.0 / M_PI)
+#include "../include/cub3D.h"
 
 void	my_keyhook(mlx_key_data_t keydata, void *param)
 {
@@ -36,13 +32,10 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 
 void	put_win_and_images(t_cub3d *data)
 {
-	data->mlx = mlx_init(WIDTH, HEIGHT, "42Balls", true);
+	data->mlx = mlx_init(WIDTH, HEIGHT, "4242424242", true);
 	if (!data->mlx)
 		ft_error();
 	cub3d_initialising(data);
-	data->img = mlx_new_image(data->mlx, data->iwidth, data->iheight);
-	if (!data->img || (mlx_image_to_window(data->mlx, data->img, 0, 0) < 0))
-		ft_error();
 	data->img2 = mlx_new_image(data->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!data->img2 || (mlx_image_to_window(data->mlx, data->img2, 0, 0) < 0))
 		ft_error();
@@ -64,9 +57,8 @@ int32_t	main(int ac, char *av[])
 		error_sms("Error: Invalid map\n");
 	}
 	put_win_and_images(&data);
-	reset_trigger(&data);
+	cast_ray(&data);
 	mlx_key_hook(data.mlx, &my_keyhook, &data);
-	mlx_loop_hook(data.mlx, &update_game_state, &data);
 	mlx_loop(data.mlx);
 	ft_delete_texture(&data);
 	mlx_terminate(data.mlx);

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   typedef.h                                          :+:      :+:    :+:   */
+/*   typedef_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:31:29 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 18:08:12 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:51:12 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TYPEDEF_H
-# define TYPEDEF_H
+#ifndef TYPEDEF_H_BONUS
+# define TYPEDEF_H_BONUS
 # include "../MLX/include/MLX42/MLX42.h"
 # include <stddef.h>
 # include <time.h>
@@ -74,9 +74,9 @@ typedef struct s_ray_data
 
 typedef struct s_wall_data
 {
-	double			height;
-	double			line_top;
-	double			line_bottom;
+	unsigned int	height;
+	unsigned int	line_top;
+	unsigned int	line_bottom;
 	double			step;
 	double			tex_pos;
 	uint32_t		tex_x;
@@ -117,6 +117,21 @@ typedef struct s_user_map
 	int				color;
 }					t_user_map;
 
+typedef struct s_weapon
+{
+	mlx_texture_t	*texture[3];
+	bool			is_shooting;
+	bool			is_flash_active;
+	float			flash_x;
+	float			flash_y;
+	float			gun_x;
+	float			gun_y;
+	float			aim_x;
+	float			aim_y;
+	float			duration;
+	time_t			timer;
+}					t_weapon;
+
 typedef struct s_cub3d
 {
 	uint32_t		iwidth;
@@ -128,9 +143,10 @@ typedef struct s_cub3d
 	t_player		pos;
 	t_user_map		map;
 	t_ray_data		ray;
+	t_weapon		wp;
 	float			cell_size;
-	float			offset;
 	int				key_pressed;
+	float			offset;
 }					t_cub3d;
 
 #endif

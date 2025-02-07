@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-<<<<<<< HEAD
 /*   get_ray_distance.c                                 :+:      :+:    :+:   */
-=======
-/*   get_ray_distance_bonus.c                           :+:      :+:    :+:   */
->>>>>>> origin/mandatory
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-<<<<<<< HEAD
 /*   Updated: 2025/02/05 23:35:07 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
-=======
-/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/cub3D_bonus.h"
->>>>>>> origin/mandatory
 
 static bool	is_wall_hit(t_cub3d *data, unsigned int mx, unsigned int my)
 {

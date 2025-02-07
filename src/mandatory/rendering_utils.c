@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rendering_utils_bonus.c                            :+:      :+:    :+:   */
+/*   rendering_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:09:10 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 19:55:00 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 17:33:14 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "../include/cub3D.h"
 
 bool	check_for_wall(char *line)
 {
@@ -42,12 +42,17 @@ uint32_t	get_texture_x(float pos, u_int32_t tex_width, float cell_size)
 void	load_png_texture(t_cub3d *data)
 {
 	data->texture[0] = mlx_load_png(data->map.we_texture);
+	if (!data->texture[0])
+		ft_error();
 	data->texture[1] = mlx_load_png(data->map.ea_texture);
+	if (!data->texture[1])
+		ft_error();
 	data->texture[2] = mlx_load_png(data->map.no_texture);
+	if (!data->texture[2])
+		ft_error();
 	data->texture[3] = mlx_load_png(data->map.so_texture);
-	data->wp.texture[0] = mlx_load_png("./images/g.png");
-	data->wp.texture[1] = mlx_load_png("./images/aiming.png");
-	data->wp.texture[2] = mlx_load_png("./images/flash.png");
+	if (!data->texture[3])
+		ft_error();
 }
 
 void	init_ray_values(t_ray *val, t_ray_data *ray, float angle)
