@@ -6,11 +6,11 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 19:20:23 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D_bonus.h"
+#include "../include/cub3D_bonus.h"
 
 static void	calculate_ray_intersection(t_cub3d *data, float ray_angle)
 {

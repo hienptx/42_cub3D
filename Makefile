@@ -54,7 +54,7 @@
 # .PHONY: all, clean, fclean, re, libmlx
 
 NAME	:= cub3D
-CFLAGS	:= -g -Ofast -Wextra -Wall -Werror -I./includes -Wunreachable-code -Ofast
+CFLAGS	:= -g -Ofast -Wextra -Wall -Werror -I./include -Wunreachable-code -Ofast
 LEAKS = -L../../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 LIBMLX	:= ./MLX
 LIBFT_PATH	:= ./libft
@@ -77,10 +77,11 @@ SRCS	:=	cub3D_utils.c \
 			rendering_utils.c \
 			keys.c \
 			rays.c
-MAND_SRCS	:= $(addprefix $(MAND_DIR)/, $(SRCS))
+MAND_SRCS   := $(addprefix $(MAND_DIR)/, $(SRCS))
+SRCS += weapon.c minimap.c
+MAND_OBJS   := ${MAND_SRCS:.c=.o}
 BONUS_SRCS := $(addsuffix _bonus.c, $(addprefix $(BONUS_DIR)/, $(basename $(SRCS))))
-MAND_OBJS	:= ${MAND_SRCS:.c=.o}
-BONUS_OBJS	:= ${BONUS_SRCS:.c=.o}
+BONUS_OBJS  := ${BONUS_SRCS:.c=.o}
 
 all: libmlx $(NAME)
 
@@ -94,9 +95,6 @@ libmlx:
 $(NAME): $(MAND_OBJS) $(LIBFT)
 	@$(CC) $(MAND_OBJS) $(LIBS) $(LIBFT) $(HEADERS) -o $(NAME)
 
-# $(BONUS_NAME): $(BONUS_OBJS) $(LIBFT)
-# 	@$(CC) $(BONUS_OBJS) $(LIBS) $(LIBFT) $(HEADERS) -o $(NAME)
-
 $(LIBFT):
 	@make -C $(LIBFT_PATH)
 
@@ -105,8 +103,7 @@ bonus: libmlx $(BONUS_OBJS) $(LIBFT)
 
 clean:
 	@echo "Cleaning up..."
-	@rm -rf $(MAND_DIR)/*.o
-	@rm -rf $(BONUS_DIR)/*.o
+	@rm -rf objs/*.o $(MAND_DIR)/*.o $(BONUS_DIR)/*.o
 	@rm -rf $(LIBMLX)/build
 	@make -C $(LIBFT_PATH) clean
 
@@ -116,4 +113,4 @@ fclean: clean
 
 re: clean all
 
-.PHONY: all, clean, fclean, re, libmlx, bonus
+.PHONY: all clean fclean re libmlx bonus

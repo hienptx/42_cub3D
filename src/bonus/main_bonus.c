@@ -6,12 +6,12 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:22:22 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 19:20:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../MLX/include/MLX42/MLX42_Int.h"
-#include "../../include/cub3D_bonus.h"
+#include "../include/cub3D_bonus.h"
 
 // #define DEG2RAD(angle_in_degrees) ((angle_in_degrees)*M_PI / 180.0)
 // #define RAD2DEG(angle_in_radians) ((angle_in_radians)*180.0 / M_PI)

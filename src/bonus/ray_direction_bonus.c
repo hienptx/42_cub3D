@@ -6,11 +6,11 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 19:20:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D_bonus.h"
+#include "../include/cub3D_bonus.h"
 
 void	init_ray_up(t_intersection *inter, t_ray_data *ray, float cell_size)
 {

@@ -6,11 +6,11 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:27:36 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 19:20:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D_bonus.h"
+#include "../include/cub3D_bonus.h"
 
 static bool	is_wall_hit(t_cub3d *data, unsigned int mx, unsigned int my)
 {

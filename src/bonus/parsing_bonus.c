@@ -6,11 +6,11 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:46:15 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 19:20:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D_bonus.h"
+#include "../include/cub3D_bonus.h"
 
 void	parse_color(char *line, t_user_map *map)
 {

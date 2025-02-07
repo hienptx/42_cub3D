@@ -6,17 +6,17 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:09:10 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 19:20:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:55:00 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D_bonus.h"
+#include "../include/cub3D_bonus.h"
 
 bool	check_for_wall(char *line)
 {
 	while (*line != '\0')
 	{
-		if (*line != '1' && *line != ' ')
+		if (*line != '1' && *line != ' ' && *line != '\t')
 			return (0);
 		line++;
 	}

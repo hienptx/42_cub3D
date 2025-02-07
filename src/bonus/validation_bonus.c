@@ -6,11 +6,11 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 19:20:15 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:54:56 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/cub3D_bonus.h"
+#include "../include/cub3D_bonus.h"
 
 bool	validate_texture_path(char *path)
 {
@@ -73,7 +73,7 @@ bool	validate_player_pos(char c, unsigned int j, unsigned int i,
 		else if (c == 'W')
 			parse_player_dir(-1, 0, map);
 	}
-	else if (ft_strchr("01 ", c))
+	else if (ft_strchr("01\t ", c))
 		;
 	else
 		return (0);

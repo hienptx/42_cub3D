@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   typedef.h                                          :+:      :+:    :+:   */
+/*   typedef_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:31:29 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 23:40:21 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:51:12 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TYPEDEF_H
-# define TYPEDEF_H
+#ifndef TYPEDEF_H_BONUS
+# define TYPEDEF_H_BONUS
 # include "../MLX/include/MLX42/MLX42.h"
 # include <stddef.h>
 # include <time.h>
@@ -146,6 +146,7 @@ typedef struct s_cub3d
 	t_weapon		wp;
 	float			cell_size;
 	int				key_pressed;
+	float			offset;
 }					t_cub3d;
 
 #endif
