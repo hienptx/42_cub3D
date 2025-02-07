@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 23:40:04 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 17:34:45 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ bool	validate_player_pos(char c, unsigned int j, unsigned int i,
 		else if (c == 'W')
 			parse_player_dir(-1, 0, map);
 	}
-	else if (ft_strchr("01 ", c))
+	else if (ft_strchr("01\t ", c))
 		;
 	else
 		return (0);

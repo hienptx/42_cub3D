@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   rendering_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:09:10 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 14:23:17 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 17:33:14 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	check_for_wall(char *line)
 {
 	while (*line != '\0')
 	{
-		if (*line != '1' && *line != ' ')
+		if (*line != '1' && *line != ' ' && *line != '\t')
 			return (0);
 		line++;
 	}

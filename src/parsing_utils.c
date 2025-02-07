@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:01:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 13:20:00 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 17:38:11 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ bool	get_player(char **maze, int i, size_t *longest_line, t_user_map *map)
 	{
 		if (maze[i][j] == '0' || ft_strchr("SNWE", maze[i][j]))
 		{
-			if (maze[i - 1][j] == ' ' || maze[i + 1][j] == ' ' || maze[i
-				- 1][j] == '\0' || maze[i + 1][j] == '\0')
+			if (maze[i - 1][j] == ' ' || maze[i + 1][j] == ' '
+				|| maze[i - 1][j] == '\0' || maze[i + 1][j] == '\0')
 				return (printf("Maze is not closed\n"), 0);
 		}
 		if (!validate_player_pos(maze[i][j], j, i, map))
