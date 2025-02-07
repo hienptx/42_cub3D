@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 15:42:27 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 22:20:14 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool		validate_map(t_user_map *map);
 bool		validate_maze(char **maze, t_user_map *map);
 bool		validate_player_pos(char c, unsigned int j, unsigned int i,
 				t_user_map *map);
-bool		validate_color_values(int *color, size_t size);
+bool		validate_color_values(int *color);
 
 //parsing.c
 bool		parsed_map(char *map_path, t_cub3d *data);
