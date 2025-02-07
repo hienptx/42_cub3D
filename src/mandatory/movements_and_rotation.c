@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   movements_and_rotation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 22:21:31 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 14:59:39 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:09:01 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,15 @@
 
 int	wall_collision(t_cub3d *data, float new_x, float new_y)
 {
-	float	offset;
 	float	check_x1;
 	float	check_y1;
 	float	check_x2;
 	float	check_y2;
 
-	offset = 2;
-	check_x1 = new_x + data->pos.dx * offset;
-	check_y1 = new_y + data->pos.dy * offset;
-	check_x2 = new_x - data->pos.dx * offset;
-	check_y2 = new_y - data->pos.dy * offset;
+	check_x1 = new_x + data->pos.dx * data->offset;
+	check_y1 = new_y + data->pos.dy * data->offset;
+	check_x2 = new_x - data->pos.dx * data->offset;
+	check_y2 = new_y - data->pos.dy * data->offset;
 	return (check_collision(data, check_x1, check_y1)
 		|| check_collision(data, check_x2, check_y1)
 		|| check_collision(data, check_x1, check_y2)

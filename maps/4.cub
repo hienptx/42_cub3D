@@ -1,7 +1,7 @@
-NO ./images/NORTH_100.png
-SO ./images/SOUTH_100.png
-WE ./images/WEST_100.png
-EA ./images/EAST_100.png
+NO ./images/N_wide.png
+SO ./images/S_wide.png
+WE ./images/W_wide.png
+EA ./images/E_wide.png
 
 C 60,179,110
 F 60,179,110

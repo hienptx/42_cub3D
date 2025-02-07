@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   rays.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 15:24:10 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 19:07:00 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D.h"
+
+mlx_texture_t	*get_wall_texture(t_cub3d *data, t_ray_data *ray)
+{
+	if (ray->color == 0)
+	{
+		if (ray->dirx >= 0)
+			return (data->texture[3]);
+		else
+			return (data->texture[2]);
+	}
+	else
+	{
+		if (ray->diry >= 0)
+			return (data->texture[1]);
+		else
+			return (data->texture[0]);
+	}
+}
 
 static void	calculate_ray_intersection(t_cub3d *data, float ray_angle)
 {

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   weapon.c                                           :+:      :+:    :+:   */
+/*   weapon_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 13:53:19 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/05 22:41:08 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 19:20:15 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../../include/cub3D_bonus.h"
 
 void	put_object(t_cub3d *data, mlx_texture_t *obj, float obj_x, float obj_y)
 {

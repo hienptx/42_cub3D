@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization_and_free.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/06 10:05:03 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/07 18:09:25 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	cub3d_initialising(t_cub3d *data)
 		data->cell_size = 16;
 	else
 		data->cell_size = 256 / data->map.map_width;
+	data->offset = data->cell_size / 7;
 	data->iheight = data->map.map_height * data->cell_size;
 	data->iwidth = data->map.map_width * data->cell_size;
 	data->pos.dx = data->map.pos.dx;
