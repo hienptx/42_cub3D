@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-<<<<<<< HEAD
-/*   validation.c                                       :+:      :+:    :+:   */
-=======
 /*   validation_bonus.c                                 :+:      :+:    :+:   */
->>>>>>> origin/mandatory
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/07 17:34:45 by hipham           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/cub3D.h"
-=======
-/*   Updated: 2025/02/07 19:54:56 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 20:26:25 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D_bonus.h"
->>>>>>> origin/mandatory
 
 bool	validate_texture_path(char *path)
 {

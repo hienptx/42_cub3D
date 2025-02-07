@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-<<<<<<< HEAD
-/*   ray_direction.c                                    :+:      :+:    :+:   */
-=======
 /*   ray_direction_bonus.c                              :+:      :+:    :+:   */
->>>>>>> origin/mandatory
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/04 17:56:48 by hipham           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "../include/cub3D.h"
-=======
-/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/07 20:26:27 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub3D_bonus.h"
->>>>>>> origin/mandatory
 
 void	init_ray_up(t_intersection *inter, t_ray_data *ray, float cell_size)
 {
