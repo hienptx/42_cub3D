@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   wall_rendering_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 20:40:16 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/08 21:10:59 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,25 @@ void	draw_single_slice(t_cub3d *data, int x, double distance_to_wall,
 		wall.tex_pos = ((wall.height - HEIGHT) / 2) * wall.step;
 	else
 		wall.tex_pos = 0;
+	// tex_x = calculate_tex_x(ray->color, &wall, ray, data);
 	if (ray->color == 0)
-		tex_x = get_texture_x(ray->hit_x, wall.texture->width, data->cell_size);
+	{
+		if (data->ray.dirx >= 0)
+			tex_x = get_texture_x(ray->hit_x, wall.texture->width, data->cell_size);
+		else
+			tex_x = wall.texture->width - get_texture_x(ray->hit_x, wall.texture->width, data->cell_size) - 1;
+	}
 	else
-		tex_x = get_texture_x(ray->hit_y, wall.texture->width, data->cell_size);
+	{
+		if (ray->diry >= 0)
+			tex_x = get_texture_x(ray->hit_y, wall.texture->width, data->cell_size);
+		else
+			tex_x = wall.texture->width - get_texture_x(ray->hit_y, wall.texture->width, data->cell_size) - 1;
+	}
+	// if (ray->color == 0)
+	// 	tex_x = get_texture_x(ray->hit_x, wall.texture->width, data->cell_size);
+	// else
+	// 	tex_x = get_texture_x(ray->hit_y, wall.texture->width, data->cell_size);
 	draw_wall_slice(data, wall, tex_x, x);
 	floor_drawing(data, wall, x);
 	ceiling_drawing(data, wall, x);

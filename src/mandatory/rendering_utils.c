@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 19:09:10 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 19:47:36 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:31:15 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ uint32_t	get_texture_x(float pos, u_int32_t tex_width, float cell_size)
 
 	relative_pos = fmod(pos, cell_size);
 	tex_x = (uint32_t)((relative_pos / cell_size) * tex_width);
-	tex_x %= tex_width;
 	return (tex_x);
 }
 

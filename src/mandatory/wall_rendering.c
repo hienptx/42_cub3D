@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 19:53:09 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:42:06 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,10 +85,7 @@ void	draw_single_slice(t_cub3d *data, int x, double distance_to_wall,
 		wall.tex_pos = ((wall.height - HEIGHT) / 2) * wall.step;
 	else
 		wall.tex_pos = 0;
-	if (ray->color == 0)
-		tex_x = get_texture_x(ray->hit_x, wall.texture->width, data->cell_size);
-	else
-		tex_x = get_texture_x(ray->hit_y, wall.texture->width, data->cell_size);
+	tex_x = calculate_tex_x(ray->color, &wall, ray, data);
 	draw_wall_slice(data, wall, tex_x, x);
 	floor_drawing(data, wall, x);
 	ceiling_drawing(data, wall, x);

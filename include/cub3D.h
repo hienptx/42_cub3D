@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 19:53:00 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:43:06 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ bool		check_for_char(const char *str);
 int			count_comma(char *s);
 bool		convert_to_int(int *i, int *rgb, char **arr, char **color);
 bool		process_color_values(char *s, char **arr, char ***color);
+uint32_t	calculate_tex_x(int is_vertical, t_wall_data *wall, t_ray_data *ray, 
+				t_cub3d *data);
 
 //movements_and_rotation.c
 float		adjust_angle(float angle);
