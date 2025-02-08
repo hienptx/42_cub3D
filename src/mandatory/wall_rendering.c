@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 01:53:22 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 16:53:32 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 19:53:09 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_wall_data	calculate_wall_dimensions(t_cub3d *data, double distance)
 {
 	t_wall_data	wall_data;
 
-	wall_data.height = (HEIGHT / 2 * data->cell_size / distance);
+	wall_data.height = (HEIGHT * data->cell_size / distance);
 	wall_data.line_top = (HEIGHT - wall_data.height) / 2;
 	if (wall_data.line_top < 0)
 		wall_data.line_top = 0;

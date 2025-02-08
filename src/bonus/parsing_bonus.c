@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 21:46:15 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 20:27:06 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:46:59 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	parse_color(char *line, t_user_map *map)
 {
 	char	**color;
-	int		color_arr[3];
+	int		rgb[3];
 	int		i;
 	char	**arr;
 
@@ -26,12 +26,16 @@ void	parse_color(char *line, t_user_map *map)
 	if (i == 2)
 	{
 		i = -1;
+		if (arr[1][ft_strlen(arr[1]) - 1] == '\n')
+			arr[1][ft_strlen(arr[1]) - 1] = '\0';
+		if (count_comma(arr[1]) != 2)
+			return (ft_free(arr));
 		color = ft_split(arr[1], ',');
-		map->color_count++;
 		while (color[++i])
-			color_arr[i] = ft_atoi(color[i]);
-		if (map->color_count < 3)
-			copy_color(map, color_arr, sizeof(color_arr), arr[0]);
+			convert_to_int(&i, rgb, arr, color);
+		map->color_count++;
+		if (map->color_count < 3 && i == 3)
+			copy_color(map, rgb, sizeof(rgb), arr[0]);
 		ft_free(color);
 		ft_free(arr);
 	}

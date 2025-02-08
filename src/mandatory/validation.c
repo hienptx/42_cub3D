@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 22:20:21 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 17:00:21 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,18 +85,12 @@ bool	validate_color_values(int *color)
 	size_t	i;
 
 	i = 0;
-	// printf("count = %i\n", count);
-	// if (count != 3)
-	// 	return(false);
 	while (i < 3)
 	{
 		if (color[i] < 0 || color[i] > 255)
 			return (false);
 		i++;
 	}
-	// printf("i = %zu, test\n", i);
-	// if (i != 3)
-	// 	return (false);
 	return (true);
 }
 

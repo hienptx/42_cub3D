@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:01:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 17:38:11 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 18:12:38 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,25 +49,39 @@ void	convert_to_data(t_user_map *map, char *join)
 	}
 }
 
-void	save_texture(char **dir, char *path)
+void	save_texture(t_user_map *map, char **dir, char *path, char *s)
 {
 	size_t	len;
 
 	len = ft_strlen(path);
 	*dir = ft_calloc(len, 1);
 	ft_memcpy(*dir, path, len - 1);
+	if (ft_strcmp(s, "EA") == 0)
+		map->counter.east++;
+	if (ft_strcmp(s, "WE") == 0)
+		map->counter.west++;
+	if (ft_strcmp(s, "SO") == 0)
+		map->counter.south++;
+	if (ft_strcmp(s, "NO") == 0)
+		map->counter.north++;
 }
 
 void	copy_color(t_user_map *map, int *color_arr, size_t size, char *line)
 {
 	if (!ft_strcmp(line, "F"))
 	{
+		if (map->counter.floor > 0)
+			return ;
 		ft_malloc((void **)&map->floor, size);
 		ft_memcpy(map->floor, color_arr, size);
+		map->counter.floor++;
 	}
 	if (!ft_strcmp(line, "C"))
 	{
+		if (map->counter.ceiling > 0)
+			return ;
 		ft_malloc((void **)&map->ceiling, size);
 		ft_memcpy(map->ceiling, color_arr, size);
+		map->counter.ceiling++;
 	}
 }

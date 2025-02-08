@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 23:00:50 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 20:26:25 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/08 16:45:00 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,19 +80,17 @@ bool	validate_player_pos(char c, unsigned int j, unsigned int i,
 	return (1);
 }
 
-bool	validate_color_values(int *color, size_t size)
+bool	validate_color_values(int *color)
 {
 	size_t	i;
 
 	i = 0;
-	while (i < size)
+	while (i < 3)
 	{
 		if (color[i] < 0 || color[i] > 255)
 			return (false);
 		i++;
 	}
-	if (i != 3)
-		return (false);
 	return (true);
 }
 
@@ -114,9 +112,9 @@ bool	validate_map(t_user_map *map)
 		return (printf("Error: Invalid texture\n"), 0);
 	if (!validate_texture_path(map->ea_texture))
 		return (printf("Error: Invalid texture\n"), 0);
-	if (!validate_color_values(map->ceiling, 3))
+	if (!validate_color_values(map->ceiling))
 		return (printf("Error: Invalid color\n"), 0);
-	if (!validate_color_values(map->floor, 3))
+	if (!validate_color_values(map->floor))
 		return (printf("Error: Invalid color\n"), 0);
 	if (!validate_maze(map->map_data, map))
 		return (printf("Error: Invalid maze\n"), 0);
