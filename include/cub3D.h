@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 22:20:14 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 19:53:00 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,15 @@ bool		get_player(char **maze, int i, size_t *longest_line,
 				t_user_map *map);
 void		parse_player_dir(int dx, int dy, t_user_map *map);
 void		convert_to_data(t_user_map *map, char *join);
-void		save_texture(char **dir, char *path);
+void		save_texture(t_user_map *map, char **dir, char *path, char *s);
 void		copy_color(t_user_map *map, int *color_arr, size_t size,
 				char *line);
+
+// parsing_more_utils.c
+bool		check_for_char(const char *str);
+int			count_comma(char *s);
+bool		convert_to_int(int *i, int *rgb, char **arr, char **color);
+bool		process_color_values(char *s, char **arr, char ***color);
 
 //movements_and_rotation.c
 float		adjust_angle(float angle);

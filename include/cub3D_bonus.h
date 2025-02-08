@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 19:13:31 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:02:46 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ bool		validate_map(t_user_map *map);
 bool		validate_maze(char **maze, t_user_map *map);
 bool		validate_player_pos(char c, unsigned int j, unsigned int i,
 				t_user_map *map);
-bool		validate_color_values(int *color, size_t size);
+bool		validate_color_values(int *color);
 
 //parsing.c
 bool		parsed_map(char *map_path, t_cub3d *data);
@@ -64,9 +64,15 @@ bool		get_player(char **maze, int i, size_t *longest_line,
 				t_user_map *map);
 void		parse_player_dir(int dx, int dy, t_user_map *map);
 void		convert_to_data(t_user_map *map, char *join);
-void		save_texture(char **dir, char *path);
+void		save_texture(t_user_map *map, char **dir, char *path, char *s);
 void		copy_color(t_user_map *map, int *color_arr, size_t size,
 				char *line);
+
+// parsing_more_utils.c
+bool		check_for_char(const char *str);
+int			count_comma(char *s);
+bool		convert_to_int(int *i, int *rgb, char **arr, char **color);
+bool		process_color_values(char *s, char **arr, char ***color);
 
 //movements_and_rotation.c
 float		adjust_angle(float angle);

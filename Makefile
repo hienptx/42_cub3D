@@ -13,6 +13,7 @@ SRCS	:=	cub3D_utils.c \
 			initialization_and_free.c \
 			main.c \
 			parsing_utils.c \
+			parsing_more_utils.c \
 			parsing.c \
 			validation.c \
 			movements_and_rotation.c \

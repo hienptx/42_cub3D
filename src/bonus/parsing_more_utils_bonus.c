@@ -1,16 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing_more_utils_bonus.c                         :+:      :+:    :+:   */
+/*   parsing_more_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:36:42 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 16:50:01 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 19:52:26 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "../include/cub3D.h"
+
+bool	process_color_values(char *s, char **arr, char ***color)
+{
+	if (s[ft_strlen(s) - 1] == '\n')
+		s[ft_strlen(s) - 1] = '\0';
+	if (count_comma(s) != 2)
+	{
+		ft_free(arr);
+		return (false);
+	}
+	*color = ft_split(s, ',');
+	if (!*color)
+	{
+		ft_free(arr);
+		return (false);
+	}
+	return (true);
+}
 
 bool	check_for_char(const char *str)
 {
@@ -40,13 +58,14 @@ int	count_comma(char *s)
 	return (count);
 }
 
-void	convert_to_int(int *i, int *rgb, char **arr, char **color)
+bool	convert_to_int(int *i, int *rgb, char **arr, char **color)
 {
 	if (!check_for_char(color[*i]))
 	{
 		ft_free(color);
 		ft_free(arr);
-		return ;
+		return (false);
 	}
 	rgb[*i] = ft_atoi(color[*i]);
+	return (true);
 }

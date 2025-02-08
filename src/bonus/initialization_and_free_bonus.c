@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   initialization_and_free_bonus.c                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 22:54:20 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 20:26:58 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/08 19:58:49 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,12 @@ void	map_initialising(t_user_map *map)
 	map->player_count = 0;
 	map->texture_count = 0;
 	map->color_count = 0;
-	map->valid_status = 0;
+	map->counter.floor = 0;
+	map->counter.ceiling = 0;
+	map->counter.east = 0;
+	map->counter.west = 0;
+	map->counter.north = 0;
+	map->counter.south = 0;
 }
 
 void	ft_free_map(t_user_map *map)

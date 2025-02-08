@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:31:29 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/07 19:51:12 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 19:59:14 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,16 @@ typedef struct s_player
 	unsigned int	py;
 }					t_player;
 
+typedef struct s_counter
+{
+	size_t			floor;
+	size_t			ceiling;
+	size_t			west;
+	size_t			east;
+	size_t			north;
+	size_t			south;
+}					t_counter;
+
 typedef struct s_user_map
 {
 	size_t			map_width;
@@ -115,6 +125,7 @@ typedef struct s_user_map
 	int				scale_factor_x;
 	int				scale_factor_y;
 	int				color;
+	t_counter		counter;
 }					t_user_map;
 
 typedef struct s_weapon
