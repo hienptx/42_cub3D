@@ -3,14 +3,32 @@
 /*                                                        :::      ::::::::   */
 /*   rays_bonus.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/28 02:23:42 by dongjle2          #+#    #+#             */
-/*   Updated: 2025/02/07 19:34:52 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:39:55 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D_bonus.h"
+#include "../../include/cub3D_bonus.h"
+
+mlx_texture_t	*get_wall_texture(t_cub3d *data, t_ray_data *ray)
+{
+	if (ray->color == 0)
+	{
+		if (ray->dirx >= 0)
+			return (data->texture[2]);
+		else
+			return (data->texture[3]);
+	}
+	else
+	{
+		if (ray->diry >= 0)
+			return (data->texture[1]);
+		else
+			return (data->texture[0]);
+	}
+}
 
 static void	calculate_ray_intersection(t_cub3d *data, float ray_angle)
 {
@@ -47,7 +65,7 @@ void	render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
 
 	ca = adjust_angle(ra - data->pos.angle);
 	corrected_dist = ray->distance * cos(ca);
-	draw_wall_slice(data, i, corrected_dist, ray);
+	draw_single_slice(data, i, corrected_dist, ray);
 	draw_ray(data, ra, 0x00FF00FF);
 }
 

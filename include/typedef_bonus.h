@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   typedef_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:31:29 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 19:59:14 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:32:04 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,9 @@ typedef struct s_ray_data
 
 typedef struct s_wall_data
 {
-	unsigned int	height;
-	unsigned int	line_top;
-	unsigned int	line_bottom;
+	double			height;
+	double			line_top;
+	double			line_bottom;
 	double			step;
 	double			tex_pos;
 	uint32_t		tex_x;

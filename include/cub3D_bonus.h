@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
+/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 20:02:46 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 20:42:04 by dongjle2         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,14 @@ int			check_collision(t_cub3d *data, float x, float y);
 void		my_keyhook(mlx_key_data_t keydata, void *param);
 
 // rays.c
-void		cast_ray(void *param);
-void		draw_wall_slice(t_cub3d *data, int x, double distance_to_wall,
+void			cast_ray(void *param);
+void			draw_single_slice(t_cub3d *data, int x, double distance_to_wall,
 				t_ray_data *ray);
-void		render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
-				float ra);
+void			draw_wall_slice(t_cub3d *data, t_wall_data wall, uint32_t tex_x,
+				int x);
+void			render_single_ray(t_cub3d *data, t_ray_data *ray, unsigned int i,
+					float ra);
+mlx_texture_t	*get_wall_texture(t_cub3d *data, t_ray_data *ray);
 
 // minimap.c
 void		render_map(char **map, t_cub3d *data);
