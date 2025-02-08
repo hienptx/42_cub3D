@@ -6,11 +6,11 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 16:36:42 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 20:44:08 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 22:01:28 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/cub3D.h"
+#include "../include/cub3D_bonus.h"
 
 bool	process_color_values(char *s, char **arr, char ***color)
 {
@@ -70,23 +70,28 @@ bool	convert_to_int(int *i, int *rgb, char **arr, char **color)
 	return (true);
 }
 
-uint32_t calculate_tex_x(int is_vertical, t_wall_data *wall, t_ray_data *ray, t_cub3d *data)
+uint32_t	calculate_tex_x(int is_vertical, t_wall_data *wall, t_ray_data *ray,
+	t_cub3d *data)
 {
-	uint32_t tex_x;
+	uint32_t	tex_x;
 
 	if (is_vertical == 0)
 	{
 		if (data->ray.dirx >= 0)
-			tex_x = get_texture_x(ray->hit_x, wall->texture->width, data->cell_size);
+			tex_x = get_texture_x(ray->hit_x, wall->texture->width,
+					data->cell_size);
 		else
-			tex_x = wall->texture->width - get_texture_x(ray->hit_x, wall->texture->width, data->cell_size) - 1;
+			tex_x = wall->texture->width - get_texture_x(ray->hit_x,
+					wall->texture->width, data->cell_size) - 1;
 	}
 	else
 	{
 		if (ray->diry >= 0)
-			tex_x = get_texture_x(ray->hit_y, wall->texture->width, data->cell_size);
+			tex_x = get_texture_x(ray->hit_y, wall->texture->width,
+					data->cell_size);
 		else
-			tex_x = wall->texture->width - get_texture_x(ray->hit_y, wall->texture->width, data->cell_size) - 1;
+			tex_x = wall->texture->width - get_texture_x(ray->hit_y,
+					wall->texture->width, data->cell_size) - 1;
 	}
 	return (tex_x);
 }

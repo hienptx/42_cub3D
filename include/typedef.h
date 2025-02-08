@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:31:29 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 17:50:32 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/08 22:11:30 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,6 @@ typedef struct s_user_map
 	int				color;
 	t_counter		counter;
 }					t_user_map;
-
 
 typedef struct s_cub3d
 {

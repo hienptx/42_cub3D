@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   typedef_bonus.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dongjle2 <dongjle2@student.42heilbronn.    +#+  +:+       +#+        */
+/*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:31:29 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 20:32:04 by dongjle2         ###   ########.fr       */
+/*   Updated: 2025/02/08 22:12:23 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TYPEDEF_H_BONUS
-# define TYPEDEF_H_BONUS
+#ifndef TYPEDEF_BONUS_H
+# define TYPEDEF_BONUS_H
 # include "../MLX/include/MLX42/MLX42.h"
 # include <stddef.h>
 # include <time.h>

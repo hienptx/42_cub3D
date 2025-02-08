@@ -3,7 +3,8 @@ SO ./images/S_wide.png
 EA ./images/E_wide.png
 WE ./images/W_wide.png
 
-C 0,0,6
+C 0,0,0
+F 35,206,235
 F 35,206,235
 
 
