@@ -39,7 +39,7 @@ libmlx:
 	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(MAND_OBJS) $(LIBFT)
-	@$(CC) $(MAND_OBJS) $(LIBS) $(LIBFT) $(HEADERS) -o $(NAME) $(LEAKS)
+	@$(CC) $(MAND_OBJS) $(LIBS) $(LIBFT) $(HEADERS) -o $(NAME)
 
 $(LIBFT):
 	@make -C $(LIBFT_PATH)
