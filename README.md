@@ -40,6 +40,8 @@ make bonus
 - **W / A / S / D** - Move forward, left, backward, right
 - **Left / Right Arrow** - Rotate camera
 - **ESC** - Exit game
+### Controls with bonus
+- **SPACE** - Shooting
 
 ## 📑 Code Structure
 - **main.c** - Entry point, initializes game
