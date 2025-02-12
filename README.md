@@ -49,11 +49,47 @@ make bonus
 - **raycasting/** - Implements the raycasting algorithm
 - **rendering/** - Manages drawing and textures
 
-## 🔍 Sorting Strategy
-**Sorting Algorithms Used:**
-- **Bubble Sort** is used for sorting ray distances to handle correct rendering order.
-- **Quick Sort** optimizes performance for larger datasets in sprite rendering.
-- **Insertion Sort** is applied to ensure small updates are efficient when managing game objects.
+## 🔍 Algorithm
+- **Raycasting Algorithm (DDA - Digital Differential Analysis)**
+    Purpose: Converts a 2D grid-based map into a pseudo-3D perspective.
+    
+    Key Steps:
+      1. Cast a ray for each vertical pixel column on the screen.
+      2. Step through the grid to detect where the ray hits a wall.
+      3. Calculate distance from the player to the wall to determine wall height.
+      4. Adjust perspective using a fish-eye correction (to avoid distortion).
+      5. Texture Mapping: If implemented, determines which texture to render on the wall.
+    Used Functions:
+      dda_algorithm() → Iterates through grid cells until a wall is hit.
+      calculate_wall_height() → Uses distance to compute correct rendering.
+  
+## ⚙️ Configure input file
+```bash
+# Open .cub file
+vim maps/1.cub
+```
+### Example:
+```javascript
+# paths to wall pictures for rendering
+NO ./images/N_wide.png
+SO ./images/S_wide.png
+WE ./images/W_wide.png
+EA ./images/E_wide.png
+
+# rgb color values of floor (F) and ceiling (C)
+F 100,150,105
+C 60,50,110
+
+# maze with 1 represent wall, 0 empty space
+# place player with N, S, E, W
+111111111
+100100111
+10010S001
+100110001
+110001101
+110100101
+111111111
+```
 
 ## 🏗️ Challenges & Learnings
 - Implementing an efficient **raycasting engine**.
