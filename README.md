@@ -32,9 +32,9 @@ make bonus
 ```
 
 ## 🎥 Screenshots & Video Demo
-![Gameplay Screenshot](assets/gameplay.png)
+![Gameplay Screenshot](images/cub3D2.png)
 
-[Watch the Demo](https://youtu.be/example_link)
+[Watch the Demo](https://youtu.be/EVUZNPmnXw8)
 
 ## 🎮 Controls
 - **W / A / S / D** - Move forward, left, backward, right
