@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:35:38 by hipham            #+#    #+#             */
-/*   Updated: 2025/02/08 22:16:19 by hipham           ###   ########.fr       */
+/*   Updated: 2025/02/12 17:40:20 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # define SCREEN_WIDTH WIDTH
 # define SCREEN_HEIGHT HEIGHT
 # define NUM_RAYS SCREEN_WIDTH
-# define MOVING_SPEED 1
+# define MOVING_SPEED 2
 # define FOV M_PI / 3.0
 # define MAX_MAP_WIDTH 240
 # define MAX_MAP_HEIGHT 240
